@@ -4,9 +4,11 @@ import sqlite3
 import csv
 import json
 import os
+import re
 import shutil
 import configparser
 import string
+import urllib.request
 
 try:
     import mgrs as _mgrs_mod
@@ -173,6 +175,52 @@ def _save_mbtiles_config(path):
         cfg.write(f)
 
 
+def _load_navdata_config():
+    cfg = configparser.ConfigParser()
+    if os.path.isfile(CONFIG_FILE):
+        cfg.read(CONFIG_FILE, encoding="utf-8")
+    return cfg.get("paths", "nav_data", fallback="")
+
+
+def _save_navdata_config(path):
+    cfg = configparser.ConfigParser()
+    if os.path.isfile(CONFIG_FILE):
+        cfg.read(CONFIG_FILE, encoding="utf-8")
+    if not cfg.has_section("paths"):
+        cfg.add_section("paths")
+    cfg.set("paths", "nav_data", path)
+    with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+        cfg.write(f)
+
+
+def _find_nav_data_db():
+    """Search for nav_data.db in DCS World C-130J module across all drives."""
+    candidates = []
+    # Common DCS install paths
+    patterns = [
+        os.path.join(f"{letter}:\\", "**", "Mods", "aircraft", "C130J",
+                      "Cockpit", "Resources", "nav_data.db")
+        for letter in string.ascii_uppercase
+    ]
+    # Check Program Files and Eagle Dynamics paths first
+    quick_paths = [
+        os.path.join(f"{letter}:\\", base, "Mods", "aircraft", "C130J",
+                      "Cockpit", "Resources", "nav_data.db")
+        for letter in string.ascii_uppercase
+        for base in [
+            "Eagle Dynamics\\DCS World",
+            "Eagle Dynamics\\DCS World OpenBeta",
+            "Program Files\\Eagle Dynamics\\DCS World",
+            "DCS World",
+            "DCS World OpenBeta",
+        ]
+    ]
+    for p in quick_paths:
+        if os.path.isfile(p) and p not in candidates:
+            candidates.append(p)
+    return candidates
+
+
 # ── Embedded MBTiles tile server (from dynCamp) ─────────────────
 
 _MBTILES_PORT = 8082
@@ -258,10 +306,14 @@ class DBEditor:
         self.db_path = None
         self.conn = None
         self.dcs_path = None  # Path to DCS.C130J user_data.db
+        self.nav_conn = None  # Connection to nav_data.db
+        self.names_conn = None  # Connection to airport_names.db
 
         self._apply_cdu_theme()
         self._build_menu()
         self._build_tabs()
+        self._load_nav_data()  # try to load nav_data.db at startup
+        self._load_airport_names()  # load airport_names.db
 
     def _apply_cdu_theme(self):
         style = ttk.Style()
@@ -446,7 +498,10 @@ class DBEditor:
         tb = ttk.Frame(left)
         tb.pack(fill=tk.X, pady=(0, 5))
         ttk.Button(tb, text="+ Nueva", command=self.add_route).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text="💾 Guardar", command=self.save_route).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text="Eliminar", command=self.delete_route).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text="Clonar", command=self.clone_route).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text="🗺 Ver en Mapa", command=self.show_route_on_map).pack(side=tk.LEFT, padx=2)
 
         cols = ("name", "origin", "dest")
         self.route_tree = ttk.Treeview(left, columns=cols, show="headings", selectmode="extended")
@@ -461,7 +516,8 @@ class DBEditor:
         paned.add(right, weight=3)
 
         # Scrollable detail area
-        canvas = tk.Canvas(right, borderwidth=0, highlightthickness=0)
+        canvas = tk.Canvas(right, borderwidth=0, highlightthickness=0,
+                           bg=self.CDU_BG)
         detail_scroll = ttk.Scrollbar(right, orient=tk.VERTICAL, command=canvas.yview)
         self.detail_inner = ttk.Frame(canvas)
         self.detail_inner.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
@@ -491,30 +547,454 @@ class DBEditor:
             ttk.Entry(fields_frame, textvariable=var, width=18).grid(row=row, column=col * 2 + 1, sticky="w", padx=(0, 12), pady=3)
             self.route_vars[key] = var
 
-        # Main points
+        # Main points — waypoint list with toolbar
         mp_frame = ttk.LabelFrame(inner, text="Main Points (main_pts)")
         mp_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0, 5))
-        self.main_pts_text = tk.Text(mp_frame, height=8, wrap=tk.NONE, font=self.CDU_FONT_SM,
-                                       bg=self.CDU_ENTRY_BG, fg=self.CDU_FG,
-                                       insertbackground=self.CDU_FG, selectbackground=self.CDU_SEL_BG)
-        mp_hsb = ttk.Scrollbar(mp_frame, orient=tk.HORIZONTAL, command=self.main_pts_text.xview)
-        self.main_pts_text.configure(xscrollcommand=mp_hsb.set)
-        self.main_pts_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=(5, 0))
-        mp_hsb.pack(fill=tk.X, padx=5, pady=(0, 5))
+        self._build_wpt_list(mp_frame, "main")
 
-        # Alt points
+        # Alt points — waypoint list with toolbar
         ap_frame = ttk.LabelFrame(inner, text="Alt Points (alt_pts)")
         ap_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0, 5))
-        self.alt_pts_text = tk.Text(ap_frame, height=5, wrap=tk.NONE, font=self.CDU_FONT_SM,
+        self._build_wpt_list(ap_frame, "alt")
+
+        # Raw text (collapsed by default, for advanced editing)
+        raw_frame = ttk.LabelFrame(inner, text="Edición manual (pipe-delimited)")
+        raw_frame.pack(fill=tk.X, padx=5, pady=(0, 5))
+        self._raw_visible = tk.BooleanVar(value=False)
+        ttk.Checkbutton(raw_frame, text="Mostrar campos de texto raw",
+                        variable=self._raw_visible,
+                        command=self._toggle_raw_text).pack(anchor="w", padx=5, pady=2)
+        self._raw_container = ttk.Frame(raw_frame)
+        # Main pts raw
+        ttk.Label(self._raw_container, text="main_pts:").pack(anchor="w", padx=5)
+        self.main_pts_text = tk.Text(self._raw_container, height=3, wrap=tk.NONE, font=self.CDU_FONT_SM,
+                                       bg=self.CDU_ENTRY_BG, fg=self.CDU_FG,
+                                       insertbackground=self.CDU_FG, selectbackground=self.CDU_SEL_BG)
+        self.main_pts_text.pack(fill=tk.X, padx=5, pady=(0, 3))
+        # Alt pts raw
+        ttk.Label(self._raw_container, text="alt_pts:").pack(anchor="w", padx=5)
+        self.alt_pts_text = tk.Text(self._raw_container, height=2, wrap=tk.NONE, font=self.CDU_FONT_SM,
                                       bg=self.CDU_ENTRY_BG, fg=self.CDU_FG,
                                       insertbackground=self.CDU_FG, selectbackground=self.CDU_SEL_BG)
-        ap_hsb = ttk.Scrollbar(ap_frame, orient=tk.HORIZONTAL, command=self.alt_pts_text.xview)
-        self.alt_pts_text.configure(xscrollcommand=ap_hsb.set)
-        self.alt_pts_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=(5, 0))
-        ap_hsb.pack(fill=tk.X, padx=5, pady=(0, 5))
+        self.alt_pts_text.pack(fill=tk.X, padx=5, pady=(0, 5))
 
-        # Save button
-        ttk.Button(inner, text="💾 Guardar Ruta", command=self.save_route).pack(pady=8)
+    def _build_wpt_list(self, parent, tag):
+        """Build a waypoint list with toolbar for main or alt points."""
+        tb = ttk.Frame(parent)
+        tb.pack(fill=tk.X, padx=5, pady=(5, 0))
+        ttk.Button(tb, text="+ Agregar", command=lambda: self._wpt_list_add(tag)).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text="Quitar", command=lambda: self._wpt_list_remove(tag)).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text="▲", width=3, command=lambda: self._wpt_list_move(tag, -1)).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text="▼", width=3, command=lambda: self._wpt_list_move(tag, 1)).pack(side=tk.LEFT, padx=2)
+
+        cols = ("seq", "wpt_id", "nombre", "source")
+        tree = ttk.Treeview(parent, columns=cols, show="headings", height=6, selectmode="extended")
+        tree.heading("seq", text="#")
+        tree.column("seq", width=35, stretch=False)
+        tree.heading("wpt_id", text="Waypoint")
+        tree.column("wpt_id", width=100)
+        tree.heading("nombre", text="Nombre")
+        tree.column("nombre", width=200)
+        tree.heading("source", text="Fuente")
+        tree.column("source", width=80)
+        tree.pack(fill=tk.BOTH, expand=True, padx=5, pady=(3, 5))
+
+        if tag == "main":
+            self._main_wpt_tree = tree
+        else:
+            self._alt_wpt_tree = tree
+
+    def _toggle_raw_text(self):
+        if self._raw_visible.get():
+            self._raw_container.pack(fill=tk.X, padx=0, pady=(0, 5))
+            self._sync_list_to_raw("main")
+            self._sync_list_to_raw("alt")
+        else:
+            self._raw_container.pack_forget()
+
+    def _get_wpt_tree(self, tag):
+        return self._main_wpt_tree if tag == "main" else self._alt_wpt_tree
+
+    # ── Native C-130J route format helpers ────────────────────────
+
+    def _lookup_wpt_coords(self, wpt_id):
+        """Look up (lat, lon, is_nav) for a waypoint ID."""
+        if self.conn:
+            cur = self.conn.cursor()
+            cur.execute("SELECT lat, lon FROM custom_data WHERE name = ?", (wpt_id,))
+            row = cur.fetchone()
+            if row:
+                return (row[0], row[1], False)
+        if self.nav_conn:
+            nav = self.nav_conn.cursor()
+            nav.execute("SELECT lat, lon FROM airports WHERE icao = ?", (wpt_id,))
+            row = nav.fetchone()
+            if not row:
+                ident = self._resolve_alias_to_ident(wpt_id)
+                if ident:
+                    nav.execute("SELECT lat, lon FROM airports WHERE icao = ?", (ident,))
+                    row = nav.fetchone()
+            if row:
+                return (row[0], row[1], True)
+            nav.execute("SELECT lat, lon FROM navaids WHERE name = ?", (wpt_id,))
+            row = nav.fetchone()
+            if row:
+                return (row[0], row[1], True)
+            nav.execute(
+                "SELECT waypoint_latitude, waypoint_longitude FROM waypoints "
+                "WHERE waypoint_identifier = ? LIMIT 1", (wpt_id,))
+            row = nav.fetchone()
+            if row:
+                return (row[0], row[1], True)
+        return (None, None, False)
+
+    def _build_native_wpt_tuple(self, name, wpt_type, lat, lon,
+                                speed=0, alt=-999, is_nav=True, flyover=None):
+        """Build a single waypoint tuple in the native C-130J format (40 fields)."""
+        if flyover is None:
+            flyover = 1 if wpt_type == 0 else 0
+        db_src = 1 if is_nav else 0
+        fields = [
+            name,               # 0  name
+            str(wpt_type),      # 1  type: 2=origin, 0=enroute, 1=dest
+            f" {lat:.5f}",      # 2  lat
+            f" {lon:.5f}",      # 3  lon
+            f"{speed:3d}",      # 4  speed (kts), 0=none
+            "0",                # 5
+            str(alt),           # 6  altitude (ft), -999=none
+            "0",                # 7
+            "",                 # 8
+            "3",                # 9
+            str(db_src),        # 10 1=nav_data, 0=custom
+            "       ",          # 11
+            "      ",           # 12
+            "      ",           # 13
+            "      ",           # 14
+            "-99",              # 15
+            "-99",              # 16
+            "0",                # 17
+            "0",                # 18
+            "000000",           # 19
+            "      ",           # 20
+            "  0.0",            # 21
+            "    0",            # 22
+            "-99999",           # 23
+            "0",                # 24
+            "0",                # 25
+            "0",                # 26
+            "0",                # 27
+            "    0",            # 28
+            "    0",            # 29
+            "    0",            # 30
+            "    0",            # 31
+            "    0",            # 32
+            str(flyover),       # 33 1=flyover (enroute), 0=flyby
+            "0",                # 34
+            "    0",            # 35
+            " -999",            # 36
+            "    0",            # 37
+            " -999",            # 38
+            " -999",            # 39
+        ]
+        return "(" + "|".join(fields) + ")"
+
+    def _build_native_wpt_for_id(self, wpt_id):
+        """Look up coordinates for wpt_id and build a native tuple (enroute default)."""
+        lat, lon, is_nav = self._lookup_wpt_coords(wpt_id)
+        if lat is None or lon is None:
+            lat, lon = 0.0, 0.0
+        return self._build_native_wpt_tuple(wpt_id, 0, lat, lon, is_nav=is_nav)
+
+    def _wpt_list_add(self, tag):
+        """Open search dialog and add selected waypoint to the list."""
+        result = self._wpt_search_dialog()
+        if result:
+            tree = self._get_wpt_tree(tag)
+            seq = len(tree.get_children()) + 1
+            wpt_id, source = result[0], result[1]
+            nombre = self._get_airport_name(wpt_id) if source == "airport" else ""
+            native = self._build_native_wpt_for_id(wpt_id)
+            tree.insert("", tk.END, values=(seq, wpt_id, nombre, source, native))
+            self._sync_list_to_raw(tag)
+
+    def _wpt_list_remove(self, tag):
+        tree = self._get_wpt_tree(tag)
+        sel = tree.selection()
+        for item in sel:
+            tree.delete(item)
+        self._renumber_wpt_list(tag)
+        self._sync_list_to_raw(tag)
+
+    def _wpt_list_move(self, tag, direction):
+        tree = self._get_wpt_tree(tag)
+        sel = tree.selection()
+        if not sel:
+            return
+        items = list(tree.get_children())
+        indices = [items.index(s) for s in sel]
+        if direction == -1 and min(indices) == 0:
+            return
+        if direction == 1 and max(indices) == len(items) - 1:
+            return
+        for idx in (indices if direction == -1 else reversed(indices)):
+            tree.move(items[idx], "", idx + direction)
+        self._renumber_wpt_list(tag)
+        self._sync_list_to_raw(tag)
+
+    def _renumber_wpt_list(self, tag):
+        tree = self._get_wpt_tree(tag)
+        for i, item in enumerate(tree.get_children(), 1):
+            vals = list(tree.item(item, "values"))
+            vals[0] = i
+            tree.item(item, values=vals)
+
+    def _sync_list_to_raw(self, tag):
+        """Sync waypoint list → raw text field (native C-130J format)."""
+        tree = self._get_wpt_tree(tag)
+        items = tree.get_children()
+        tuples = []
+        for idx, item in enumerate(items):
+            vals = tree.item(item, "values")
+            native_tuple = vals[4] if len(vals) > 4 else None
+            if native_tuple:
+                fields = native_tuple.strip("()").split("|")
+                if len(fields) >= 34:
+                    if len(items) == 1:
+                        fields[1] = "2"
+                        fields[33] = "0"
+                    elif idx == 0:
+                        fields[1] = "2"
+                        fields[33] = "0"
+                    elif idx == len(items) - 1:
+                        fields[1] = "1"
+                        fields[33] = "0"
+                    else:
+                        fields[1] = "0"
+                        fields[33] = "1"
+                tuples.append("(" + "|".join(fields) + ")")
+            else:
+                tuples.append(str(vals[1]))
+        raw = ",".join(tuples)
+        text_widget = self.main_pts_text if tag == "main" else self.alt_pts_text
+        text_widget.delete("1.0", tk.END)
+        text_widget.insert("1.0", raw)
+
+    def _load_wpt_list_from_raw(self, tag, raw_text):
+        """Parse native C-130J format or legacy pipe-delimited text."""
+        tree = self._get_wpt_tree(tag)
+        tree.delete(*tree.get_children())
+        if not raw_text or not raw_text.strip():
+            return
+        raw = raw_text.strip()
+        if raw.startswith("("):
+            # Native format: (WPT|...),(WPT|...)
+            wpt_tuples = re.findall(r'\([^)]+\)', raw)
+            for i, t in enumerate(wpt_tuples, 1):
+                wpt_id = t[1:].split("|", 1)[0].strip()
+                source = self._identify_wpt_source(wpt_id)
+                nombre = self._get_airport_name(wpt_id) if source == "airport" else ""
+                tree.insert("", tk.END, values=(i, wpt_id, nombre, source, t))
+        else:
+            # Legacy format: NAME|NAME|NAME — convert to native
+            wpts = [w.strip() for w in raw.split("|") if w.strip()]
+            for i, wpt_id in enumerate(wpts, 1):
+                source = self._identify_wpt_source(wpt_id)
+                nombre = self._get_airport_name(wpt_id) if source == "airport" else ""
+                native = self._build_native_wpt_for_id(wpt_id)
+                tree.insert("", tk.END, values=(i, wpt_id, nombre, source, native))
+
+    def _identify_wpt_source(self, wpt_id):
+        """Try to identify where a waypoint comes from."""
+        if self.conn:
+            cur = self.conn.cursor()
+            cur.execute("SELECT COUNT(*) FROM custom_data WHERE name = ?", (wpt_id,))
+            if cur.fetchone()[0] > 0:
+                return "custom"
+        if self.nav_conn:
+            cur = self.nav_conn.cursor()
+            cur.execute("SELECT type FROM navaids WHERE name = ? LIMIT 1", (wpt_id,))
+            row = cur.fetchone()
+            if row:
+                return row[0].lower()
+            cur.execute("SELECT type FROM airports WHERE icao = ? LIMIT 1", (wpt_id,))
+            row = cur.fetchone()
+            if row:
+                return "airport"
+            cur.execute("SELECT COUNT(*) FROM waypoints WHERE waypoint_identifier = ? LIMIT 1", (wpt_id,))
+            if cur.fetchone()[0] > 0:
+                return "fix"
+        return ""
+
+    # ── Waypoint Search Dialog ───────────────────────────────────────
+
+    def _wpt_search_dialog(self):
+        """Search dialog that queries custom_data + nav_data.db. Returns (wpt_id, source) or None."""
+        dlg = tk.Toplevel(self.root)
+        dlg.title("Buscar Waypoint")
+        dlg.geometry("680x420")
+        dlg.transient(self.root)
+        dlg.grab_set()
+        dlg.resizable(True, True)
+        dlg.configure(bg=self.CDU_BG)
+
+        result = [None]
+
+        # Search bar
+        search_frame = ttk.Frame(dlg)
+        search_frame.pack(fill=tk.X, padx=10, pady=(10, 5))
+        ttk.Label(search_frame, text="Buscar:").pack(side=tk.LEFT, padx=(0, 5))
+        search_var = tk.StringVar()
+        search_entry = ttk.Entry(search_frame, textvariable=search_var, width=25, font=self.CDU_FONT)
+        search_entry.pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Button(search_frame, text="Buscar",
+                   command=lambda: do_search()).pack(side=tk.LEFT, padx=2)
+
+        # Source filter
+        src_var = tk.StringVar(value="Todos")
+        ttk.Label(search_frame, text="Fuente:").pack(side=tk.LEFT, padx=(10, 5))
+        src_combo = ttk.Combobox(search_frame, textvariable=src_var, width=12, state="readonly",
+                                  values=["Todos", "custom_data", "airports", "navaids", "waypoints"])
+        src_combo.pack(side=tk.LEFT)
+
+        # Results tree
+        cols = ("wpt_id", "name", "source", "lat", "lon")
+        res_tree = ttk.Treeview(dlg, columns=cols, show="headings", height=14)
+        res_tree.heading("wpt_id", text="ID")
+        res_tree.column("wpt_id", width=80)
+        res_tree.heading("name", text="Nombre")
+        res_tree.column("name", width=250)
+        res_tree.heading("source", text="Fuente")
+        res_tree.column("source", width=70)
+        res_tree.heading("lat", text="Lat")
+        res_tree.column("lat", width=80)
+        res_tree.heading("lon", text="Lon")
+        res_tree.column("lon", width=80)
+        res_tree.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+        vsb = ttk.Scrollbar(dlg, orient=tk.VERTICAL, command=res_tree.yview)
+        res_tree.configure(yscrollcommand=vsb.set)
+
+        # Status label
+        status_var = tk.StringVar(value="Escribí un nombre o ICAO y presioná Buscar")
+        ttk.Label(dlg, textvariable=status_var, foreground=self.CDU_FG_DIM).pack(padx=10, anchor="w")
+
+        # Buttons
+        btn_frame = ttk.Frame(dlg)
+        btn_frame.pack(fill=tk.X, padx=10, pady=(5, 10))
+
+        def do_select():
+            sel = res_tree.selection()
+            if sel:
+                vals = res_tree.item(sel[0], "values")
+                result[0] = (vals[0], vals[2])
+                dlg.destroy()
+
+        def do_search():
+            query = search_var.get().strip().upper()
+            if len(query) < 2:
+                status_var.set("Ingresá al menos 2 caracteres")
+                return
+            source = src_var.get()
+            results = self._search_waypoints(query, source)
+            res_tree.delete(*res_tree.get_children())
+            for r in results:
+                res_tree.insert("", tk.END, values=r)
+            status_var.set(f"{len(results)} resultados encontrados" +
+                           (" (máx 100)" if len(results) >= 100 else ""))
+
+        ttk.Button(btn_frame, text="Seleccionar", command=do_select).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text="Cancelar", command=dlg.destroy).pack(side=tk.LEFT, padx=5)
+
+        # Bind enter and double-click
+        search_entry.bind("<Return>", lambda e: do_search())
+        res_tree.bind("<Double-1>", lambda e: do_select())
+        search_entry.focus_set()
+
+        dlg.bind("<Escape>", lambda e: dlg.destroy())
+        self.root.wait_window(dlg)
+        return result[0]
+
+    def _search_waypoints(self, query, source="Todos", limit=100):
+        """Search across custom_data and nav_data.db. Returns list of (id, name, source, lat, lon)."""
+        results = []
+        like = f"%{query}%"
+
+        # custom_data
+        if source in ("Todos", "custom_data") and self.conn:
+            cur = self.conn.cursor()
+            cur.execute(
+                "SELECT name, name, 'custom', lat, lon FROM custom_data WHERE UPPER(name) LIKE ? LIMIT ?",
+                (like, limit))
+            results.extend(cur.fetchall())
+
+        if not self.nav_conn:
+            return results[:limit]
+
+        remaining = limit - len(results)
+        if remaining <= 0:
+            return results[:limit]
+
+        nav = self.nav_conn.cursor()
+
+        # airports (search by ICAO and also by name via airport_names.db)
+        if source in ("Todos", "airports"):
+            found_icaos = set()
+            if self.names_conn:
+                # Search airport_names by ident, icao, name, or municipality
+                name_rows = self.names_conn.execute(
+                    "SELECT ident, icao FROM airport_names "
+                    "WHERE UPPER(ident) LIKE ? OR UPPER(icao) LIKE ? "
+                    "OR UPPER(name) LIKE ? OR UPPER(municipality) LIKE ? "
+                    "LIMIT ?",
+                    (like, like, like, like, remaining * 3)).fetchall()
+                # Collect all possible ICAO codes to query nav_data
+                for ident, icao_col in name_rows:
+                    found_icaos.add(ident)
+                    if icao_col:
+                        found_icaos.add(icao_col)
+            # Also search directly by ICAO in nav_data
+            nav.execute(
+                "SELECT icao FROM airports WHERE UPPER(icao) LIKE ? LIMIT ?",
+                (like, remaining))
+            for row in nav.fetchall():
+                found_icaos.add(row[0])
+            # Now fetch actual airport records from nav_data
+            if found_icaos:
+                placeholders = ",".join("?" * len(found_icaos))
+                nav.execute(
+                    f"SELECT icao, icao, 'airport', lat, lon FROM airports "
+                    f"WHERE icao IN ({placeholders}) LIMIT ?",
+                    (*found_icaos, remaining))
+                seen = set()
+                for row in nav.fetchall():
+                    # Prefer DCS alias code (e.g. URKL instead of RU-0090)
+                    display_id = self._get_dcs_alias(row[0]) or row[0]
+                    if display_id in seen:
+                        continue
+                    seen.add(display_id)
+                    aname = self._get_airport_name(display_id) or self._get_airport_name(row[0])
+                    results.append((display_id, aname or row[1], row[2], row[3], row[4]))
+            remaining = limit - len(results)
+
+        # navaids
+        if remaining > 0 and source in ("Todos", "navaids"):
+            nav.execute(
+                "SELECT name, name, 'navaid', lat, lon FROM navaids "
+                "WHERE UPPER(name) LIKE ? LIMIT ?",
+                (like, remaining))
+            results.extend(nav.fetchall())
+            remaining = limit - len(results)
+
+        # waypoints/fixes
+        if remaining > 0 and source in ("Todos", "waypoints"):
+            nav.execute(
+                "SELECT waypoint_identifier, waypoint_name, 'fix', "
+                "waypoint_latitude, waypoint_longitude FROM waypoints "
+                "WHERE UPPER(waypoint_identifier) LIKE ? LIMIT ?",
+                (like, remaining))
+            results.extend(nav.fetchall())
+
+        return results[:limit]
 
     # ── Map tab ──────────────────────────────────────────────────────
 
@@ -530,7 +1010,7 @@ class DBEditor:
         ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=8, pady=2)
 
         ttk.Label(toolbar, text="Tiles:").pack(side=tk.LEFT, padx=(0, 4))
-        self._tile_var = tk.StringVar(value="OpenStreetMap")
+        self._tile_var = tk.StringVar(value="DCS Caucasus")
         tile_values = ["OpenStreetMap", "Google Satélite", "ArcGIS Satélite",
                        "DCS Caucasus", "DCS Marianas", "DCS Nevada",
                        "DCS Persian Gulf", "DCS Syria"]
@@ -552,9 +1032,28 @@ class DBEditor:
 
         # Map widget
         self.map_widget = TkinterMapView(self.map_frame, corner_radius=0)
-        self.map_widget.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0, 5))
+        self.map_widget.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0, 0))
+
+        # Status bar below map
+        self._map_status = ttk.Frame(self.map_frame)
+        self._map_status.pack(fill=tk.X, padx=5, pady=(0, 5))
+        self._map_lat_lon_var = tk.StringVar(value="---")
+        self._map_mgrs_var = tk.StringVar(value="---")
+        self._map_elev_var = tk.StringVar(value="---")
+        self._map_zoom_var = tk.StringVar(value="Z: 7")
+        ttk.Label(self._map_status, textvariable=self._map_lat_lon_var,
+                  font=("Consolas", 9), width=32, anchor="w").pack(side=tk.LEFT, padx=(0, 8))
+        ttk.Label(self._map_status, textvariable=self._map_mgrs_var,
+                  font=("Consolas", 9), width=20, anchor="w").pack(side=tk.LEFT, padx=(0, 8))
+        ttk.Label(self._map_status, textvariable=self._map_elev_var,
+                  font=("Consolas", 9), width=16, anchor="w").pack(side=tk.LEFT, padx=(0, 8))
+        ttk.Label(self._map_status, textvariable=self._map_zoom_var,
+                  font=("Consolas", 9), width=6, anchor="w").pack(side=tk.LEFT)
 
         # Default: Caucasus region (DCS theater)
+        self.map_widget.set_tile_server(
+            "https://maps.bigbeautifulboards.com/alt-caucasus/{z}/{x}/{y}.png",
+            max_zoom=15)
         self.map_widget.set_position(42.0, 43.5)
         self.map_widget.set_zoom(7)
 
@@ -563,6 +1062,109 @@ class DBEditor:
             "Crear waypoint aquí", self._map_create_wpt, pass_coords=True)
 
         self._map_markers = []
+        self._map_route_markers = []
+        self._map_route_path = None
+        self._wpt_marker_icons = {}  # cache: size -> PhotoImage
+
+        # Bind events on the map's internal canvas
+        self.map_widget.canvas.bind("<Motion>", self._on_map_mouse_motion)
+        self.map_widget.canvas.bind("<MouseWheel>", self._on_map_zoom_event, add="+")
+        self.map_widget.canvas.bind("<ButtonRelease-1>", lambda e: self.root.after(100, self._on_map_zoom), add="+")
+        self._last_zoom = self.map_widget.zoom
+        self._elev_cache = {}  # (lat_round, lon_round) -> elevation
+        self._elev_pending = None  # scheduled after-id for elevation query
+
+    def _make_circle_icon(self, size=10, fill="#33ff33", outline="#1a8c1a"):
+        """Create a small circle marker icon as PhotoImage. Cached by size."""
+        if size in self._wpt_marker_icons:
+            return self._wpt_marker_icons[size]
+        dim = size + 2  # padding for outline
+        img = tk.PhotoImage(width=dim, height=dim)
+        # Draw filled circle with 1px outline
+        cx, cy = dim // 2, dim // 2
+        r_out = size // 2
+        r_in = r_out - 1
+        for y in range(dim):
+            for x in range(dim):
+                dx, dy = x - cx, y - cy
+                dist_sq = dx * dx + dy * dy
+                if dist_sq <= r_in * r_in:
+                    img.put(fill, (x, y))
+                elif dist_sq <= r_out * r_out:
+                    img.put(outline, (x, y))
+        self._wpt_marker_icons[size] = img
+        return img
+
+    def _on_map_zoom_event(self, event=None):
+        """Called after mouse wheel on map canvas."""
+        self.root.after(200, self._on_map_zoom)
+
+    def _on_map_zoom(self):
+        """Update marker text visibility based on zoom level."""
+        if not hasattr(self, "map_widget"):
+            return
+        zoom = self.map_widget.zoom
+        self._map_zoom_var.set(f"Z: {zoom:.0f}")
+        if zoom == self._last_zoom:
+            return
+        self._last_zoom = zoom
+        # At zoom >= 9 show text labels, below that hide them
+        for marker in self._map_markers:
+            if hasattr(marker, '_orig_text'):
+                if zoom >= 9:
+                    marker.text = marker._orig_text
+                else:
+                    marker.text = ""
+                marker.draw()
+
+    def _on_map_mouse_motion(self, event):
+        """Update status bar with coordinates under mouse cursor."""
+        try:
+            coords = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
+        except Exception:
+            return
+        lat, lon = coords
+        self._map_lat_lon_var.set(f"{dd_to_ddm(lat, True)}  {dd_to_ddm(lon, False)}")
+        # MGRS
+        if _mgrs:
+            try:
+                mgrs_str = _mgrs.toMGRS(lat, lon, MGRSPrecision=4)
+                self._map_mgrs_var.set(mgrs_str)
+            except Exception:
+                self._map_mgrs_var.set("---")
+        # Throttled elevation lookup
+        lat_r = round(lat, 3)
+        lon_r = round(lon, 3)
+        key = (lat_r, lon_r)
+        if key in self._elev_cache:
+            self._map_elev_var.set(f"Elev: {self._elev_cache[key] * METERS_TO_FEET:.0f} ft")
+        else:
+            if self._elev_pending:
+                self.root.after_cancel(self._elev_pending)
+            self._elev_pending = self.root.after(400, self._fetch_elevation, lat_r, lon_r)
+
+    def _fetch_elevation(self, lat, lon):
+        """Fetch elevation from Open-Meteo API in background thread."""
+        self._elev_pending = None
+        key = (lat, lon)
+        if key in self._elev_cache:
+            self._map_elev_var.set(f"Elev: {self._elev_cache[key] * METERS_TO_FEET:.0f} ft")
+            return
+
+        def _worker():
+            try:
+                url = f"https://api.open-meteo.com/v1/elevation?latitude={lat}&longitude={lon}"
+                req = urllib.request.Request(url, headers={"User-Agent": "ChanchitaDTC/0.2"})
+                with urllib.request.urlopen(req, timeout=5) as resp:
+                    data = json.loads(resp.read())
+                elev = data["elevation"][0]
+                self._elev_cache[key] = elev
+                elev_ft = elev * METERS_TO_FEET
+                self.root.after(0, lambda: self._map_elev_var.set(f"Elev: {elev_ft:.0f} ft"))
+            except Exception:
+                self.root.after(0, lambda: self._map_elev_var.set("Elev: ---"))
+
+        threading.Thread(target=_worker, daemon=True).start()
 
     def _on_tile_change(self, event=None):
         choice = self._tile_var.get()
@@ -629,14 +1231,21 @@ class DBEditor:
         self._map_markers.clear()
         if not self.conn:
             return
+        icon = self._make_circle_icon(10, fill="#ff3333", outline="#cc0000")
+        zoom = self.map_widget.zoom
         cur = self.conn.cursor()
         cur.execute("SELECT name, lat, lon, alt FROM custom_data WHERE lat IS NOT NULL AND lon IS NOT NULL")
         for name, lat, lon, alt in cur.fetchall():
             if lat == 0 and lon == 0:
                 continue
+            show_text = name if zoom >= 9 else ""
             marker = self.map_widget.set_marker(
-                lat, lon, text=name,
+                lat, lon, text=show_text,
+                icon=icon,
+                text_color="#000000",
+                font=("Consolas", 9, "bold"),
                 command=lambda m, n=name: self._on_marker_click(n))
+            marker._orig_text = name
             self._map_markers.append(marker)
 
     def _center_map_on_wpts(self):
@@ -668,7 +1277,31 @@ class DBEditor:
         if not self._ensure_db():
             return
         lat, lon = coords
-        pre = ("", "", dd_to_ddm(lat, True), dd_to_ddm(lon, False), "")
+        # MGRS
+        mgrs_str = ""
+        if _mgrs:
+            try:
+                mgrs_str = _mgrs.toMGRS(lat, lon, MGRSPrecision=4)
+            except Exception:
+                pass
+        # Elevation from cache or fetch synchronously
+        elev_str = ""
+        lat_r, lon_r = round(lat, 3), round(lon, 3)
+        key = (lat_r, lon_r)
+        if key in self._elev_cache:
+            elev_str = f"{self._elev_cache[key] * METERS_TO_FEET:.0f}"
+        else:
+            try:
+                url = f"https://api.open-meteo.com/v1/elevation?latitude={lat_r}&longitude={lon_r}"
+                req = urllib.request.Request(url, headers={"User-Agent": "ChanchitaDTC/0.2"})
+                with urllib.request.urlopen(req, timeout=5) as resp:
+                    data = json.loads(resp.read())
+                elev_m = data["elevation"][0]
+                self._elev_cache[key] = elev_m
+                elev_str = f"{elev_m * METERS_TO_FEET:.0f}"
+            except Exception:
+                pass
+        pre = ("", mgrs_str, dd_to_ddm(lat, True), dd_to_ddm(lon, False), elev_str)
         self._waypoint_dialog(pre)
 
     # ── DB helpers ───────────────────────────────────────────────────
@@ -686,8 +1319,80 @@ class DBEditor:
             self.conn.close()
         self.conn = sqlite3.connect(self.db_path)
         self.root.title(f"Chanchita DTC — {self.version} — {self.db_path}")
+        self._load_nav_data()
         self.refresh_waypoints()
         self.refresh_routes()
+
+    def _load_airport_names(self):
+        """Open airport_names.db (ICAO -> name lookup) bundled with the app."""
+        names_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "airport_names.db")
+        if os.path.isfile(names_path):
+            self.names_conn = sqlite3.connect(names_path)
+
+    def _get_airport_name(self, icao):
+        """Look up the human-readable name for an ICAO code."""
+        if not self.names_conn:
+            return ""
+        # Try by ident first (most common match)
+        row = self.names_conn.execute(
+            "SELECT name FROM airport_names WHERE ident = ? LIMIT 1", (icao,)
+        ).fetchone()
+        if row:
+            return row[0]
+        # Fallback: some airports use a different ident but have the icao column
+        row = self.names_conn.execute(
+            "SELECT name FROM airport_names WHERE icao = ? LIMIT 1", (icao,)
+        ).fetchone()
+        return row[0] if row else ""
+
+    def _get_dcs_alias(self, airport_ident):
+        """Get the DCS ICAO alias for an airport ident (e.g. RU-0090 -> URKL)."""
+        if not self.names_conn:
+            return None
+        try:
+            row = self.names_conn.execute(
+                "SELECT alias FROM icao_alias WHERE airport_ident = ? LIMIT 1",
+                (airport_ident,)
+            ).fetchone()
+            return row[0] if row else None
+        except Exception:
+            return None
+
+    def _resolve_alias_to_ident(self, alias):
+        """Reverse alias lookup: DCS ICAO alias → nav_data airport ident (e.g. UGKS → GE-0010)."""
+        if not self.names_conn:
+            return None
+        try:
+            row = self.names_conn.execute(
+                "SELECT airport_ident FROM icao_alias WHERE alias = ? LIMIT 1",
+                (alias,)
+            ).fetchone()
+            return row[0] if row else None
+        except Exception:
+            return None
+
+
+
+    def _load_nav_data(self):
+        """Detect and open nav_data.db from the C-130J module."""
+        if self.nav_conn:
+            return  # already connected
+
+        # 1. Check saved config
+        saved = _load_navdata_config()
+        if saved and os.path.isfile(saved):
+            self.nav_conn = sqlite3.connect(saved)
+            return
+
+        # 2. Auto-detect
+        found = _find_nav_data_db()
+        if found:
+            path = found[0]
+            self.nav_conn = sqlite3.connect(path)
+            _save_navdata_config(path)
+            return
+
+        # 3. Silently continue without nav_data (still functional)
 
     def _resolve_dcs_path(self, silent=False):
         """Find the DCS.C130J user_data.db path. Returns path or None."""
@@ -710,9 +1415,10 @@ class DBEditor:
             dlg.transient(self.root)
             dlg.grab_set()
             dlg.resizable(False, False)
+            dlg.configure(bg=self.CDU_BG)
 
             ttk.Label(dlg, text="Se encontraron varias instalaciones de DCS.C130J.\nSeleccioná cuál usar:",
-                      font=("Segoe UI", 10)).pack(padx=20, pady=(15, 10))
+                      font=self.CDU_FONT).pack(padx=20, pady=(15, 10))
 
             selected = tk.StringVar(value=found[0])
             for p in found:
@@ -860,27 +1566,28 @@ class DBEditor:
     def _waypoint_dialog(self, existing=None, is_duplicate=False):
         dlg = tk.Toplevel(self.root)
         dlg.title("Nuevo Waypoint" if (not existing or is_duplicate) else "Editar Waypoint")
-        dlg.geometry("520x270")
+        dlg.geometry("540x290")
         dlg.transient(self.root)
         dlg.grab_set()
         dlg.resizable(False, False)
+        dlg.configure(bg=self.CDU_BG)
 
         labels = ["Name:", "MGRS (entry_pos):", "Lat (DDM):", "Lon (DDM):", "Elevación (ft):"]
         entries = []
         for i, lbl in enumerate(labels):
-            ttk.Label(dlg, text=lbl).grid(row=i, column=0, sticky="e", padx=(15, 5), pady=6)
-            e = ttk.Entry(dlg, width=32)
-            e.grid(row=i, column=1, padx=(0, 15), pady=6)
+            ttk.Label(dlg, text=lbl, style="TLabel").grid(row=i, column=0, sticky="e", padx=(15, 5), pady=6)
+            e = ttk.Entry(dlg, width=32, font=self.CDU_FONT)
+            e.grid(row=i, column=1, padx=(0, 10), pady=6)
             if existing and i < len(existing):
                 e.insert(0, existing[i])
             entries.append(e)
 
-        # Hint labels
-        ttk.Label(dlg, text="N 41° 23.456'", foreground="gray").grid(row=2, column=2, sticky="w")
-        ttk.Label(dlg, text="E 044° 12.345'", foreground="gray").grid(row=3, column=2, sticky="w")
-        ttk.Label(dlg, text="en pies (MSL)", foreground="gray").grid(row=4, column=2, sticky="w")
+        # Hint labels (dimmed green, visible on dark bg)
+        ttk.Label(dlg, text="N 41° 23.456'", foreground=self.CDU_FG_DIM).grid(row=2, column=2, sticky="w")
+        ttk.Label(dlg, text="E 044° 12.345'", foreground=self.CDU_FG_DIM).grid(row=3, column=2, sticky="w")
+        ttk.Label(dlg, text="en pies (MSL)", foreground=self.CDU_FG_DIM).grid(row=4, column=2, sticky="w")
 
-        is_edit = existing and not is_duplicate
+        is_edit = existing and not is_duplicate and bool(existing[0])
         old_name = existing[0] if is_edit else None
         if is_edit:
             entries[0].config(state="disabled")
@@ -992,10 +1699,17 @@ class DBEditor:
         for key, var in self.route_vars.items():
             var.set(str(data.get(key, "") or ""))
 
+        # Populate raw text fields
+        main_raw = data.get("main_pts", "") or ""
+        alt_raw = data.get("alt_pts", "") or ""
         self.main_pts_text.delete("1.0", tk.END)
-        self.main_pts_text.insert("1.0", data.get("main_pts", "") or "")
+        self.main_pts_text.insert("1.0", main_raw)
         self.alt_pts_text.delete("1.0", tk.END)
-        self.alt_pts_text.insert("1.0", data.get("alt_pts", "") or "")
+        self.alt_pts_text.insert("1.0", alt_raw)
+
+        # Populate waypoint lists from raw text
+        self._load_wpt_list_from_raw("main", main_raw)
+        self._load_wpt_list_from_raw("alt", alt_raw)
 
     def add_route(self):
         if not self._ensure_db():
@@ -1004,6 +1718,8 @@ class DBEditor:
             var.set("")
         self.main_pts_text.delete("1.0", tk.END)
         self.alt_pts_text.delete("1.0", tk.END)
+        self._main_wpt_tree.delete(*self._main_wpt_tree.get_children())
+        self._alt_wpt_tree.delete(*self._alt_wpt_tree.get_children())
         self.route_tree.selection_remove(*self.route_tree.selection())
 
     def save_route(self):
@@ -1013,6 +1729,51 @@ class DBEditor:
         if not name:
             messagebox.showwarning("Error", "El nombre de la ruta es obligatorio")
             return
+
+        # Sync lists → raw text before saving
+        self._sync_list_to_raw("main")
+        self._sync_list_to_raw("alt")
+
+        # ── Origin / Destination auto-sync ──────────────────────────
+        tree = self._main_wpt_tree
+        items = tree.get_children()
+        origin = self.route_vars["origin"].get().strip()
+        dest = self.route_vars["dest"].get().strip()
+
+        if origin:
+            # Insert origin as first waypoint if not already there
+            first_id = tree.item(items[0], "values")[1] if items else None
+            if first_id != origin:
+                native = self._build_native_wpt_for_id(origin)
+                source = self._identify_wpt_source(origin)
+                nombre = self._get_airport_name(origin) if source == "airport" else ""
+                tree.insert("", 0, values=(0, origin, nombre, source, native))
+                self._renumber_wpt_list("main")
+                items = tree.get_children()
+        else:
+            # No origin specified → use first waypoint
+            if items:
+                origin = tree.item(items[0], "values")[1]
+                self.route_vars["origin"].set(origin)
+
+        if dest:
+            # Insert dest as last waypoint if not already there
+            last_id = tree.item(items[-1], "values")[1] if items else None
+            if last_id != dest:
+                native = self._build_native_wpt_for_id(dest)
+                source = self._identify_wpt_source(dest)
+                nombre = self._get_airport_name(dest) if source == "airport" else ""
+                seq = len(tree.get_children()) + 1
+                tree.insert("", tk.END, values=(seq, dest, nombre, source, native))
+                items = tree.get_children()
+        else:
+            # No dest specified → use last waypoint
+            if items:
+                dest = tree.item(items[-1], "values")[1]
+                self.route_vars["dest"].set(dest)
+
+        # Re-sync after possible insertions (updates type flags)
+        self._sync_list_to_raw("main")
 
         data = {k: v.get().strip() for k, v in self.route_vars.items()}
         data["main_pts"] = self.main_pts_text.get("1.0", tk.END).strip()
@@ -1072,6 +1833,104 @@ class DBEditor:
             self.conn.execute("DELETE FROM routes WHERE name = ?", (name,))
             self.conn.commit()
             self.refresh_routes()
+
+    def clone_route(self):
+        if not self._ensure_db():
+            return
+        sel = self.route_tree.selection()
+        if not sel:
+            messagebox.showwarning("Error", "Selecciona una ruta para clonar")
+            return
+        src_name = self.route_tree.item(sel[0], "values")[0]
+        new_name = simpledialog.askstring(
+            "Clonar Ruta", f"Nombre para la copia de '{src_name}':",
+            parent=self.root)
+        if not new_name or not new_name.strip():
+            return
+        new_name = new_name.strip()[:10]
+        cur = self.conn.cursor()
+        cur.execute("SELECT COUNT(*) FROM routes WHERE name = ?", (new_name,))
+        if cur.fetchone()[0] > 0:
+            messagebox.showwarning("Error", f"Ya existe una ruta '{new_name}'")
+            return
+        cur.execute("SELECT * FROM routes WHERE name = ?", (src_name,))
+        row = cur.fetchone()
+        if not row:
+            return
+        cols = [d[0] for d in cur.description]
+        data = dict(zip(cols, row))
+        data["name"] = new_name
+        self.conn.execute(
+            """INSERT INTO routes (name, wpt_trans, main_pts, alt_pts, origin, dest, alt,
+               rwy_dep, rwy_arr, rwy_dep_return, rwy_alt, rwy_dep_sid, rwy_arr_star,
+               rwy_alt_star, rwy_dep_return_star, rwy_dep_trans, rwy_arr_trans)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            tuple(data[c] for c in cols),
+        )
+        self.conn.commit()
+        self.refresh_routes()
+
+    def show_route_on_map(self):
+        if not hasattr(self, "map_widget"):
+            messagebox.showwarning("Error", "El mapa no está disponible")
+            return
+        tree = self._main_wpt_tree
+        items = tree.get_children()
+        if not items:
+            messagebox.showwarning("Error", "No hay waypoints en la ruta")
+            return
+        # Clear previous route overlay
+        self._clear_route_overlay()
+        # Collect coordinates from native tuples
+        coords = []
+        icon = self._make_circle_icon(10, fill="#3399ff", outline="#0055cc")
+        zoom = self.map_widget.zoom
+        for item in items:
+            vals = tree.item(item, "values")
+            wpt_id = vals[1]
+            native = vals[4] if len(vals) > 4 else None
+            lat, lon = None, None
+            if native and native.startswith("("):
+                fields = native.strip("()").split("|")
+                try:
+                    lat = float(fields[2])
+                    lon = float(fields[3])
+                except (IndexError, ValueError):
+                    pass
+            if lat is None or lon is None:
+                lat, lon, _ = self._lookup_wpt_coords(wpt_id)
+            if lat is not None and lon is not None and not (lat == 0 and lon == 0):
+                coords.append((lat, lon))
+                show_text = wpt_id if zoom >= 7 else ""
+                marker = self.map_widget.set_marker(
+                    lat, lon, text=show_text,
+                    icon=icon,
+                    text_color="#000000",
+                    font=("Consolas", 9, "bold"))
+                marker._orig_text = wpt_id
+                self._map_route_markers.append(marker)
+        if len(coords) >= 2:
+            self._map_route_path = self.map_widget.set_path(
+                coords, color="#3399ff", width=3)
+        # Switch to map tab and fit view
+        self.notebook.select(self.map_frame)
+        if coords:
+            lats = [c[0] for c in coords]
+            lons = [c[1] for c in coords]
+            center_lat = (min(lats) + max(lats)) / 2
+            center_lon = (min(lons) + max(lons)) / 2
+            self.map_widget.set_position(center_lat, center_lon)
+            if len(coords) >= 2:
+                self.map_widget.set_zoom(8)
+
+    def _clear_route_overlay(self):
+        if hasattr(self, "_map_route_path") and self._map_route_path:
+            self._map_route_path.delete()
+            self._map_route_path = None
+        if hasattr(self, "_map_route_markers"):
+            for m in self._map_route_markers:
+                m.delete()
+            self._map_route_markers.clear()
 
     # ── DTC Package Export / Import ─────────────────────────────────
 
@@ -1271,13 +2130,14 @@ class DBEditor:
         dlg.title(f"Conflicto — {tipo}")
         dlg.resizable(False, False)
         dlg.transient(self.root)
+        dlg.configure(bg=self.CDU_BG)
 
         result = tk.StringVar(value="skip")
 
         ttk.Label(dlg, text=f"⚠  {tipo} '{name}' ya existe",
-                  font=("Segoe UI", 11, "bold")).pack(padx=20, pady=(18, 5))
+                  font=self.CDU_FONT_HDR, foreground=self.CDU_AMBER).pack(padx=20, pady=(18, 5))
         ttk.Label(dlg, text="¿Qué querés hacer?",
-                  font=("Segoe UI", 9)).pack(padx=20, pady=(0, 12))
+                  font=self.CDU_FONT_SM).pack(padx=20, pady=(0, 12))
 
         btn_frame = ttk.Frame(dlg)
         btn_frame.pack(fill=tk.X, padx=20, pady=5)

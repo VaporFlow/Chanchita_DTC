@@ -1,0 +1,1485 @@
+=== Log opened UTC 2026-04-14 20:15:13
+2026-04-14 20:15:13.636 WARNING EDCORE (Main): hypervisor is active
+2026-04-14 20:15:15.081 INFO    EDCORE (Main): Platform Timer Resolution: 15.55ms
+2026-04-14 20:15:15.556 INFO    EDCORE (Main): Created boot pool: n:24
+2026-04-14 20:15:15.556 INFO    APP (Main): Command line: "F:\Eagle Dynamics\DCS World\bin\DCS.exe" --restarted
+2026-04-14 20:15:15.556 INFO    APP (Main): DCS/2.9.25.21402 (x86_64; MT; Windows NT 10.0.26200)
+2026-04-14 20:15:15.556 INFO    APP (Main): Application revision: 261402
+2026-04-14 20:15:15.556 INFO    APP (Main): Renderer revision: 26305
+2026-04-14 20:15:15.556 INFO    APP (Main): Terrain revision: 27312
+2026-04-14 20:15:15.556 INFO    APP (Main): Build number: 479
+2026-04-14 20:15:15.556 INFO    APP (Main): CPU cores: 12, threads: 24, System RAM: 32691 MB, Pagefile: 65536 MB
+2026-04-14 20:15:15.556 INFO    DCS (Main): CPU info:
+system  affinity mask: 111111111111111111111111
+process affinity mask: 111111111111111111111111
+CPU: AMD Ryzen 9 5900X 12-Core Processor             [2x L3 caches]
+CPU has uniform cache size 32 MB (per cache)
+all CPU cores have the same efficiency class 0
+CPU cores have different performance classes: [0-10]
+logical cores with performance class 10: {8, 9, 10, 11}
+logical cores with performance class 9: {0, 1}
+logical cores with performance class 8: {6, 7}
+logical cores with performance class 7: {4, 5}
+logical cores with performance class 6: {2, 3}
+logical cores with performance class 5: {16, 17}
+logical cores with performance class 4: {14, 15}
+logical cores with performance class 3: {18, 19}
+logical cores with performance class 2: {12, 13}
+logical cores with performance class 1: {22, 23}
+logical cores with performance class 0: {20, 21}
+common cores: {16, 17, 14, 15, 18, 19, 12, 13, 22, 23, 20, 21}
+render cores: {8, 9, 10, 11, 0, 1, 6, 7, 4, 5, 2, 3}
+IO cores: {}
+unavailable cores: {}
+pause10: 0.014394 us (std dev: 0.010792)
+pause10: 488 cycles (std dev: 307.9)
+2026-04-14 20:15:17.531 INFO    ASYNCNET (16912): Login success.
+2026-04-14 20:15:18.688 INFO    ASYNCNET (16912): Got auth data.
+2026-04-14 20:15:18.698 INFO    APP (Main): Successfully got authorization data.
+2026-04-14 20:15:18.753 INFO    EDCORE (Main): (dDispatcher)enterToState_:0
+2026-04-14 20:15:18.753 INFO    Dispatcher (Main): 2026/4/14 17:15 V2404051500
+2026-04-14 20:15:18.754 INFO    ASYNCNET (Main): ProtocolVersion: 420
+2026-04-14 20:15:18.754 INFO    ASYNCNET (Main): Adding LAN search interface 0: 127.0.0.1 "IPv4 Loopback"
+2026-04-14 20:15:18.754 INFO    ASYNCNET (Main): Adding LAN search interface 0: 255.255.255.255 "IPv4 Broadcast"
+2026-04-14 20:15:18.759 INFO    ED_SOUND (Main): Using driver: wasapi
+2026-04-14 20:15:18.762 INFO    ED_SOUND (Main): Found 6 available audio device(s):
+2026-04-14 20:15:18.762 INFO    ED_SOUND (Main):   0: ID: "{0.0.0.00000000}.{498342c9-6764-42df-8566-5bc455735ad8}", Name: "Realtek Digital Output (Realtek(R) Audio)"
+2026-04-14 20:15:18.762 INFO    ED_SOUND (Main):   1: ID: "{0.0.0.00000000}.{5617b468-d002-4558-86c6-209178f84db4}", Name: "Altavoces (Steam Streaming Speakers)"
+2026-04-14 20:15:18.762 INFO    ED_SOUND (Main):   2: ID: "{0.0.0.00000000}.{5b50c181-5f49-42b9-b47c-827c6018a214}", Name: "Headphones (HyperX Cloud III)"
+2026-04-14 20:15:18.762 INFO    ED_SOUND (Main):   3: ID: "{0.0.0.00000000}.{5b747521-9d58-4881-a41f-a53caaf3cbfa}", Name: "PHL 273V5 (NVIDIA High Definition Audio)"
+2026-04-14 20:15:18.762 INFO    ED_SOUND (Main):   4: ID: "{0.0.0.00000000}.{5e23bf62-d0ea-472b-9512-763be91b7229}", Name: "Auriculares (Oculus Virtual Audio Device)"
+2026-04-14 20:15:18.762 INFO    ED_SOUND (Main):   5: ID: "{0.0.0.00000000}.{f9fb56ad-fb4e-4db9-8701-21d45c5b04bc}", Name: "Altavoces (Steam Streaming Microphone)"
+2026-04-14 20:15:18.872 INFO    SOUND (Main): Added sound path: Sounds
+2026-04-14 20:15:18.909 INFO    SOUNDER (Main): Loaded 229 packed sounders.
+2026-04-14 20:15:18.935 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/dx11backend.dll
+2026-04-14 20:15:18.938 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/dxgui_edge_render.dll
+2026-04-14 20:15:18.938 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/edterrain4.dll
+2026-04-14 20:15:18.940 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-direct_output.dll
+2026-04-14 20:15:18.946 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-dxgui.dll
+2026-04-14 20:15:18.949 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-dxguiWin.dll
+2026-04-14 20:15:18.951 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-ED_demosceneAPI.dll
+2026-04-14 20:15:18.953 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-guid.dll
+2026-04-14 20:15:18.955 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-gui_axes_tune.dll
+2026-04-14 20:15:18.958 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-gui_demoscene.dll
+2026-04-14 20:15:18.960 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-gui_nodes_map.dll
+2026-04-14 20:15:18.962 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-gui_overlay.dll
+2026-04-14 20:15:18.965 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-gui_ruler.dll
+2026-04-14 20:15:18.967 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-gui_user_container.dll
+2026-04-14 20:15:18.981 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-gui_video_player.dll
+2026-04-14 20:15:18.983 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-gui_webview.dll
+2026-04-14 20:15:18.986 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-librs232.dll
+2026-04-14 20:15:18.988 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-magvar.dll
+2026-04-14 20:15:18.991 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-md5.dll
+2026-04-14 20:15:18.993 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-mime.dll
+2026-04-14 20:15:18.996 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-minizip.dll
+2026-04-14 20:15:19.013 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-MissionGenerator.dll
+2026-04-14 20:15:19.016 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-reg.dll
+2026-04-14 20:15:19.018 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-socket.dll
+2026-04-14 20:15:19.018 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-terrain.dll
+2026-04-14 20:15:19.021 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/lua-textutil.dll
+2026-04-14 20:15:19.021 INFO    Dispatcher (Main): InitLow
+2026-04-14 20:15:19.022 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/bin/CockpitBase.dll
+2026-04-14 20:15:19.033 INFO    Dispatcher (Main): Loading installed modules...
+2026-04-14 20:15:19.894 INFO    SECURITYCONTROL (Main): Loaded .\Mods\tech\WWII Units\dcs_module.pak.crypt
+2026-04-14 20:15:31.400 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in ./CoreMods/aircraft/AJS37/entry.lua
+2026-04-14 20:15:31.541 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in ./CoreMods/aircraft/C130J/entry.lua
+2026-04-14 20:15:31.625 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in ./CoreMods/aircraft/F-4E/entry.lua
+2026-04-14 20:15:31.750 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in ./CoreMods/aircraft/Hawk/Hawk.lua
+2026-04-14 20:15:31.885 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in ./Mods/aircraft/AJS37/entry.lua
+2026-04-14 20:15:31.893 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in ./Mods/aircraft/C130J/entry.lua
+2026-04-14 20:15:31.907 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in ./Mods/aircraft/F-4E/entry.lua
+2026-04-14 20:15:31.921 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in ./Mods/aircraft/F14/entry.lua
+2026-04-14 20:15:32.020 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in G:\Saved Games\DCS\Mods/aircraft/A-4E-C/entry.lua
+2026-04-14 20:15:32.041 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in G:\Saved Games\DCS\Mods/aircraft/PUCARA/PUCARA.lua
+2026-04-14 20:15:32.041 INFO    Scripting (Main): OBSOLETE mount_vfs_sound_path() used in G:\Saved Games\DCS\Mods/aircraft/PUCARA/entry.lua
+2026-04-14 20:15:32.079 INFO    Scripting (Main): PLUGINS START-------------------------------------------------
+2026-04-14 20:15:32.098 INFO    Scripting (Main): plugin: ColdWarAssetsPack unit replace BRDM-2
+2026-04-14 20:15:32.098 INFO    Scripting (Main): plugin: ColdWarAssetsPack unit replace Strela-1 9P31
+2026-04-14 20:15:32.101 INFO    Scripting (Main): plugin: Currenthill Assets Pack unit replace Mi-28N
+2026-04-14 20:15:32.101 INFO    Scripting (Main): plugin: Currenthill Assets Pack unit replace Tu-95MS
+2026-04-14 20:15:32.102 INFO    Scripting (Main): plugin: Currenthill Assets Pack unit replace T-90
+2026-04-14 20:15:32.102 INFO    Scripting (Main): plugin: Currenthill Assets Pack unit replace ALBATROS
+2026-04-14 20:15:32.109 INFO    Scripting (Main): plugin: World War II PTO Units by Magnitude 3 LLC unit replace Type_3_80mm_AA
+2026-04-14 20:15:32.109 INFO    Scripting (Main): plugin: World War II PTO Units by Magnitude 3 LLC unit replace Type_88_75mm_AA
+2026-04-14 20:15:32.110 INFO    Scripting (Main): plugin: World War II PTO Units by Magnitude 3 LLC unit replace Type_94_Truck
+2026-04-14 20:15:32.110 INFO    Scripting (Main): plugin: World War II PTO Units by Magnitude 3 LLC unit replace Type_96_25mm_AA
+2026-04-14 20:15:32.110 INFO    Scripting (Main): plugin: World War II PTO Units by Magnitude 3 LLC unit replace Type_94_25mm_AA_Truck
+2026-04-14 20:15:32.110 INFO    Scripting (Main): plugin: World War II PTO Units by Magnitude 3 LLC unit replace Type_98_Ke_Ni
+2026-04-14 20:15:32.110 INFO    Scripting (Main): plugin: World War II PTO Units by Magnitude 3 LLC unit replace Type_98_So_Da
+2026-04-14 20:15:32.110 INFO    Scripting (Main): plugin: World War II PTO Units by Magnitude 3 LLC unit replace Type_89_I_Go
+2026-04-14 20:15:32.158 INFO    SOUND (21508): Added sound path: ./CoreMods/tech/Animals/Sounds
+2026-04-14 20:15:32.165 INFO    SOUND (21508): Added sound path: ./CoreMods/tech/ColdWarAssetsPack/Sounds
+2026-04-14 20:15:32.165 INFO    SOUNDER (21508): Loaded 9 packed sounders.
+2026-04-14 20:15:32.195 INFO    SOUND (21508): Added sound path: ./CoreMods/tech/Currenthill Assets Pack/Sounds
+2026-04-14 20:15:32.196 INFO    SOUNDER (21508): Loaded 45 packed sounders.
+2026-04-14 20:15:32.258 INFO    SOUND (21508): Added sound path: ./CoreMods/tech/HeavyMetalCore/Sounds
+2026-04-14 20:15:32.258 INFO    SOUNDER (21508): Loaded 14 packed sounders.
+2026-04-14 20:15:32.328 INFO    SOUND (21508): Added sound path: ./CoreMods/tech/Kuznecow/Sounds
+2026-04-14 20:15:32.328 INFO    SOUNDER (21508): Loaded 1 packed sounders.
+2026-04-14 20:15:32.334 INFO    SOUND (21508): Added sound path: ./CoreMods/tech/M3 WWII PTO units/Sounds
+2026-04-14 20:15:32.335 INFO    SOUNDER (21508): Loaded 8 packed sounders.
+2026-04-14 20:15:32.385 INFO    SOUND (21508): Added sound path: ./CoreMods/tech/SouthAtlanticAssets/Sounds
+2026-04-14 20:15:32.386 INFO    SOUNDER (21508): Loaded 15 packed sounders.
+2026-04-14 20:15:32.395 INFO    Scripting (Main): plugin: F-5E 2024 unit replace F-5E-3
+2026-04-14 20:15:32.395 INFO    Scripting (Main): plugin: SKIPPED 'F-5E by Belsimtek': disabled by 'F-5E 2024'
+2026-04-14 20:15:32.409 WARNING EDCORE (21508): Source coremods/tech/southatlanticassets/textures/vehicles is already mounted to the same mount /textures/.
+2026-04-14 20:15:32.415 INFO    SOUND (21508): Added sound path: ./CoreMods/tech/TechWeaponPack/Sounds
+2026-04-14 20:15:32.417 INFO    SOUNDER (21508): Loaded 80 packed sounders.
+2026-04-14 20:15:32.501 INFO    Scripting (Main): plugin: SKIPPED 'TheChannel': disabled by user
+2026-04-14 20:15:32.707 ERROR   Scripting (Main): DUPLICATE not allowed :weapons.shells.20x110mm HE-I,	from	G:\Saved Games\DCS\Mods/aircraft/PUCARA/weapons.lua
+2026-04-14 20:15:32.707 ERROR   Scripting (Main): DUPLICATE not allowed :weapons.shells.20x110mm AP-I,	from	G:\Saved Games\DCS\Mods/aircraft/PUCARA/weapons.lua
+2026-04-14 20:15:32.707 ERROR   Scripting (Main): DUPLICATE not allowed :weapons.shells.20x110mm AP-T,	from	G:\Saved Games\DCS\Mods/aircraft/PUCARA/weapons.lua
+2026-04-14 20:15:32.744 INFO    Scripting (Main): PLUGINS DONE--------------------------------------------------
+2026-04-14 20:15:32.860 INFO    SOUND (21508): Added sound path: ./CoreMods/tech/USS_Nimitz/Sounds
+2026-04-14 20:15:32.860 INFO    SOUNDER (21508): Loaded 6 packed sounders.
+2026-04-14 20:15:32.999 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/AJS37/Sounds
+2026-04-14 20:15:33.015 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/AV8BNA/Sounds
+2026-04-14 20:15:33.018 INFO    SOUNDER (21508): Loaded 1 sounders.
+2026-04-14 20:15:33.019 WARNING EDCORE (21508): Source coremods/aircraft/av8bna/shapes is already mounted to the same mount /models/.
+2026-04-14 20:15:33.043 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/C-101/Sounds
+2026-04-14 20:15:33.076 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/C130J/Sounds
+2026-04-14 20:15:33.107 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/CH-47F/Sounds
+2026-04-14 20:15:33.118 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/ChinaAssetPack/Sounds
+2026-04-14 20:15:33.146 INFO    SOUNDER (21508): Loaded 16 sounders.
+2026-04-14 20:15:33.160 WARNING EDCORE (21508): Source coremods/aircraft/chinaassetpack/textures/vehicles/hq7 is already mounted to the same mount /textures/.
+2026-04-14 20:15:33.204 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/Christen Eagle II/Sounds
+2026-04-14 20:15:33.256 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/F-15E/Sounds
+2026-04-14 20:15:33.280 ERROR   EDCORE (21508): Drivers errors while mounting coremods/aircraft/f-15e/liveries/f-15ese/usaf 17th ws af90 low vis clean.zip:
+2026-04-14 20:15:33.280 ERROR   EDCORE (21508): 	ZipDriver: Failed to open zip archive coremods/aircraft/f-15e/liveries/f-15ese/usaf 17th ws af90 low vis clean.zip.
+2026-04-14 20:15:33.402 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/F-4E/Sounds
+2026-04-14 20:15:33.606 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/F14/Sounds
+2026-04-14 20:15:33.617 INFO    SOUNDER (21508): Loaded 1 sounders.
+2026-04-14 20:15:33.692 ERROR   EDCORE (21508): Drivers errors while mounting coremods/aircraft/f14/liveries/f-14a-135-gr-early/.gitkeep:
+2026-04-14 20:15:33.692 ERROR   EDCORE (21508): 	ZipDriver: Failed to open zip archive coremods/aircraft/f14/liveries/f-14a-135-gr-early/.gitkeep.
+2026-04-14 20:15:33.696 ERROR   EDCORE (21508): Drivers errors while mounting coremods/aircraft/f14/liveries/f-14a-95-gr/.gitkeep:
+2026-04-14 20:15:33.696 ERROR   EDCORE (21508): 	ZipDriver: Failed to open zip archive coremods/aircraft/f14/liveries/f-14a-95-gr/.gitkeep.
+2026-04-14 20:15:33.748 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/F4U-1D/Sounds
+2026-04-14 20:15:33.788 INFO    SOUND (Main): Added sound path: G:\Saved Games\DCS\Sounds
+2026-04-14 20:15:33.931 INFO    APP (Main): options.graphics =
+{
+	['volumetricLights'] = 1;
+	['AA'] = 'DLAA';
+	['forestDetailsFactor'] = 0.7;
+	['rainDroplets'] = 1;
+	['LensEffects'] = 0;
+	['box_mouse_cursor'] = false;
+	['anisotropy'] = 3;
+	['water'] = 1;
+	['motionBlurAmount'] = 1;
+	['BlurFlatShadows'] = 0;
+	['outputGamma'] = 2.2;
+	['aspect'] = 1.6666666666667;
+	['lights'] = 2;
+	['LODmult'] = 1;
+	['MSAA'] = 1;
+	['messagesFontScale'] = 1;
+	['canopyReflections'] = 1;
+	['width'] = 1280;
+	['visibRange'] = 'Medium';
+	['DLSS_PerfQuality'] = 2;
+	['useDeferredShading'] = 1;
+	['clutterMaxDistance'] = 750;
+	['textures'] = 2;
+	['cockpitGI'] = 1;
+	['terrainTextures'] = 'max';
+	['height'] = 768;
+	['multiMonitorSetup'] = '1camera';
+	['shadows'] = 3;
+	['defaultFOV'] = 78;
+	['shadowTree'] = false;
+	['chimneySmokeDensity'] = 0;
+	['secondaryShadows'] = 0;
+	['SSS'] = 0;
+	['fullScreen'] = false;
+	['preloadRadius'] = 32500;
+	['scaleGui'] = 1;
+	['Scaling'] = 0.66;
+	['DOF'] = 0;
+	['clouds'] = 2;
+	['sceneryDetailsFactor'] = 0.7;
+	['Upscaling'] = 'DLSS';
+	['Sharpening'] = 0.6;
+	['motionBlur'] = 0;
+	['ColorGradingLUT'] = 0;
+	['SSLR'] = 0;
+	['effects'] = 3;
+	['SSAO'] = 0;
+	['maxFPS'] = 90;
+	['sync'] = false;
+	['heatBlr'] = 0;
+	['forestDistanceFactor'] = 1;
+	['flatTerrainShadows'] = 1;
+	['civTraffic'] = '';
+	['ScreenshotExt'] = 'jpg';
+};
+2026-04-14 20:15:34.123 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/I-16/Sounds
+2026-04-14 20:15:34.139 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/Ka-50/Sounds
+2026-04-14 20:15:34.198 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/La-7/Sounds
+2026-04-14 20:15:34.214 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/M-2000C/Sounds
+2026-04-14 20:15:34.271 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/MiG-21bis/Sounds
+2026-04-14 20:15:34.414 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/MiG-29-Fulcrum/Sounds
+2026-04-14 20:15:34.427 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/Mirage-F1/Sounds
+2026-04-14 20:15:34.689 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/OH-58D/Sounds
+2026-04-14 20:15:34.726 INFO    SOUND (21508): Added sound path: ./CoreMods/aircraft/SA342/Sounds
+2026-04-14 20:15:34.833 INFO    SOUND (21508): Added sound path: ./CoreMods/services/VoiceChat/Sounds
+2026-04-14 20:15:34.837 INFO    SOUND (21508): Added sound path: ./Mods/tech/CombinedArms/Sounds
+2026-04-14 20:15:34.854 INFO    SOUND (21508): Added sound path: ./Mods/tech/WWII Units/Sounds
+2026-04-14 20:15:34.857 INFO    SOUNDER (21508): Loaded 82 packed sounders.
+2026-04-14 20:15:34.961 WARNING EDCORE (21508): Source mods/tech/wwii units/textures/ju-88 is already mounted to the same mount /textures/.
+2026-04-14 20:15:35.084 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/A-10C/Sounds
+2026-04-14 20:15:35.089 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/A-10C_2/Sounds
+2026-04-14 20:15:35.101 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/AH-64D/Sounds
+2026-04-14 20:15:35.112 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/AJS37/Sounds
+2026-04-14 20:15:35.141 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/AV8BNA/Sounds
+2026-04-14 20:15:35.174 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/Bf-109K-4/Sounds
+2026-04-14 20:15:35.180 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/C-101/Sounds
+2026-04-14 20:15:35.228 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/C130J/Sounds
+2026-04-14 20:15:35.236 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/GCBase/Sounds
+2026-04-14 20:15:35.240 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/CH-47F/Sounds
+2026-04-14 20:15:35.257 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/F-15E/Sounds
+2026-04-14 20:15:35.268 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/F-16C/Sounds
+2026-04-14 20:15:35.505 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/F-4E/Sounds
+2026-04-14 20:15:36.334 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/F-5E 2024/Sounds
+2026-04-14 20:15:36.443 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/F-86/Sounds
+2026-04-14 20:15:36.603 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/F14/Sounds
+2026-04-14 20:15:37.221 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/F4U-1D/Sounds
+2026-04-14 20:15:37.236 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/FA-18C/Sounds
+2026-04-14 20:15:37.245 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/FW-190A8/Sounds
+2026-04-14 20:15:37.252 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/FW-190D9/Sounds
+2026-04-14 20:15:37.259 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/JF-17/Sounds
+2026-04-14 20:15:37.298 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/Ka-50/Sounds
+2026-04-14 20:15:37.324 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/Ka-50_3/Sounds
+2026-04-14 20:15:37.330 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/L-39C/Sounds
+2026-04-14 20:15:37.340 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/La-7/Sounds
+2026-04-14 20:15:37.343 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/M-2000C/Sounds
+2026-04-14 20:15:37.377 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/MB-339/Sounds
+2026-04-14 20:15:37.400 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/MIG-21bis/Sounds
+2026-04-14 20:15:37.433 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/Mi-24P/Sounds
+2026-04-14 20:15:37.444 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/Mi-8MTV2/Sounds
+2026-04-14 20:15:37.453 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/MiG-15bis/Sounds
+2026-04-14 20:15:37.458 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/MiG-19P/Sounds
+2026-04-14 20:15:37.479 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/MiG-29-Fulcrum/Sounds
+2026-04-14 20:15:37.492 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/Mirage-F1/Sounds
+2026-04-14 20:15:37.509 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/MosquitoFBMkVI/Sounds
+2026-04-14 20:15:37.516 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/NS430/Sounds
+2026-04-14 20:15:37.521 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/OH-58D/Sounds
+2026-04-14 20:15:37.529 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/P-47D-30/Sounds
+2026-04-14 20:15:37.536 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/SA342/Sounds
+2026-04-14 20:15:37.561 INFO    SOUNDER (21508): Loaded 1 sounders.
+2026-04-14 20:15:37.566 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/SpitfireLFMkIX/Sounds
+2026-04-14 20:15:37.584 INFO    SOUND (21508): Added sound path: ./Mods/aircraft/Uh-1H/Sounds
+2026-04-14 20:15:37.590 INFO    SOUND (21508): Added sound path: ./Mods/terrains/GermanyColdWar/Sounds
+2026-04-14 20:15:37.592 INFO    SOUND (21508): Added sound path: ./Mods/terrains/MarianaIslands/Sounds
+2026-04-14 20:15:37.593 INFO    SOUND (21508): Added sound path: ./Mods/terrains/Nevada/Sounds
+2026-04-14 20:15:37.595 INFO    SOUND (21508): Added sound path: ./Mods/terrains/Normandy/Sounds
+2026-04-14 20:15:37.596 INFO    SOUND (21508): Added sound path: ./Mods/terrains/PersianGulf/Sounds
+2026-04-14 20:15:37.676 INFO    SOUND (21508): Added sound path: G:\Saved Games\DCS\Mods/tech/ZedimStatic/Sounds
+2026-04-14 20:15:37.681 ERROR   SOUNDER (21508): Failed to load /sounds/81/Sounders/GroundUnits/WeaponSystem/IFV/toyota_desert.lua: [string "/sounds/81/Sounders/GroundUnits/WeaponSystem/IFV/toyota_desert...."]:9: '=' expected near '-'
+2026-04-14 20:15:37.681 INFO    SOUNDER (21508): Loaded 3 sounders.
+2026-04-14 20:15:37.682 WARNING EDCORE (21508): Source g:/saved games/dcs/mods/tech/zedimstatic/shapes is already mounted to the same mount /models/.
+2026-04-14 20:15:37.696 WARNING LOG (14504): 8 duplicate message(s) skipped.
+2026-04-14 20:15:37.696 INFO    SOUND (21508): Added sound path: G:\Saved Games\DCS\Mods/aircraft/A-4E-C/Sounds
+2026-04-14 20:15:37.737 INFO    SOUNDER (21508): Loaded 4 sounders.
+2026-04-14 20:15:37.783 INFO    SOUND (21508): Added sound path: G:\Saved Games\DCS\Mods/aircraft/AH-6J/Sounds
+2026-04-14 20:15:37.796 INFO    SOUNDER (21508): Loaded 4 sounders.
+2026-04-14 20:15:37.807 WARNING EDCORE (21508): Source g:/saved games/dcs/mods/aircraft/ah-6j/shapes/textures/extra is already mounted to the same mount /textures/.
+2026-04-14 20:15:37.821 INFO    SOUND (21508): Added sound path: G:\Saved Games\DCS\Mods/aircraft/Civil Aircraft Mod/Sounds
+2026-04-14 20:15:37.900 INFO    SOUND (21508): Added sound path: G:\Saved Games\DCS\Mods/aircraft/PUCARA/Sounds
+2026-04-14 20:15:37.914 WARNING EDCORE (21508): Source g:/saved games/dcs/mods/aircraft/pucara/shapes is already mounted to the same mount /models/.
+2026-04-14 20:15:37.916 WARNING EDCORE (21508): Source g:/saved games/dcs/mods/aircraft/pucara/textures is already mounted to the same mount /textures/.
+2026-04-14 20:15:37.921 INFO    SOUND (21508): Added sound path: G:\Saved Games\DCS\Mods/aircraft/uh60l/Sounds
+2026-04-14 20:15:37.946 INFO    SOUNDER (21508): Loaded 7 sounders.
+2026-04-14 20:15:37.984 INFO    SOUND (21508): Added sound path: G:\Saved Games\DCS\Mods/resource/ECHO19_CORE_ULTIMATE/Sounds
+2026-04-14 20:15:38.031 ERROR   ED_SOUND (21508): can't load proto file "/sounds/87/sdef/aircrafts/fa-18/distant_flyby_s.sdef": [string "/sounds/87/sdef/aircrafts/fa-18/distant_flyby_s.sdef"]:12: malformed number near '0.2S'
+2026-04-14 20:15:38.041 ERROR   ED_SOUND (21508): can't open proto file "/sounds/87/sdef/aircrafts/fa-18/canopyclose_in.sdef"
+2026-04-14 20:15:38.041 ERROR   ED_SOUND (21508): failed to load sdef Aircrafts/FA-18/CanopyClose_In referenced in /sounds/87/sdef/aircrafts/fa-18/cockpit/canopyopen_in.sdef
+2026-04-14 20:15:38.067 ERROR   ED_SOUND (21508): can't load proto file "/sounds/87/sdef/aircrafts/engines/su25inenginer.sdef": [string "/sounds/87/sdef/aircrafts/engines/su25inenginer.sdef"]:1: unfinished string near '"Effects/Aircrafts/Engines/Su25InEngineR'''
+2026-04-14 20:15:38.070 ERROR   ED_SOUND (21508): can't open proto file "/sounds/87/sdef/effects/aircrafts/engines/v_1650_7/exb.sdef"
+2026-04-14 20:15:38.070 ERROR   ED_SOUND (21508): failed to load sdef Effects/Aircrafts/Engines/V_1650_7/ExB referenced in /sounds/87/sdef/aircrafts/engines/v_1650_7/exb4 muted.sdef
+2026-04-14 20:15:38.072 ERROR   ED_SOUND (21508): can't load proto file "/sounds/87/sdef/aircrafts/engines/v_1650_7/startup.sdef": [string "/sounds/87/sdef/aircrafts/engines/v_1650_7/startup.sdef"]:2: '}' expected (to close '{' at line 1) near 'inner_radius'
+2026-04-14 20:15:38.073 ERROR   ED_SOUND (21508): can't open proto file "/sounds/87/sdef/effects/aircrafts/engines/v_1650_7/exb.sdef"
+2026-04-14 20:15:38.073 ERROR   ED_SOUND (21508): failed to load sdef Effects/Aircrafts/Engines/V_1650_7/ExB referenced in /sounds/87/sdef/aircrafts/engines/v_1650_7/exb4.sdef
+2026-04-14 20:15:38.074 ERROR   ED_SOUND (21508): can't load proto file "/sounds/87/sdef/aircrafts/engines/v_1650_7/exs4.sdef": [string "/sounds/87/sdef/aircrafts/engines/v_1650_7/exs4.sdef"]:7: ')' expected near ','
+2026-04-14 20:15:38.084 ERROR   ED_SOUND (21508): can't load proto file "/sounds/87/sdef/aircrafts/engines/rollsroycemerlin/exb2.sdef": [string "/sounds/87/sdef/aircrafts/engines/rollsroycemerlin/exb2.sdef"]:6: unexpected symbol near '7'
+2026-04-14 20:15:38.084 ERROR   ED_SOUND (21508): can't load proto file "/sounds/87/sdef/aircrafts/engines/rollsroycemerlin/exf3.sdef": [string "/sounds/87/sdef/aircrafts/engines/rollsroycemerlin/exf3.sdef"]:3: unexpected symbol near '3'
+2026-04-14 20:15:38.088 ERROR   ED_SOUND (21508): can't load proto file "/sounds/87/sdef/aircrafts/engines/rollsroycemerlin/exf2.sdef": [string "/sounds/87/sdef/aircrafts/engines/rollsroycemerlin/exf2.sdef"]:3: unexpected symbol near '10'
+2026-04-14 20:15:38.118 INFO    Dispatcher (Main): Waiting for module resource mounts: 4.183s
+2026-04-14 20:15:38.120 INFO    VISUALIZER (Main): render thread initialization...
+2026-04-14 20:15:38.126 INFO    GRAPHICSVISTA (3748): renderer: 'dx11backend.dll'
+2026-04-14 20:15:38.355 INFO    DX11BACKEND (3748): DX11Renderer initialization (w:1280 h:768 fullscrn:0 vsync:0 adapter:0 monitor:0 shaderErrors:1)
+2026-04-14 20:15:45.029 INFO    DX11BACKEND (3748): Driver Concurrent Creates - 1
+2026-04-14 20:15:45.029 INFO    DX11BACKEND (3748): Driver Command Lists - 1
+2026-04-14 20:15:45.156 INFO    DX11BACKEND (3748): NVIDIA API init OK
+2026-04-14 20:15:45.156 INFO    DX11BACKEND (3748): NVIDIA Display Driver Version 59579.r595_00
+2026-04-14 20:15:45.156 INFO    DX11BACKEND (3748): GPU count:1
+2026-04-14 20:15:45.216 INFO    DX11BACKEND (3748): commonPool: 48-128, cbPool: 4-14
+2026-04-14 20:15:45.216 INFO    DX11BACKEND (3748): samplerPool: 5-16
+2026-04-14 20:15:46.858 INFO    DX11BACKEND (3748): NVIDIA DLSS Minimum driver version was reported as : 470.0
+2026-04-14 20:15:46.862 INFO    METASHADER (3748): Init filesystem: F
+2026-04-14 20:15:46.873 INFO    DX11BACKEND (3748): DX11ShaderBinaries::loadCache bazar/shaders/fxo/fxo
+2026-04-14 20:15:49.475 INFO    DX11BACKEND (3748): DX11ShaderBinaries::loadCache done. Loaded 2594/2594.
+2026-04-14 20:15:49.485 INFO    DX11BACKEND (3748): DX11ShaderBinaries::loadCache g:/saved games/dcs/fxo
+2026-04-14 20:15:49.570 INFO    DX11BACKEND (3748): DX11ShaderBinaries::loadCache done. Loaded 204/204.
+2026-04-14 20:15:49.963 INFO    VISUALIZER (3748): SceneManager initialization
+2026-04-14 20:15:50.871 ERROR_ONCE DX11BACKEND (25028): texture 'KevinWakePattern812x1024.dds' not found. Asked from ''
+2026-04-14 20:15:51.233 INFO    VISUALIZER (3748): DCSScene initialized
+2026-04-14 20:15:51.343 ERROR   DX11BACKEND (3748): Unknown DLSS preset 'M', use default preset 'C'
+2026-04-14 20:15:51.343 INFO    DX11BACKEND (3748): Use DLSS preset 'C'
+2026-04-14 20:15:51.376 INFO    DX11BACKEND (3748): DLSS successfully initialized, 744x448 -> 1280x768
+2026-04-14 20:15:51.566 ERROR_ONCE DX11BACKEND (3748): render target 'mainDepthBuffer' not found
+2026-04-14 20:15:51.636 ERROR_ONCE DX11BACKEND (3748): render target 'uiTargetColor' not found
+2026-04-14 20:15:51.636 ERROR_ONCE DX11BACKEND (3748): render target 'uiTargetDepth' not found
+2026-04-14 20:15:51.636 INFO    VISUALIZER (3748): DCSSceneRenderer initialized
+2026-04-14 20:15:51.637 INFO    VISUALIZER (3748): SceneManager: render pool size:8
+2026-04-14 20:15:51.661 INFO    VISUALIZER (Main): render thread is initialized
+2026-04-14 20:15:51.758 INFO    INPUT (Main): created [Keyboard]
+2026-04-14 20:15:51.797 INFO    INPUT (Main): created [Saitek Pro Flight Rudder Pedals] with full id [Saitek Pro Flight Rudder Pedals {5A49B4F0-2DF6-11f0-8003-444553540000}],JOYSTICK|LIMITED
+2026-04-14 20:15:51.855 INFO    INPUT (Main): created [Joystick - HOTAS Warthog] with full id [Joystick - HOTAS Warthog {5A49DC00-2DF6-11f0-8004-444553540000}],JOYSTICK|LIMITED
+2026-04-14 20:15:51.866 INFO    INPUT (Main): created [Throttle - HOTAS Warthog] with full id [Throttle - HOTAS Warthog {5A4AC660-2DF6-11f0-8009-444553540000}],JOYSTICK|STANDARD
+2026-04-14 20:15:51.893 INFO    ED_SOUND (Main): Opening default audio device.
+2026-04-14 20:15:51.897 INFO    ED_SOUND (Main): Speaker layout: auto
+2026-04-14 20:15:51.901 INFO    ED_SOUND (Main): Driver reports 2 channels with mask 0x3
+2026-04-14 20:15:51.901 INFO    ED_SOUND (Main): Using 2 channels at 48000 Hz
+2026-04-14 20:15:51.901 INFO    ED_SOUND (Main): Channel layout: Headphones/Stereo
+2026-04-14 20:15:51.924 INFO    ED_SOUND (Main): Opening audio device "{0.0.0.00000000}.{217a2623-fb80-4216-999a-ae6aa7cabdf4}"
+2026-04-14 20:15:51.924 ERROR   ED_SOUND (Main): Failed to open device "{0.0.0.00000000}.{217a2623-fb80-4216-999a-ae6aa7cabdf4}": 0x80070490 (?)
+2026-04-14 20:15:51.924 INFO    ED_SOUND (Main): Opening default audio device.
+2026-04-14 20:15:51.927 INFO    ED_SOUND (Main): Speaker layout: forced_stereo
+2026-04-14 20:15:51.928 INFO    ED_SOUND (Main): Driver reports 2 channels with mask 0x3
+2026-04-14 20:15:51.928 INFO    ED_SOUND (Main): Using 2 channels at 48000 Hz
+2026-04-14 20:15:51.928 INFO    ED_SOUND (Main): Channel layout: Headphones/Stereo
+2026-04-14 20:15:51.947 INFO    APP (Main): gDescription: "NVIDIA GeForce RTX 5070 Ti" gVendorId: 4318 gDeviceId: 11269 gMemory: 15997 MB
+2026-04-14 20:15:51.969 ERROR   EDOBJECTS (Main): SAB-100 already declared in shapes.txt
+2026-04-14 20:15:51.969 ERROR   EDOBJECTS (Main): Object HB_F4E_GBU15V1 with id=42 already declared in table BombTable
+2026-04-14 20:15:51.969 ERROR   EDOBJECTS (Main): Object DFT_150_GAL_A4E_EMPTY with id=3180 already declared in table ContainerTable
+2026-04-14 20:15:51.969 ERROR   EDOBJECTS (Main): Object DFT_300_GAL_A4E_EMPTY with id=3178 already declared in table ContainerTable
+2026-04-14 20:15:51.969 ERROR   EDOBJECTS (Main): Object DFT_300_GAL_A4E_LR_EMPTY with id=3179 already declared in table ContainerTable
+2026-04-14 20:15:51.969 ERROR   EDOBJECTS (Main): Object DFT_400_GAL_A4E_EMPTY with id=3177 already declared in table ContainerTable
+2026-04-14 20:15:51.970 ERROR   EDOBJECTS (Main): Object FIM-92C STINGER with id=93 already declared in table MissileTable
+2026-04-14 20:15:51.970 ERROR   EDOBJECTS (Main): Object OH58D_FIM_92 with id=93 already declared in table MissileTable
+2026-04-14 20:15:51.970 ERROR   EDOBJECTS (Main): Object X_25MP with id=47 already declared in table MissileTable
+2026-04-14 20:15:53.930 ERROR   WORLDGENERAL (Main): Error: Unit [MB-339APAN]: Cell "NOSE_LEFT_SIDE" references an unknown cell "PITOT".
+2026-04-14 20:15:53.930 ERROR   WORLDGENERAL (Main): Error: Unit [MB-339APAN]: Cell "NOSE_RIGHT_SIDE" references an unknown cell "PITOT".
+2026-04-14 20:15:53.933 ERROR   WORLDGENERAL (Main): Error: Unit [F-4E-45MC]: Effect presets records are defined but empty.
+2026-04-14 20:15:53.934 ERROR   WORLDGENERAL (Main): AJS37 AI by Heatblur Simulations: Unexpected fires_pos index  12
+2026-04-14 20:15:53.947 ERROR   WORLDGENERAL (Main): Error: Unit [QF-4E]: Effect presets records are defined but empty.
+2026-04-14 20:15:53.949 ERROR   WORLDGENERAL (Main): Error: Unit [CH-47Fbl1]: Effect presets records are defined but empty.
+2026-04-14 20:15:53.959 ERROR   WORLDGENERAL (Main): Error: Unit [OH58D]: Asymmetrical wing configuration found.
+2026-04-14 20:15:53.969 WARNING LOG (14504): 2 duplicate message(s) skipped.
+2026-04-14 20:15:53.969 ERROR   WORLDGENERAL (Main): Error: Unit [MB-339A]: Cell "NOSE_LEFT_SIDE" references an unknown cell "PITOT".
+2026-04-14 20:15:53.969 ERROR   WORLDGENERAL (Main): Error: Unit [MB-339A]: Cell "NOSE_RIGHT_SIDE" references an unknown cell "PITOT".
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK83_MER_3x_AFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{BRU-70A_2*GBU-54_SIDE_RIGHT}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "OH58D_Violet_Smoke_Grenade" (origin: "./CoreMods/aircraft/OH-58D/OH58D_Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{FAB-500-M54-TU}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_TALD_MER_4x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK81_MER_4x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK81_MER_4x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "OH58D_Blue_Smoke_Grenade" (origin: "./CoreMods/aircraft/OH-58D/OH58D_Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45_MER_1x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK106_MER_6x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{MAK79_MK20 1L}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45_MER_2x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative weight of payload "{LAU-7_AIM-9M_Right}" (origin: "./CoreMods/aircraft/F-4E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_M117_MER_4x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{BRU-70A_3*GBU-38}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82_MER_2x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{MAK79_BDU45B 3R}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{BRU-32 CBU-99}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "OH58D_Green_Smoke_Grenade" (origin: "./CoreMods/aircraft/OH-58D/OH58D_Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45_MER_3x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45SE_MER_3x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{BRU-32 GBU-10}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK20_MER_3x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{FAB-250-M54-TU}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_M117_MER_4x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{BRU-70A_2*GBU-54_SIDE_LEFT}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{OFAB-100-120-TU}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK83_MER_2x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45SE_MER_5x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{BRU-32 MK-84}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative weight of payload "{LAU-7_AIM-9M_Left}" (origin: "./CoreMods/aircraft/F-4E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45SE_MER_5x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.976 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK83_MER_3x_FWD}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK81_MER_3x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK20_MER_4x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45SE_MER_6x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{FAB-500-M54}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK83_MER_2x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{MAK79_MK20 2L}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82_MER_5x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{BETAB-500M}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45_MER_3x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{BRU-42_3*GBU-38}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{IAB-500}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82SE_MER_2x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative weight of payload "{LAU3_WP156_TER_2_C}" (origin: "G:\Saved Games\DCS\Mods/aircraft/A-4E-C/Weapons/A4E_Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK81_MER_5x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45SE_MER_3x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{BRU-32 MK-82SE}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK81_MER_5x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{MAK79_MK20 1R}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{BRU-32 GBU_31_V_4B}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "OH58D_White_Smoke_Grenade" (origin: "./CoreMods/aircraft/OH-58D/OH58D_Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative weight of payload "{LAU3_WP156_TER_3_C}" (origin: "G:\Saved Games\DCS\Mods/aircraft/A-4E-C/Weapons/A4E_Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82SE_MER_5x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{BRU-70A_2*GBU-38_SIDE_RIGHT}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45SE_MER_4x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45_MER_6x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45_MER_4x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK20_MER_4x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{BRU-42_2*GBU-38_LEFT}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK20_MER_2x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{BRU-32 BDU-45}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82_MER_3x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82_MER_5x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.977 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_GBU12_MER_2x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82SE_MER_3x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{FAB-500-TA}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45_MER_5x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45SE_MER_5x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_TALD_MER_2x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{BRU-32 MK-82}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{FAB-250-M54}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK81_MER_6x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{BRU-32 GBU_31_V_2B}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_TALD_MER_2x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45SE_MER_2x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK76_MER_6x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative weight of payload "{LAU3_WP156_TER_2_L}" (origin: "G:\Saved Games\DCS\Mods/aircraft/A-4E-C/Weapons/A4E_Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{BRU-70A_2*GBU-54_RIGHT}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{ODAB-500PM}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45SE_MER_4x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45_MER_4x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_BDU45_MER_5x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative weight of payload "{LAU-7_AIM-9L_Right}" (origin: "./CoreMods/aircraft/F-4E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative weight of payload "{LAU3_WP156_TER_2_R}" (origin: "G:\Saved Games\DCS\Mods/aircraft/A-4E-C/Weapons/A4E_Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82_MER_4x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{BRU-32 GBU-16}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK20_MER_6x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_GBU12_MER_2x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_M117_MER_4x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{BRU-70A_2*GBU-54_LEFT}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82SE_MER_5x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82_MER_4x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{BRU-32 MK-82AIR}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{BETAB-500S}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "OH58D_Red_Smoke_Grenade" (origin: "./CoreMods/aircraft/OH-58D/OH58D_Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{RN-24}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82_MER_6x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{RN-28}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82SE_MER_5x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{FAB-100-4}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{BRU-32 GBU-38}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "OH58D_Yellow_Smoke_Grenade" (origin: "./CoreMods/aircraft/OH-58D/OH58D_Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{BRU-42_2*GBU-38_RIGHT}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{BRU-32 MK-20}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK81_MER_2x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK81_MER_3x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.978 ERROR   wInfo (Main): negative drag of payload "{MAK79_BDU45B 4}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_TALD_MER_2x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82_MER_3x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{FAB-500-SL}" (origin: "./CoreMods/aircraft/MiG-21bis/Entry/Aw")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{CHAP_Kh555x6}" (origin: "./CoreMods/tech/Currenthill Assets Pack/Database/Weapons/CHAP_missiles.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{MAK79_MK20 2R}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{MAK79_BDU45B 3L}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{BRU-32 GBU-24}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{BRU-32 BDU-45B}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{BRU-32 MK-83}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{BRU-32 GBU-12}" (origin: "./CoreMods/aircraft/F14/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{CHAP_HOT3}" (origin: "./CoreMods/tech/Currenthill Assets Pack/Database/Weapons/CHAP_missiles.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82SE_MER_4x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82SE_MER_6x}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82SE_MER_4x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative weight of payload "{LAU-7_AIM-9L_Left}" (origin: "./CoreMods/aircraft/F-4E/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK20_MER_5x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{BRU-70A_2*GBU-38_SIDE_LEFT}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK82SE_MER_3x_LEFT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK20_MER_5x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{BRU-70A_3*GBU-54}" (origin: "./CoreMods/aircraft/AV8BNA/WEAPONS/AV8BNA_Weapons.lua")
+2026-04-14 20:15:53.979 ERROR   wInfo (Main): negative drag of payload "{HB_A6E_MK20_MER_3x_RIGHT}" (origin: "./CoreMods/aircraft/A-6E/Entry/Weapons.lua")
+2026-04-14 20:15:53.980 INFO    WEATHER (Main): set fog: visibility:1  thickness:300.0
+2026-04-14 20:15:53.983 INFO    DX11BACKEND (Main): DX11ShaderBinaries::loadCache mods/aircraft/f14/fxo
+2026-04-14 20:15:53.983 INFO    DX11BACKEND (Main): DX11ShaderBinaries::loadCache done. Loaded 0/0.
+2026-04-14 20:15:53.984 INFO    DX11BACKEND (Main): DX11ShaderBinaries::loadCache mods/aircraft/f-4e/fxo
+2026-04-14 20:15:53.984 INFO    DX11BACKEND (Main): DX11ShaderBinaries::loadCache done. Loaded 0/0.
+2026-04-14 20:15:53.988 INFO    WorldPlugIns (Main): Waiting for immediate load to finish...
+2026-04-14 20:15:53.997 ERROR   EDCORE (Main): Failed to load F:/Eagle Dynamics/DCS World/CoreMods/tech/SouthAtlanticAssets/bin/SouthAtlantic.dll: (127) No se encontró el proceso especificado.
+2026-04-14 20:15:53.997 INFO    WorldPlugIns (Main): loading "South_Atlantic_Assets": 0.008
+2026-04-14 20:15:54.006 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/A-6E/bin/HeatblurCore.dll
+2026-04-14 20:15:54.028 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/A-6E/bin/HeatblurComponents.dll
+2026-04-14 20:15:54.040 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/A-6E/bin/HeatblurDCSBase.dll
+2026-04-14 20:15:54.048 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/A-6E/bin/A-6E-AI.dll
+2026-04-14 20:15:54.048 INFO    WorldPlugIns (Main): loading "A-6E AI by Heatblur Simulations": 0.051
+2026-04-14 20:15:54.056 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/AV8BNA/bin/AV8B_AI.dll
+2026-04-14 20:15:54.056 INFO    WorldPlugIns (Main): loading "AV-8B N/A AI by RAZBAM Sims": 0.007
+2026-04-14 20:15:54.062 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/C-101/bin/C101Core.dll
+2026-04-14 20:15:54.063 INFO    WorldPlugIns (Main): loading "C-101 Aviojet by AvioDev": 0.006
+2026-04-14 20:15:54.070 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/C130J/bin/C130J_Sounder.dll
+2026-04-14 20:15:54.070 INFO    WorldPlugIns (Main): loading "C-130J AI": 0.007
+2026-04-14 20:15:54.078 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/ChinaAssetPack/bin/CAP_AI.dll
+2026-04-14 20:15:54.085 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/ChinaAssetPack/bin/JF-17_AI.dll
+2026-04-14 20:15:54.085 INFO    WorldPlugIns (Main): loading "China Asset Pack by Deka Ironwork Simulations and Eagle Dynamics": 0.015
+2026-04-14 20:15:54.093 INFO    CE2_AI (Main): Loading CE AI
+2026-04-14 20:15:54.093 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/Christen Eagle II/bin/CE2_AI.dll
+2026-04-14 20:15:54.093 INFO    WorldPlugIns (Main): loading "Christen Eagle II AI by Magnitude 3 LLC": 0.008
+2026-04-14 20:15:54.101 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/F-15E/bin/F15E_AI.dll
+2026-04-14 20:15:54.101 INFO    WorldPlugIns (Main): loading "F-15E AI by RAZBAM": 0.007
+2026-04-14 20:15:54.110 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/F-4E/bin/HeatblurCore.dll
+2026-04-14 20:15:54.131 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/F-4E/bin/HeatblurComponents.dll
+2026-04-14 20:15:54.141 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/F-4E/bin/HeatblurDCSBase.dll
+2026-04-14 20:15:54.148 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/F-4E/bin/F-4E-AI.dll
+2026-04-14 20:15:54.149 INFO    WorldPlugIns (Main): loading "F-4E AI by Heatblur Simulations": 0.047
+2026-04-14 20:15:54.158 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/F14/bin/HeatblurCore.dll
+2026-04-14 20:15:54.179 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/F14/bin/HeatblurComponents.dll
+2026-04-14 20:15:54.190 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/F14/bin/HeatblurDCSBase.dll
+2026-04-14 20:15:54.197 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/F14/bin/F14-AI.dll
+2026-04-14 20:15:54.197 INFO    WorldPlugIns (Main): loading "F-14B AI by Heatblur Simulations": 0.048
+2026-04-14 20:15:54.205 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/F4U-1D/bin/F4U_AI.dll
+2026-04-14 20:15:54.205 INFO    WorldPlugIns (Main): loading "F4U-1D AI by Magnitude 3 LLC": 0.007
+2026-04-14 20:15:54.212 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/M-2000C/bin/M2KC_AI.dll
+2026-04-14 20:15:54.212 INFO    WorldPlugIns (Main): loading "M-2000C AI by RAZBAM Sims": 0.007
+2026-04-14 20:15:54.219 INFO    MiG21_AI (Main): Loading Mig21 AI
+2026-04-14 20:15:54.219 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/MiG-21bis/bin/MiG21_AI.dll
+2026-04-14 20:15:54.220 INFO    WorldPlugIns (Main): loading "MiG-21Bis AI by Magnitude 3 LLC": 0.007
+2026-04-14 20:15:54.227 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/Mirage-F1/bin/MirageF1Core.dll
+2026-04-14 20:15:54.227 INFO    WorldPlugIns (Main): loading "Mirage F1 Assets by Aerges": 0.007
+2026-04-14 20:15:54.234 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/OH-58D/bin/OH58D_AI.dll
+2026-04-14 20:15:54.235 INFO    WorldPlugIns (Main): loading "OH58D AI by Polychop-Simulations": 0.007
+2026-04-14 20:15:54.241 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/aircraft/SA342/bin/SA342_ai.dll
+2026-04-14 20:15:54.241 INFO    WorldPlugIns (Main): loading "SA342 AI by Polychop-Simulations": 0.007
+2026-04-14 20:15:54.253 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/services/CaptoGlove/bin/edCaptoGlove.dll
+2026-04-14 20:15:54.253 INFO    WorldPlugIns (Main): loading "CaptoGloveSupport": 0.011
+2026-04-14 20:15:54.302 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/services/LeapMotion/bin/edLeapMotion.dll
+2026-04-14 20:15:54.302 INFO    WorldPlugIns (Main): loading "LeapMotionSupport": 0.049
+2026-04-14 20:15:54.322 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/services/SensoryxVRFree/bin/edSensoryxVRFree.dll
+2026-04-14 20:15:54.323 INFO    WorldPlugIns (Main): loading "SensoryxVRFreeSupport": 0.020
+2026-04-14 20:15:54.368 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/services/VoiceChat/bin/VoiceChat.dll
+2026-04-14 20:15:54.369 INFO    WorldPlugIns (Main): loading "VoiceChat": 0.045
+2026-04-14 20:15:54.611 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/CoreMods/services/jsAvionics/bin/jsAvionics.dll
+2026-04-14 20:15:54.612 INFO    WorldPlugIns (Main): loading "jsAvionics": 0.034
+2026-04-14 20:15:55.491 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/Mods/tech/CombinedArms/bin/GroundCockpitBase.dll
+2026-04-14 20:15:56.333 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/Mods/tech/CombinedArms/bin/CombinedArms.dll
+2026-04-14 20:15:56.334 INFO    WorldPlugIns (Main): loading "Combined Arms by Eagle Dynamics": 1.722
+2026-04-14 20:15:57.233 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/Mods/tech/Supercarrier/bin/edSupercarrier.dll
+2026-04-14 20:15:57.233 INFO    WorldPlugIns (Main): loading "Supercarrier": 0.899
+2026-04-14 20:15:58.312 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/Mods/aircraft/C130J/bin/C130J.dll
+2026-04-14 20:15:58.519 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/Mods/aircraft/C130J/bin/Manwe.dll
+2026-04-14 20:15:58.520 INFO    WorldPlugIns (Main): loading "C-130J": 1.286
+2026-04-14 20:15:59.538 INFO    EDCORE (Main): Loaded F:/Eagle Dynamics/DCS World/Mods/aircraft/NS430/bin/NS430.dll
+2026-04-14 20:15:59.539 INFO    WorldPlugIns (Main): loading "NS430": 1.019
+2026-04-14 20:15:59.546 INFO    EDCORE (Main): Loaded G:/Saved Games/DCS/Mods/aircraft/uh60l/bin/UH60L.dll
+2026-04-14 20:15:59.547 INFO    WorldPlugIns (Main): loading "UH-60L": 0.008
+2026-04-14 20:15:59.552 INFO    EDCORE (Main): Loaded G:/Saved Games/DCS/Mods/services/DCS-SRS/bin/srs.dll
+2026-04-14 20:15:59.553 INFO    WorldPlugIns (Main): loading "DCS-SRS": 0.006
+2026-04-14 20:15:59.553 INFO    WorldPlugIns (Main): Immediate load done.
+2026-04-14 20:15:59.573 INFO    DXGUI_WIN_ADAPTER (Main): resize main window to [1280, 768]
+2026-04-14 20:15:59.574 INFO    Dispatcher (Main): Waiting for module resource mounts: 0.000s
+2026-04-14 20:15:59.608 INFO    EDCORE (Main): (dDispatcher)enterToState_:1
+2026-04-14 20:16:02.773 INFO    UIBASERENDERER (Main): Cannot load font [F:\Eagle Dynamics\DCS World\dxgui\skins\fonts\]!
+2026-04-14 20:16:02.773 INFO    UIBASERENDERER (Main): Cannot create font [F:\Eagle Dynamics\DCS World\dxgui\skins\fonts\] size 0!
+2026-04-14 20:16:04.881 INFO    APP (Main): Loaded F:\Eagle Dynamics\DCS World\Scripts\Hooks\common.lua
+2026-04-14 20:16:04.882 INFO    APP (Main): Loaded F:\Eagle Dynamics\DCS World\Scripts\Hooks\multiplayerCoalitionBlocker.lua
+2026-04-14 20:16:04.883 INFO    APP (Main): Loaded F:\Eagle Dynamics\DCS World\Scripts\Hooks\multislot.lua
+2026-04-14 20:16:04.883 INFO    APP (Main): Loaded F:\Eagle Dynamics\DCS World\Scripts\Hooks\voicechat.lua
+2026-04-14 20:16:04.885 INFO    APP (Main): Loaded F:\Eagle Dynamics\DCS World\Scripts\Hooks\webGUI.lua
+2026-04-14 20:16:04.886 INFO    APP (Main): Loaded F:\Eagle Dynamics\DCS World\Scripts\Hooks\webRTCwebSocket.lua
+2026-04-14 20:16:05.836 INFO    APP (Main): Loaded G:\Saved Games\DCS\Scripts\Hooks\CETAVDynamicCampaignCLIENT.luac
+2026-04-14 20:16:05.836 INFO    APP (Main): Loaded G:\Saved Games\DCS\Scripts\Hooks\CETAVDynamicCampaignSYSTEM.luac
+2026-04-14 20:16:05.837 INFO    SRS-GameGUI (Main): Loading - DCS-SRS GameGUI - Ciribob: 2.3.6.0
+2026-04-14 20:16:05.838 INFO    SRS-GameGUI (Main): Loaded SRS.dll
+2026-04-14 20:16:05.838 INFO    SRS-GameGUI (Main): Loaded - DCS-SRS GameGUI - Ciribob: 2.3.6.0
+2026-04-14 20:16:05.839 INFO    SRS-OverlayGameGUI (Main): Loading - DCS-SRS Overlay GameGUI - Ciribob: 2.3.6.0 
+2026-04-14 20:16:05.840 INFO    SRS-OverlayGameGUI (Main): Loaded - DCS-SRS Overlay GameGUI - Ciribob: 2.3.6.0 
+2026-04-14 20:16:05.840 INFO    APP (Main): Loaded G:\Saved Games\DCS\Scripts\Hooks\DCS-SRS-hook.lua
+2026-04-14 20:16:05.843 INFO    DCS-DTC (Main): DTC Hook reloaded
+2026-04-14 20:16:05.843 INFO    DCS-DTC (Main): DTC Hook initialized
+2026-04-14 20:16:05.843 INFO    APP (Main): Loaded G:\Saved Games\DCS\Scripts\Hooks\DCSDTCHook.lua
+2026-04-14 20:16:05.844 INFO    OpenKneeboard (Main): Init
+2026-04-14 20:16:05.844 INFO    OpenKneeboard (Main): Loading DLL - search path: G:\Saved Games\DCS\\Scripts\Hooks\?.dll;.\lua-?.dll;.\?.dll;F:\Eagle Dynamics\DCS World\bin\lua-?.dll;F:\Eagle Dynamics\DCS World\bin\?.dll;;.\LuaSocket\?.dll;;G:\Saved Games\DCS\Mods\Services\DCS-SRS\bin\?.dll;;.\LuaSocket\?.dll;
+2026-04-14 20:16:05.852 INFO    OpenKneeboard (Main): DLL Loaded
+2026-04-14 20:16:05.852 INFO    OpenKneeboard (Main): Callbacks installed
+2026-04-14 20:16:05.852 INFO    APP (Main): Loaded G:\Saved Games\DCS\Scripts\Hooks\OpenKneeboardDCSExt.lua
+2026-04-14 20:16:05.852 INFO    TACVIEW.GUI.LUA (Main): Starting [G:\Saved Games\DCS\Scripts\Hooks\TacviewGameGUI.lua]
+2026-04-14 20:16:05.852 INFO    TACVIEW.GUI.LUA (Main): Loading C++ flight data recorder from [G:\Saved Games\DCS\Mods\tech\Tacview\bin\]
+2026-04-14 20:16:05.863 INFO    TACVIEW.GUI.LUA (Main): Tacview 1.9.6.103 C++ flight data recorder successfully loaded.
+2026-04-14 20:16:05.863 INFO    APP (Main): Loaded G:\Saved Games\DCS\Scripts\Hooks\TacviewGameGUI.lua
+2026-04-14 20:16:05.864 INFO    APP (Main): Loaded G:\Saved Games\DCS\Scripts\Hooks\bhHook.lua
+2026-04-14 20:16:05.864 INFO    OH6GunnerExport (Main): LoadDLL
+2026-04-14 20:16:05.866 INFO    OH6GunnerExport (Main): DLL loaded
+2026-04-14 20:16:05.866 INFO    LuaNET (Main): OH6_Gunner Loaded...
+2026-04-14 20:16:05.866 INFO    APP (Main): Loaded G:\Saved Games\DCS\Scripts\Hooks\gunner_export_hook.lua
+2026-04-14 20:16:05.866 INFO    LuaNET (Main): LOTTAF loaded
+2026-04-14 20:16:05.866 INFO    APP (Main): Loaded G:\Saved Games\DCS\Scripts\Hooks\lottafGameGUI.lua
+2026-04-14 20:16:05.868 INFO    LuaNET (Main): [Scratchpad] Loaded ...
+2026-04-14 20:16:05.868 INFO    APP (Main): Loaded G:\Saved Games\DCS\Scripts\Hooks\scratchpad-hook.lua
+2026-04-14 20:16:05.978 INFO    Dispatcher (Main): //=== END OF INIT ======================================//
+2026-04-14 20:16:05.978 INFO    EDCORE (Main): (dDispatcher)enterToState_:2
+2026-04-14 20:16:06.004 INFO    EDCORE (Main): (dDispatcher)enterToState_:3
+2026-04-14 20:16:06.041 INFO    SRS-OverlayGameGUI (Main): Loading config file...
+2026-04-14 20:16:06.041 INFO    SRS-OverlayGameGUI (Main): Configuration exists...
+2026-04-14 20:16:06.042 INFO    SRS-OverlayGameGUI (Main): setMode called minimum
+2026-04-14 20:16:06.043 INFO    SRS-OverlayGameGUI (Main): SRS Window created
+2026-04-14 20:16:10.188 INFO    ED_SOUND (24504): Using SSSE3 for peak calc.
+2026-04-14 20:16:23.310 INFO    Dispatcher (Main): load terrain from ./Mods/terrains/Caucasus\terrain.cfg.lua
+2026-04-14 20:16:23.322 INFO    SECURITYCONTROL (Main): Loaded ./Mods/terrains/Caucasus\terrain.cfg.lua.pak.crypt
+2026-04-14 20:16:23.322 INFO    TERRAIN (Main): lSystem::load(./Mods/terrains/Caucasus\terrain.cfg.lua)
+2026-04-14 20:16:23.322 INFO    TERRAIN (Main): lSystem::openSession(./Mods/terrains/Caucasus\terrain.cfg.lua)
+2026-04-14 20:16:23.322 INFO    TERRAIN (Main): lSystem::exit()
+2026-04-14 20:16:23.323 INFO    TERRAIN (Main): lSystem::CleanScenes()
+2026-04-14 20:16:23.323 INFO    EDOBJECTS (Main): lTypeObjectManagerImpl::clear 13
+2026-04-14 20:16:23.323 INFO    INTER (Main): ITerrainEntryPoint::close()
+2026-04-14 20:16:23.323 WARNING LOG (14504): 1 duplicate message(s) skipped.
+2026-04-14 20:16:23.323 INFO    INTER (Main): ITerrainEntryPoint::openTerrain()
+2026-04-14 20:16:23.325 INFO    INTER (Main): ITerrainEntryPoint: call createITerrain()
+2026-04-14 20:16:23.327 INFO    EDTERRAIN4 (Main): Open terrain cfg "./Mods/terrains/Caucasus\terrain.cfg.lua"
+2026-04-14 20:16:23.329 INFO    EDTERRAIN4 (Main): TERRAIN_REVISION = 6889
+2026-04-14 20:16:23.329 INFO    EDTERRAIN4 (Main): Build date: 
+2026-04-14 20:16:23.329 INFO    EDTERRAIN4 (Main): Texture quality: "max"
+2026-04-14 20:16:23.329 INFO    EDTERRAIN4 (Main): Language: "en"
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'ceh_ang_b' (sq=0.000000e+00) (xyz=19.680016, 24.800762, -43.199993)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'ceh_ang_b' (sq=0.000000e+00) (xyz=-19.679996, 24.800762, -43.199993)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'ceh_ang_b' (sq=0.000000e+00) (xyz=-59.040010, 24.800762, -14.399994)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'ceh_ang_b' (sq=0.000000e+00) (xyz=-59.040011, 24.800762, 14.400005)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'ceh_ang_b' (sq=0.000000e+00) (xyz=-19.680000, 24.800762, 43.200005)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'ceh_ang_b' (sq=0.000000e+00) (xyz=19.680012, 24.800762, 43.200005)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'ceh_ang_b' (sq=0.000000e+00) (xyz=59.040025, 24.800762, 14.400005)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'ceh_ang_b' (sq=0.000000e+00) (xyz=59.040026, 24.800762, -14.399994)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'hotel_a' (sq=7.564423e-06) (xyz=-4.443190, 0.597240, 10.019501)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'school_a' (sq=1.642593e-08) (xyz=6.994224, 4.236901, 1.671592)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'tr_budka_new' (sq=0.000000e+00) (xyz=3.123838, 4.327496, -2.127915)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'tr_budka_new' (sq=0.000000e+00) (xyz=3.123837, 4.327496, 2.145863)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'tr_budka_new' (sq=0.000000e+00) (xyz=-1.042828, 4.327496, -6.401694)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'tr_budka_new' (sq=0.000000e+00) (xyz=1.040505, 4.327496, -6.401693)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'tr_budka_new' (sq=0.000000e+00) (xyz=-3.126163, 4.327496, 2.145862)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'tr_budka_new' (sq=0.000000e+00) (xyz=-3.126163, 4.327496, -2.127916)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'tr_budka_new' (sq=0.000000e+00) (xyz=1.040503, 4.327496, 6.419640)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'tr_budka_new' (sq=0.000000e+00) (xyz=-1.042830, 4.327496, 6.419640)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'uniwersam_a_new' (sq=3.081897e-06) (xyz=-13.705606, 8.235668, -2.060844)
+2026-04-14 20:16:23.357 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'uniwersam_a_new' (sq=7.611944e-06) (xyz=-13.708746, 8.232817, 2.179883)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airbase_airport_tbilisi_big' (sq=4.631429e-06) (xyz=-18.044575, 22.660065, -61.759819)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airbase_airport_tbilisi_big' (sq=7.271992e-07) (xyz=-16.787917, 22.810421, 57.034218)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new' (sq=0.000000e+00) (xyz=27.878689, 8.499997, -10.707115)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new' (sq=0.000000e+00) (xyz=19.292899, 8.499997, -2.121329)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new' (sq=0.000000e+00) (xyz=-19.292891, 8.499997, 27.878686)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new' (sq=0.000000e+00) (xyz=-27.878678, 8.499998, 19.292897)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new' (sq=0.000000e+00) (xyz=10.707110, 8.499997, -2.121327)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new' (sq=0.000000e+00) (xyz=2.121320, 8.499998, -10.707111)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new' (sq=4.628650e-06) (xyz=30.213438, 2.790612, -23.508533)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new' (sq=1.159289e-06) (xyz=30.210464, 2.790612, -7.105153)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'batumi_hangar_small' (sq=0.000000e+00) (xyz=-5.709213, -3.317785, -15.576451)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'batumi_kdp' (sq=6.750820e-07) (xyz=-7.613943, 7.277841, 1.481227)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'batumi_kdp' (sq=0.000000e+00) (xyz=5.116231, 12.707878, 6.124228)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'batumi_kdp' (sq=0.000000e+00) (xyz=3.992901, 12.597298, 5.965339)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'batumi_kdp' (sq=0.000000e+00) (xyz=5.106196, 12.599205, 5.237995)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'batumi_kdp' (sq=0.000000e+00) (xyz=4.763738, 12.598251, 5.082096)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'batumi_kdp' (sq=0.000000e+00) (xyz=5.448654, 12.636065, 5.393893)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'batumi_kdp' (sq=0.000000e+00) (xyz=5.106196, 12.707329, 5.237995)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'boat-1b' (sq=0.000000e+00) (xyz=0.255124, 1.405493, -0.452704)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'boat-1b' (sq=0.000000e+00) (xyz=0.974799, 1.266999, -0.942004)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, -17.744604)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, -13.916192)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, -10.996424)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, -7.403983)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, -4.349680)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, -0.757238)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, 2.297066)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, 5.889507)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, 8.943810)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, 12.267182)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-7.493908, 0.141645, 15.725090)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=6.130935e-07) (xyz=7.500020, 0.141645, 17.744607)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=7.500020, 0.141645, 14.185260)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=7.500020, 0.141645, 10.592819)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=7.500020, 0.141645, 7.673052)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=7.500020, 0.141645, 4.080610)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=7.500020, 0.141645, 1.026307)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=7.500020, 0.141645, -2.566135)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=7.500020, 0.141645, -5.620438)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=7.500020, 0.141645, -9.212879)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=7.500020, 0.141645, -12.267183)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=7.500020, 0.141645, -15.590555)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=5.306941, 0.141645, -20.000093)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=2.312498, 0.141645, -20.000093)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=4.035587, 0.141645, -20.000093)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-3.537906, 0.141645, -20.000093)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=-3.537905, 0.141645, 20.000097)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=2.312498, 0.141645, 20.000097)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=5.306941, 0.141645, 20.000097)
+2026-04-14 20:16:23.368 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'f_home3_c' (sq=0.000000e+00) (xyz=4.035587, 0.141645, 20.000097)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'mig19-monument' (sq=0.000000e+00) (xyz=-3.773873, 6.767669, 4.694133)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'mig19-monument' (sq=0.000000e+00) (xyz=3.770340, 6.918002, 4.826016)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'mig19-monument' (sq=0.000000e+00) (xyz=-3.762786, 6.918003, 4.826016)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'mig19-monument' (sq=0.000000e+00) (xyz=3.774230, 6.767668, 4.694133)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'par_anten7_l' (sq=0.000000e+00) (xyz=-5.738346, 0.000000, 5.770747)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'par_anten7_l' (sq=0.000000e+00) (xyz=-5.762677, 0.000000, 5.746404)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'par_anten7_l' (sq=0.000000e+00) (xyz=-5.770747, 3.973969, -5.738346)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'par_anten7_l' (sq=0.000000e+00) (xyz=-5.746404, 3.973965, -5.762677)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'par_anten7_l' (sq=0.000000e+00) (xyz=5.738346, 3.973969, -5.770747)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'par_anten7_l' (sq=0.000000e+00) (xyz=5.762677, 3.973965, -5.746404)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'par_anten7_l' (sq=0.000000e+00) (xyz=5.770746, 0.000000, 5.738347)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'par_anten7_l' (sq=0.000000e+00) (xyz=5.746404, 0.000000, 5.762678)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_b' (sq=0.000000e+00) (xyz=1.865910, 1.700000, 75.496307)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_b' (sq=0.000000e+00) (xyz=-1.865910, 1.700000, -69.911713)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_c' (sq=0.000000e+00) (xyz=-7.951810, 1.270918, -14.678645)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_c' (sq=0.000000e+00) (xyz=-7.951810, 1.270918, 14.443448)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_c' (sq=0.000000e+00) (xyz=-7.951810, 1.270918, 14.678294)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_c' (sq=0.000000e+00) (xyz=-8.951809, 1.270920, -14.488286)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_c' (sq=0.000000e+00) (xyz=-8.951808, 0.847280, -14.488286)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_c' (sq=0.000000e+00) (xyz=7.951810, 1.270918, -14.678645)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_c' (sq=0.000000e+00) (xyz=7.951810, 1.270918, 14.443448)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_c' (sq=0.000000e+00) (xyz=7.951810, 1.270918, 14.678294)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_c' (sq=0.000000e+00) (xyz=8.951809, 1.270920, -14.488286)
+2026-04-14 20:16:23.369 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'vok_sim_c' (sq=0.000000e+00) (xyz=8.951808, 0.847280, -14.488286)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new_crash' (sq=2.384189e-06) (xyz=30.212013, 2.740270, -22.774262)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new_crash' (sq=2.883288e-06) (xyz=30.212016, 2.582145, -22.184131)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new_crash' (sq=2.402740e-06) (xyz=28.378682, 2.582145, -22.184131)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new_crash' (sq=7.996792e-07) (xyz=-7.249265, 2.898390, 30.212026)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new_crash' (sq=3.576276e-07) (xyz=-7.839395, 2.740265, 30.212027)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new_crash' (sq=1.239114e-05) (xyz=-114.791499, 7.363461, 11.845170)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'airport_babushara_new_crash' (sq=5.092136e-06) (xyz=-113.316063, 6.840351, 11.371226)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'batumi_kdp_crash' (sq=7.630534e-07) (xyz=-2.281200, 14.310538, 6.860374)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'batumi_kdp_crash' (sq=7.630536e-07) (xyz=-2.797938, 14.310538, 5.968825)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'garage_a_crash' (sq=0.000000e+00) (xyz=-10.061975, 1.696121, -15.715268)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'garage_a_crash' (sq=0.000000e+00) (xyz=-9.222221, 2.484941, -15.648526)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'garage_a_crash' (sq=0.000000e+00) (xyz=-12.248419, 1.057744, 14.183513)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'garage_a_crash' (sq=0.000000e+00) (xyz=-13.119382, 1.756869, 13.892777)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'gradir_crush' (sq=0.000000e+00) (xyz=-10.382706, 13.076068, -5.998585)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'gradir_crush' (sq=0.000000e+00) (xyz=3.550477, 25.719932, 9.735236)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'gradir_crush' (sq=1.795513e-06) (xyz=-8.965139, 26.624737, 5.179361)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'gradir_crush' (sq=1.802424e-06) (xyz=8.979416, 26.624737, 5.179365)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'gradir_crush' (sq=0.000000e+00) (xyz=3.206941, 28.739100, 8.791380)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'gradir_crush' (sq=0.000000e+00) (xyz=-3.870823, 25.140288, -5.869917)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'home16_twin_crush' (sq=3.881179e-07) (xyz=2.281361, 0.823538, 12.809234)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'home16_twin_crush' (sq=0.000000e+00) (xyz=20.060312, 0.823538, -20.635106)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'home16_twin_crush' (sq=3.849332e-07) (xyz=2.265471, 0.874712, 21.440470)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'home16_twin_crush' (sq=0.000000e+00) (xyz=20.044423, 0.874712, -10.159812)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'home1ug_crush' (sq=1.507641e-07) (xyz=-0.458285, 0.697940, -8.122790)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'home1ug_crush' (sq=8.944863e-08) (xyz=1.958412, 0.732230, -7.868588)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'home1ugr_crush' (sq=1.507641e-07) (xyz=7.777606, 0.697940, -0.359557)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'home1ugr_crush' (sq=8.944863e-08) (xyz=7.523404, 0.732230, 2.057140)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'home52_st_crash' (sq=2.363315e-07) (xyz=9.902370, 4.265686, -39.480270)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'lokator_crash' (sq=1.355111e-05) (xyz=12.294858, 2.045360, 9.936700)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'lokator_crash' (sq=1.484206e-05) (xyz=12.346491, 1.373256, 10.040321)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'most(road)small-crush' (sq=0.000000e+00) (xyz=0.755923, -3.529291, -9.486899)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'most(road)small-crush' (sq=0.000000e+00) (xyz=0.297044, -4.790061, -8.136270)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'polyklinika_a_crush' (sq=0.000000e+00) (xyz=-2.181127, 0.062917, -12.834483)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'polyklinika_a_crush' (sq=0.000000e+00) (xyz=-8.694631, 0.302820, -14.073813)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'restoran1_crash' (sq=3.014118e-07) (xyz=-10.378951, 6.352591, -14.858738)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'restoran1_crash' (sq=0.000000e+00) (xyz=-10.479951, 7.269756, -14.858739)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'restoran1_crash' (sq=4.029761e-06) (xyz=-10.311618, 7.269756, -11.257864)
+2026-04-14 20:16:23.384 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 's1_crash' (sq=1.606771e-07) (xyz=0.423504, 0.662391, 1.372451)
+2026-04-14 20:16:23.391 WARNING LOG (14504): 1 duplicate message(s) skipped.
+2026-04-14 20:16:23.391 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'tuapse_building2_crash' (sq=0.000000e+00) (xyz=-8.883338, 1.650052, 1.762125)
+2026-04-14 20:16:23.391 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'tuapse_building2_crash' (sq=0.000000e+00) (xyz=-8.883338, 1.650035, -1.370581)
+2026-04-14 20:16:23.393 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'gaz_66_new' (sq=5.531112e-09) (xyz=-2.848471, 0.764464, 0.658997)
+2026-04-14 20:16:23.393 WARNING EDTERRAIN4 (Main): Removed degenerate triangle in collision 'gaz_66_new' (sq=5.531110e-09) (xyz=-3.048830, 0.764464, 0.658997)
+2026-04-14 20:16:23.412 INFO    EDCORE (Main): 0.069 s  terrain references
+2026-04-14 20:16:23.414 INFO    EDCORE (Main): 0.000 s  terrain models
+2026-04-14 20:16:23.414 INFO    EDCORE (Main): 0.000 s  terrain assets
+2026-04-14 20:16:23.500 INFO    EDCORE (Main): 0.075 s  terrain assets2
+2026-04-14 20:16:23.659 INFO    EDCORE (Main): 0.158 s  terrain landfile
+2026-04-14 20:16:23.666 INFO    EDCORE (Main): 0.003 s  terrain surfaceTile
+2026-04-14 20:16:23.667 INFO    EDTERRAIN4 (Main): switchTextures (season=1, minTexture=false)
+2026-04-14 20:16:23.800 INFO    EDCORE (Main): 0.134 s  terrain vfstextures
+2026-04-14 20:16:23.848 INFO    EDCORE (Main): 0.047 s  terrain scene
+2026-04-14 20:16:23.849 INFO    EDCORE (Main): 0.000 s  terrain roaddetails
+2026-04-14 20:16:23.850 INFO    EDCORE (Main): 0.000 s  terrain forest
+2026-04-14 20:16:24.882 INFO    EDCORE (Main): 1.030 s  terrain routes
+2026-04-14 20:16:24.884 INFO    EDCORE (Main): 0.000 s  terrain surfacedetails
+2026-04-14 20:16:24.884 INFO    EDCORE (Main): 0.000 s  terrain blocks
+2026-04-14 20:16:24.893 INFO    EDCORE (Main): 0.000 s  terrain references
+2026-04-14 20:16:25.036 INFO    EDCORE (Main): 0.149 s  terrain superficials
+2026-04-14 20:16:25.043 INFO    EDCORE (Main): 0.005 s  terrain lma
+2026-04-14 20:16:25.043 INFO    EDCORE (Main): 0.000 s  terrain vectordatasettings
+2026-04-14 20:16:25.686 INFO    EDCORE (Main): 0.639 s  terrain navgraph
+2026-04-14 20:16:25.691 INFO    EDCORE (Main): 0.004 s  terrain vti
+2026-04-14 20:16:25.942 INFO    EDTERRAIN4 (Main): terrain time: 2.599974 s
+2026-04-14 20:16:25.951 INFO    TERRAIN (Main): lSystem::InitScenes()
+2026-04-14 20:16:25.953 INFO    EDTERRAIN4 (Main): ITerrainContextImpl4::setTrafficDecimation(0)
+2026-04-14 20:16:25.954 INFO    EDTERRAIN4 (Main): ITerrainContextImpl4::setDate( day=5, month=4)
+2026-04-14 20:16:25.954 INFO    EDTERRAIN4 (Main): lTerraDispatchImpl::setDate( day=5, month=4)
+2026-04-14 20:16:25.954 INFO    EDTERRAIN4 (Main): switch to season = spring
+2026-04-14 20:16:25.954 INFO    EDTERRAIN4 (Main): switchTextures (season=0, minTexture=false)
+2026-04-14 20:16:25.958 INFO    EDTERRAIN4 (27392): ITerrainContextImpl4::setTrafficDecimation(0)
+2026-04-14 20:16:25.994 WARNING LOG (14504): 3 duplicate message(s) skipped.
+2026-04-14 20:16:25.994 INFO    EDTERRAIN4 (27620): ITerrainContextImpl4::setDate( day=5, month=4)
+2026-04-14 20:16:25.995 WARNING LOG (14504): 3 duplicate message(s) skipped.
+2026-04-14 20:16:25.995 INFO    EDTERRAIN4 (Main): ITerrainContextImpl4::setTextureMode(full=1)
+2026-04-14 20:16:26.102 WARNING LOG (14504): 4 duplicate message(s) skipped.
+2026-04-14 20:16:26.102 INFO    DX11BACKEND (3748): Reloading textures ...
+2026-04-14 20:16:26.110 INFO    Dispatcher (Main): load terrain done
+2026-04-14 20:16:26.111 INFO    LUA-TERRAIN (Main): Init done
+2026-04-14 20:16:26.111 INFO    INTER (Main): ITerrainGraphicsEntryPoint::close()
+2026-04-14 20:16:26.111 INFO    INTER (Main): ITerrainGraphicsEntryPoint::createTerrainGraphics()
+2026-04-14 20:16:26.129 INFO    INTER (3748): ITerrainGraphicsEntryPoint: call CreateITerrainGraphics()
+2026-04-14 20:16:26.133 INFO    EDTERRAINGRAPHICS41 (3748): ITerrainGraphicsImpl4::openTerrain() START
+2026-04-14 20:16:26.134 INFO    EDTERRAINGRAPHICS41 (3748): loading terrain options: Config/terrain/terrainoptions41.lua
+2026-04-14 20:16:26.136 INFO    EDTERRAINGRAPHICS41 (3748): loading terrain shading options: ./Mods/terrains/Caucasus/shadingOptions/Caucasus.lua
+2026-04-14 20:16:26.142 INFO    METASHADER (3748): MetaShaderCache2: [82] from ./Mods/terrains/Caucasus/misc/metacache/base.lua
+2026-04-14 20:16:26.258 INFO    METASHADER (3748): loaded [82/82]
+2026-04-14 20:16:26.271 WARNING EDTERRAINGRAPHICS41 (3748): failed to open "surfaceDetailsHints" section in terrain config
+2026-04-14 20:16:26.275 ERROR_ONCE DX11BACKEND (2012): texture 'lightPalette.tif' not found. Asked from ''
+2026-04-14 20:16:27.105 INFO    EDCORE (3748): 0.820 s  Precompile metashaders
+2026-04-14 20:16:27.107 INFO    EDTERRAINGRAPHICS41 (3748): 0.000578s Loaded reference file "caucasus" buffers: 0
+2026-04-14 20:16:27.107 INFO    EDCORE (3748): 0.001 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.111 INFO    EDTERRAINGRAPHICS41 (3748): 0.000812s Loaded reference file "airfieldslights" buffers: 7
+2026-04-14 20:16:27.111 INFO    EDCORE (3748): 0.001 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.115 INFO    EDTERRAINGRAPHICS41 (3748): 0.000583s Loaded reference file "blockbuildings" buffers: 9
+2026-04-14 20:16:27.115 INFO    EDCORE (3748): 0.001 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.120 INFO    EDTERRAINGRAPHICS41 (3748): 0.001586s Loaded reference file "blocktrees" buffers: 0
+2026-04-14 20:16:27.120 INFO    EDCORE (3748): 0.002 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.126 INFO    EDTERRAINGRAPHICS41 (3748): 0.003462s Loaded reference file "caucasusafbbuildings_new" buffers: 30
+2026-04-14 20:16:27.126 INFO    EDCORE (3748): 0.003 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.126 INFO    EDTERRAINGRAPHICS41 (3748): 0.000111s Loaded reference file "caucasusbridges" buffers: 11
+2026-04-14 20:16:27.126 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.136 INFO    EDTERRAINGRAPHICS41 (3748): 0.005460s Loaded reference file "caucasusobjects" buffers: 0
+2026-04-14 20:16:27.136 INFO    EDCORE (3748): 0.005 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.137 INFO    EDTERRAINGRAPHICS41 (3748): 0.000760s Loaded reference file "communication" buffers: 7
+2026-04-14 20:16:27.137 INFO    EDCORE (3748): 0.001 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.141 INFO    EDTERRAINGRAPHICS41 (3748): 0.000026s Loaded reference file "crashmodels" buffers: 3
+2026-04-14 20:16:27.141 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.145 INFO    EDTERRAINGRAPHICS41 (3748): 0.000898s Loaded reference file "crashmodelsfromedm" buffers: 22
+2026-04-14 20:16:27.145 INFO    EDCORE (3748): 0.001 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.149 INFO    EDTERRAINGRAPHICS41 (3748): 0.000088s Loaded reference file "housedetails" buffers: 9
+2026-04-14 20:16:27.149 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.153 INFO    EDTERRAINGRAPHICS41 (3748): 0.000093s Loaded reference file "industrial" buffers: 8
+2026-04-14 20:16:27.153 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.157 INFO    EDTERRAINGRAPHICS41 (3748): materialParams[1]*1536
+2026-04-14 20:16:27.159 INFO    EDTERRAINGRAPHICS41 (3748): 0.002015s Loaded reference file "misc" buffers: 3
+2026-04-14 20:16:27.159 INFO    EDCORE (3748): 0.002 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.161 INFO    EDTERRAINGRAPHICS41 (3748): 0.000094s Loaded reference file "oilplatforms" buffers: 7
+2026-04-14 20:16:27.161 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.165 INFO    EDTERRAINGRAPHICS41 (3748): 0.000123s Loaded reference file "tuapserefinery" buffers: 6
+2026-04-14 20:16:27.165 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.169 INFO    EDTERRAINGRAPHICS41 (3748): 0.000106s Loaded reference file "vehicles" buffers: 12
+2026-04-14 20:16:27.169 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.173 INFO    EDTERRAINGRAPHICS41 (3748): 0.000051s Loaded reference file "vessels" buffers: 7
+2026-04-14 20:16:27.173 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.177 INFO    EDTERRAINGRAPHICS41 (3748): 0.000022s Loaded reference file "walls" buffers: 2
+2026-04-14 20:16:27.177 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.182 INFO    EDTERRAINGRAPHICS41 (3748): 0.001122s Loaded reference file "americanbeech" buffers: 0
+2026-04-14 20:16:27.182 INFO    EDCORE (3748): 0.001 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.185 INFO    EDTERRAINGRAPHICS41 (3748): 0.000042s Loaded reference file "caucasus_fir" buffers: 0
+2026-04-14 20:16:27.185 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.189 INFO    EDTERRAINGRAPHICS41 (3748): 0.000043s Loaded reference file "cypress_oak" buffers: 0
+2026-04-14 20:16:27.189 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.193 INFO    EDTERRAINGRAPHICS41 (3748): 0.000038s Loaded reference file "european_beech" buffers: 0
+2026-04-14 20:16:27.193 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.197 INFO    EDTERRAINGRAPHICS41 (3748): 0.000039s Loaded reference file "green_ash" buffers: 0
+2026-04-14 20:16:27.197 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.201 INFO    EDTERRAINGRAPHICS41 (3748): 0.000039s Loaded reference file "honey_mesquite" buffers: 0
+2026-04-14 20:16:27.201 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.205 INFO    EDTERRAINGRAPHICS41 (3748): 0.000046s Loaded reference file "italiancypress" buffers: 0
+2026-04-14 20:16:27.205 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.209 INFO    EDTERRAINGRAPHICS41 (3748): 0.000042s Loaded reference file "lombardypoplar" buffers: 0
+2026-04-14 20:16:27.209 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.213 INFO    EDTERRAINGRAPHICS41 (3748): 0.000039s Loaded reference file "mountain_maple" buffers: 0
+2026-04-14 20:16:27.213 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.217 INFO    EDTERRAINGRAPHICS41 (3748): 0.000039s Loaded reference file "norwayspruce" buffers: 0
+2026-04-14 20:16:27.217 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.221 INFO    EDTERRAINGRAPHICS41 (3748): 0.000029s Loaded reference file "shrub" buffers: 0
+2026-04-14 20:16:27.221 INFO    EDCORE (3748): 0.000 s  landscape4::lReferenceFile
+2026-04-14 20:16:27.221 INFO    EDTERRAINGRAPHICS41 (3748): InstanceManager2 is completing initialization... 
+2026-04-14 20:16:27.225 INFO    EDTERRAINGRAPHICS41 (3748): InstanceManager2 complete initialization: 
+2026-04-14 20:16:27.225 INFO    EDTERRAINGRAPHICS41 (3748):   objects:    1338
+2026-04-14 20:16:27.225 INFO    EDTERRAINGRAPHICS41 (3748):   subObjects: 1090
+2026-04-14 20:16:27.225 INFO    EDTERRAINGRAPHICS41 (3748):   objectLods: 5786
+2026-04-14 20:16:27.225 INFO    EDTERRAINGRAPHICS41 (3748):   objectLodRenderItems: 353
+2026-04-14 20:16:27.225 INFO    EDTERRAINGRAPHICS41 (3748):   MAX_LODS_IN_OBJECT:       10
+2026-04-14 20:16:27.225 INFO    EDTERRAINGRAPHICS41 (3748):   MAX_SUBOBJECTS_IN_OBJECT: 74
+2026-04-14 20:16:27.225 INFO    EDTERRAINGRAPHICS41 (3748):   GEOMETRY BUFFERS: 143
+2026-04-14 20:16:27.229 INFO    EDCORE (3748): 0.000 s  landscape5::OceanFile
+2026-04-14 20:16:27.283 INFO    EDCORE (3748): 0.050 s  landscape5::GrassFile
+2026-04-14 20:16:27.284 INFO    EDCORE (3748): 0.000 s  landscape5::lModels5File
+2026-04-14 20:16:27.357 WARNING LOG (14504): 16 duplicate message(s) skipped.
+2026-04-14 20:16:27.357 INFO    EDTERRAINGRAPHICS41 (3748): remapper.deformers is not empty
+2026-04-14 20:16:27.525 INFO    EDTERRAINGRAPHICS41 (3748): materialParams[37382]*1536
+2026-04-14 20:16:27.530 INFO    EDCORE (3748): 0.178 s  landscape5::Surface5File
+2026-04-14 20:16:27.535 INFO    EDTERRAINGRAPHICS41 (3748): materialParams[1040]*1536
+2026-04-14 20:16:27.535 INFO    EDCORE (3748): 0.003 s  landscape5::SurfaceTile
+2026-04-14 20:16:27.541 INFO    EDCORE (3748): 0.004 s  landscape5::Scene5File
+2026-04-14 20:16:27.544 INFO    EDCORE (3748): 0.001 s  landscape4::lRoutesFile
+2026-04-14 20:16:27.547 INFO    EDCORE (3748): 0.000 s  landscape4::lSurfaceDetails2File
+2026-04-14 20:16:27.551 INFO    EDTERRAINGRAPHICS41 (3748): materialParams[1]*1536
+2026-04-14 20:16:27.551 INFO    EDCORE (3748): 0.001 s  landscape4::lSuperficialFile
+2026-04-14 20:16:27.555 INFO    EDCORE (3748): Loaded F:/Eagle Dynamics/DCS World/bin/dxgui_edge_render.dll
+2026-04-14 20:16:27.555 INFO    EDCORE (3748): 0.000 s  landscape4::lGeoNamesFile
+2026-04-14 20:16:27.559 INFO    EDCORE (3748): 0.001 s  landscape5::sup5File
+2026-04-14 20:16:27.563 INFO    EDCORE (3748): 0.000 s  landscape5::sup5File
+2026-04-14 20:16:27.566 INFO    EDCORE (3748): 0.000 s  landscape5::navGraph5File
+2026-04-14 20:16:27.567 INFO    EDTERRAINGRAPHICS41 (3748): ITerrainGraphicsImpl4::openTerrain() END 1.433008 s
+2026-04-14 20:16:27.926 INFO    Dispatcher (Main): loadMission C:\Users\fmang\AppData\Local\Temp\DCS\tempMission.miz
+2026-04-14 20:16:27.926 INFO    WORLDGENERAL (Main): loading mission from: "C:\Users\fmang\AppData\Local\Temp\DCS\tempMission.miz"
+2026-04-14 20:16:28.074 INFO    APP (Main): use_xRay: yes
+2026-04-14 20:16:28.074 INFO    APP (Main): netfm_enable_coeff_switching: yes
+2026-04-14 20:16:28.077 INFO    Dispatcher (Main): Terrain theatre Caucasus
+2026-04-14 20:16:28.087 INFO    EDCORE (Main): (dDispatcher)enterToState_:4
+2026-04-14 20:16:28.087 INFO    Dispatcher (Main): Start
+2026-04-14 20:16:28.097 INFO    OpenKneeboard (Main): onMissionLoadBegin: tempMission
+2026-04-14 20:16:28.097 INFO    OpenKneeboard (Main): Mission: F:\Eagle Dynamics\DCS World\Mods\aircraft\C130J\Missions\quickStart/C-130J - Caucasus - Ready on the Ramp at Senaki.miz
+2026-04-14 20:16:28.097 INFO    OpenKneeboard (Main): Terrain: Caucasus
+2026-04-14 20:16:28.112 INFO    Dispatcher (Main): Terrain theatre Caucasus
+2026-04-14 20:16:28.113 INFO    Dispatcher (Main): load terrain from ./Mods/terrains/Caucasus\terrain.cfg.lua
+2026-04-14 20:16:28.126 INFO    SECURITYCONTROL (Main): Loaded ./Mods/terrains/Caucasus\terrain.cfg.lua.pak.crypt
+2026-04-14 20:16:28.126 INFO    TERRAIN (Main): lSystem::load(./Mods/terrains/Caucasus\terrain.cfg.lua)
+2026-04-14 20:16:28.126 INFO    TERRAIN (Main): lSystem::openSession(./Mods/terrains/Caucasus\terrain.cfg.lua)
+2026-04-14 20:16:28.126 INFO    WORLDGENERAL (Main): TerrainUtility:: updated in parallel: 0, updated in the main thread: 0
+2026-04-14 20:16:28.161 INFO    EDCORE (Main): 0.000 s  terrain references
+2026-04-14 20:16:28.172 INFO    EDCORE (Main): 0.000 s  terrain models
+2026-04-14 20:16:28.183 INFO    EDCORE (Main): 0.000 s  terrain assets
+2026-04-14 20:16:28.194 INFO    EDCORE (Main): 0.000 s  terrain assets2
+2026-04-14 20:16:28.202 INFO    EDCORE (Main): 0.000 s  terrain landfile
+2026-04-14 20:16:28.213 INFO    EDCORE (Main): 0.000 s  terrain surfaceTile
+2026-04-14 20:16:28.226 INFO    EDCORE (Main): 0.000 s  terrain vfstextures
+2026-04-14 20:16:28.237 INFO    EDCORE (Main): 0.000 s  terrain scene
+2026-04-14 20:16:28.248 INFO    EDCORE (Main): 0.000 s  terrain roaddetails
+2026-04-14 20:16:28.259 INFO    EDCORE (Main): 0.000 s  terrain forest
+2026-04-14 20:16:28.271 INFO    EDCORE (Main): 0.000 s  terrain routes
+2026-04-14 20:16:28.282 INFO    EDCORE (Main): 0.000 s  terrain surfacedetails
+2026-04-14 20:16:28.294 INFO    EDCORE (Main): 0.000 s  terrain blocks
+2026-04-14 20:16:28.305 INFO    EDCORE (Main): 0.000 s  terrain superficials
+2026-04-14 20:16:28.316 INFO    EDCORE (Main): 0.000 s  terrain lma
+2026-04-14 20:16:28.327 INFO    EDCORE (Main): 0.000 s  terrain vectordatasettings
+2026-04-14 20:16:28.338 INFO    EDCORE (Main): 0.000 s  terrain navgraph
+2026-04-14 20:16:28.349 INFO    EDCORE (Main): 0.000 s  terrain vti
+2026-04-14 20:16:28.349 INFO    EDTERRAIN4 (Main): terrain time: 0.189820 s
+2026-04-14 20:16:28.354 INFO    TERRAIN (Main): lSystem::InitScenes()
+2026-04-14 20:16:28.362 INFO    EDTERRAIN4 (Main): ITerrainContextImpl4::setTrafficDecimation(0)
+2026-04-14 20:16:28.363 INFO    EDTERRAIN4 (Main): ITerrainContextImpl4::setDate( day=5, month=4)
+2026-04-14 20:16:28.363 INFO    EDTERRAIN4 (Main): ITerrainContextImpl4::setTextureMode(full=1)
+2026-04-14 20:16:28.364 INFO    Dispatcher (Main): load terrain done
+2026-04-14 20:16:28.368 INFO    EDTERRAIN4 (18736): ITerrainContextImpl4::setTrafficDecimation(0)
+2026-04-14 20:16:28.368 INFO    EDTERRAIN4 (18736): ITerrainContextImpl4::setDate( day=5, month=4)
+2026-04-14 20:16:28.368 INFO    EDTERRAIN4 (18736): ITerrainContextImpl4::setTextureMode(full=1)
+2026-04-14 20:16:28.373 INFO    WEATHER (Main): set fog: visibility:1  thickness:300.0
+2026-04-14 20:16:28.373 WARNING GRAPHICSCORE (Main): already registered Renderer callback
+2026-04-14 20:16:28.373 INFO    WEATHER (Main): set fog: visibility:100000  thickness:0.0
+2026-04-14 20:16:28.373 INFO    EDTERRAIN4 (19800): ITerrainContextImpl4::setTrafficDecimation(0)
+2026-04-14 20:16:28.373 INFO    EDTERRAIN4 (19800): ITerrainContextImpl4::setDate( day=5, month=4)
+2026-04-14 20:16:28.373 INFO    EDTERRAIN4 (19800): ITerrainContextImpl4::setTextureMode(full=1)
+2026-04-14 20:16:28.379 INFO    EDTERRAIN4 (25884): ITerrainContextImpl4::setTrafficDecimation(0)
+2026-04-14 20:16:28.379 INFO    EDTERRAIN4 (25884): ITerrainContextImpl4::setDate( day=5, month=4)
+2026-04-14 20:16:28.379 INFO    EDTERRAIN4 (25884): ITerrainContextImpl4::setTextureMode(full=1)
+2026-04-14 20:16:28.385 INFO    EDTERRAIN4 (19616): ITerrainContextImpl4::setTrafficDecimation(0)
+2026-04-14 20:16:28.385 INFO    EDTERRAIN4 (19616): ITerrainContextImpl4::setDate( day=5, month=4)
+2026-04-14 20:16:28.385 INFO    EDTERRAIN4 (19616): ITerrainContextImpl4::setTextureMode(full=1)
+2026-04-14 20:16:28.386 WARNING SCENE (Main): Scene was removed with 5 alive objects
+2026-04-14 20:16:28.388 INFO    VISUALIZER (Main): DCSScene initialized
+2026-04-14 20:16:28.392 ERROR   ASYNCNET (16912): HTTP request NORESULT failed with error 60: SSL peer certificate or SSH remote key was not OK
+2026-04-14 20:16:28.420 ERROR   DX11BACKEND (3748): Unknown DLSS preset 'M', use default preset 'C'
+2026-04-14 20:16:28.420 INFO    DX11BACKEND (3748): Use DLSS preset 'C'
+2026-04-14 20:16:28.439 INFO    DX11BACKEND (3748): DLSS successfully initialized, 744x448 -> 1280x768
+2026-04-14 20:16:28.463 INFO    VISUALIZER (3748): DCSSceneRenderer initialized
+2026-04-14 20:16:28.752 INFO    Dispatcher (Main): initial random seed = 7788728
+2026-04-14 20:16:28.752 INFO    Dispatcher (Main): apply random seed = 7788728
+2026-04-14 20:16:29.448 INFO    WORLDGENERAL (Main): loaded from mission Scripts/World/GPS_GNSS.lua
+2026-04-14 20:16:30.411 INFO    WORLDGENERAL (Main): loaded from mission Config/View/SnapViewsDefault.lua
+2026-04-14 20:16:30.412 INFO    WORLDGENERAL (Main): loaded from mission Config/View/View.lua
+2026-04-14 20:16:30.413 INFO    WORLDGENERAL (Main): loaded from mission Config/View/Server.lua
+2026-04-14 20:16:31.443 WARNING FLIGHT (Main): No taxiroad found on Batumi from 2 to 1
+2026-04-14 20:16:31.443 WARNING FLIGHT (Main): No taxiroad found on Batumi from 3 to 1
+2026-04-14 20:16:31.443 WARNING FLIGHT (Main): No taxiroad found on Batumi from 4 to 1
+2026-04-14 20:16:31.443 WARNING FLIGHT (Main): No taxiroad found on Batumi from 5 to 1
+2026-04-14 20:16:31.443 WARNING FLIGHT (Main): No taxiroad found on Batumi from 6 to 1
+2026-04-14 20:16:31.444 WARNING FLIGHT (Main): No taxiroad found on Batumi from 7 to 1
+2026-04-14 20:16:31.444 WARNING FLIGHT (Main): No taxiroad found on Batumi from 8 to 1
+2026-04-14 20:16:31.444 WARNING FLIGHT (Main): No taxiroad found on Batumi from 9 to 1
+2026-04-14 20:16:31.444 WARNING FLIGHT (Main): No taxiroad found on Batumi from 10 to 1
+2026-04-14 20:16:31.444 WARNING FLIGHT (Main): No taxiroad found on Batumi from 11 to 1
+2026-04-14 20:16:31.636 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 1 to 16
+2026-04-14 20:16:31.636 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 2 to 16
+2026-04-14 20:16:31.636 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 3 to 16
+2026-04-14 20:16:31.636 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 4 to 16
+2026-04-14 20:16:31.636 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 5 to 16
+2026-04-14 20:16:31.636 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 6 to 16
+2026-04-14 20:16:31.637 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 7 to 16
+2026-04-14 20:16:31.637 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 8 to 16
+2026-04-14 20:16:31.639 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 9 to 16
+2026-04-14 20:16:31.639 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 10 to 16
+2026-04-14 20:16:31.639 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 11 to 16
+2026-04-14 20:16:31.640 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 12 to 16
+2026-04-14 20:16:31.640 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 13 to 16
+2026-04-14 20:16:31.640 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 14 to 16
+2026-04-14 20:16:31.640 WARNING FLIGHT (Main): No taxiroad found on Nalchik from 15 to 16
+2026-04-14 20:16:31.742 WARNING FLIGHT (Main): No taxiroad found on Tbilisi-Lochini from 62 to 74
+2026-04-14 20:16:31.742 WARNING FLIGHT (Main): No taxiroad found on Tbilisi-Lochini from 63 to 74
+2026-04-14 20:16:31.742 WARNING FLIGHT (Main): No taxiroad found on Tbilisi-Lochini from 64 to 74
+2026-04-14 20:16:31.742 WARNING FLIGHT (Main): No taxiroad found on Tbilisi-Lochini from 65 to 74
+2026-04-14 20:16:32.168 ERROR   ED_SOUND (24504): can't load wave: "effects/ambient/field_night1.ogg"
+2026-04-14 20:16:32.168 ERROR   ED_SOUND (24504): can't load wave: "effects/ambient/field_night2.ogg"
+2026-04-14 20:16:34.914 INFO    APP (Main): MissionSpawn:initScript
+2026-04-14 20:16:34.914 INFO    APP (Main): MissionSpawn:spawnCoalition neutrals
+2026-04-14 20:16:34.914 INFO    APP (Main): MissionSpawn:spawnCoalition red
+2026-04-14 20:16:34.914 INFO    APP (Main): MissionSpawn:spawnCoalition blue
+2026-04-14 20:16:34.914 INFO    APP (Main): MissionSpawn:spawnPlanes 2
+2026-04-14 20:16:34.915 INFO    APP (Main): MissionSpawn:spawnLocalPlayer 1,C-130J-30
+2026-04-14 20:16:34.929 INFO    C130J (Main): Initializing flight model...
+2026-04-14 20:16:34.929 INFO    C130J (Main): FM Init Complete
+2026-04-14 20:16:34.948 INFO    C130J (Main): Cfg path: ./Mods/aircraft/C130J
+2026-04-14 20:16:34.955 INFO    C130J (Main): Hot ground start init...
+2026-04-14 20:16:35.614 INFO    C130J (Main): Install Path: F
+2026-04-14 20:16:35.614 INFO    C130J (Main): RT Enabled
+2026-04-14 20:16:35.668 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver/transmitter "VHF1" with id - 0
+2026-04-14 20:16:35.668 INFO    COCKPITBASE (Main): WebRTC VOIP init: enabled VOIP capability for radio VHF1
+2026-04-14 20:16:35.674 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver/transmitter "UHF1" with id - 1
+2026-04-14 20:16:35.674 INFO    COCKPITBASE (Main): WebRTC VOIP init: enabled VOIP capability for radio UHF1
+2026-04-14 20:16:35.680 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver/transmitter "VHF2" with id - 2
+2026-04-14 20:16:35.680 INFO    COCKPITBASE (Main): WebRTC VOIP init: enabled VOIP capability for radio VHF2
+2026-04-14 20:16:35.688 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver/transmitter "UHF2" with id - 3
+2026-04-14 20:16:35.688 INFO    COCKPITBASE (Main): WebRTC VOIP init: enabled VOIP capability for radio UHF2
+2026-04-14 20:16:35.694 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver/transmitter "HF1" with id - 4
+2026-04-14 20:16:35.694 INFO    COCKPITBASE (Main): WebRTC VOIP init: enabled VOIP capability for radio HF1
+2026-04-14 20:16:35.704 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver/transmitter "HF2" with id - 5
+2026-04-14 20:16:35.704 INFO    COCKPITBASE (Main): WebRTC VOIP init: enabled VOIP capability for radio HF2
+2026-04-14 20:16:35.705 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver "Base ILS localizer receiver" with id - 6
+2026-04-14 20:16:35.705 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver "Base ILS localizer receiver" with id - 7
+2026-04-14 20:16:35.711 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver/transmitter "ADF1" with id - 8
+2026-04-14 20:16:35.712 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver/transmitter "ADF2" with id - 9
+2026-04-14 20:16:35.794 INFO    VISUALIZER (19064): ILV loaded  for /models/Cockpit_C130J_30.edm.ilv
+2026-04-14 20:16:35.796 INFO    ENLIGHT (19064): get cockpit shading params from /models/Cockpit_C130J_30.edm.lua
+2026-04-14 20:16:35.815 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver/transmitter "ARC_210" with id - 10
+2026-04-14 20:16:35.815 INFO    COCKPITBASE (Main): WebRTC VOIP init: enabled VOIP capability for radio ARC_210
+2026-04-14 20:16:35.819 ERROR   COCKPITBASE (Main): devices_keeper::link_all: unable to find link source 'offside_' for device 'ARC_210'
+2026-04-14 20:16:36.046 INFO    RENDERER (Main): Compile shader hdd
+2026-04-14 20:16:37.543 WARNING LOG (14504): 7 duplicate message(s) skipped.
+2026-04-14 20:16:37.543 INFO    EDCORE (3748): Loaded F:/Eagle Dynamics/DCS World/bin/edWebViewBrowser.dll
+2026-04-14 20:16:37.702 ERROR   EDCORE (3748): No suitable driver found to mount /node-v20.19.6-win-x64/node_modules/npm
+2026-04-14 20:16:37.830 INFO    C130J (CrBrowserMain): Web client created
+2026-04-14 20:16:37.898 ERROR_ONCE DX11BACKEND (23376): texture 'C-130J_prop_blades_flir' not found. Asked from ''
+2026-04-14 20:16:37.912 ERROR   EDCORE (Chrome_IOThread): Can't open file: /index.html.
+2026-04-14 20:16:37.969 INFO    C130J (CrBrowserMain): Page loaded 404
+2026-04-14 20:16:37.969 ERROR   EDCORE (CrBrowserMain): Can't unmount drivers. Reason: Can't found drivers with given id == 18446744073709551615
+2026-04-14 20:16:39.484 ERROR   EDCORE (Chrome_IOThread): Can't open file: /index.html.
+2026-04-14 20:16:39.511 INFO    C130J (CrBrowserMain): Page loaded 404
+2026-04-14 20:16:39.957 INFO    C130J (CrBrowserMain): Query {"req_type":"spawn_list","requests":[]} received with id 1 | Persist: No
+2026-04-14 20:16:39.957 INFO    C130J (CrBrowserMain): Query {"req_type":"unit_data","requests":[]} received with id 2 | Persist: Yes
+2026-04-14 20:16:39.961 INFO    C130J (CrBrowserMain): Page loaded 200
+2026-04-14 20:16:39.961 INFO    C130J (CrBrowserMain): App URL: https://cargomanager/
+2026-04-14 20:16:40.330 INFO    RENDERER (Main): Compile shader hdd
+2026-04-14 20:16:40.339 ERROR_ONCE DX11BACKEND (25516): texture 'mfd8' not found. Asked from ''
+2026-04-14 20:16:40.339 INFO    RENDERER (Main): Compile shader hdd
+2026-04-14 20:16:40.347 ERROR_ONCE DX11BACKEND (8852): texture 'mfd9' not found. Asked from ''
+2026-04-14 20:16:40.347 INFO    RENDERER (Main): Compile shader hdd
+2026-04-14 20:16:40.841 INFO    C130J (CrBrowserMain): Query {"req_type":"set_window_size","requests":[{"name":"resize","width":800,"height":1100,"zoom":0}]} received with id 3 | Persist: No
+2026-04-14 20:16:41.368 INFO    RENDERER (Main): Compile shader hdd
+2026-04-14 20:16:41.385 ERROR_ONCE DX11BACKEND (13720): texture 'mfd13' not found. Asked from ''
+2026-04-14 20:16:41.479 WARNING COCKPITBASE (Main): no livery for ns430 , mirrors and MFDs can be broken 
+2026-04-14 20:16:41.483 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver/transmitter "GNS430_Radio" with id - 11
+2026-04-14 20:16:42.185 ERROR_ONCE DX11BACKEND (22672): texture 'NS430_src' not found. Asked from ''
+2026-04-14 20:16:42.213 ERROR   ED_SOUND (Main): source_add(host:woLA-16777472, proto:Aircrafts/Engines/V2/eng_2/front_flight_hum, alt_proto:Aircrafts/Engines/eng_2/front_flight_hum): can't find proto
+2026-04-14 20:16:42.214 ERROR   ED_SOUND (Main): source_add(host:woLA-16777472, proto:Aircrafts/Engines/V2/eng_3/front_flight_hum, alt_proto:Aircrafts/Engines/eng_3/front_flight_hum): can't find proto
+2026-04-14 20:16:42.219 INFO    C130J (Main): Eng 1 arg: 1.00
+2026-04-14 20:16:42.223 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver "Base TACAN receiver" with id - 12
+2026-04-14 20:16:42.223 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver "Base TACAN receiver" with id - 13
+2026-04-14 20:16:42.223 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver "Base VOR receiver" with id - 14
+2026-04-14 20:16:42.223 INFO    COCKPITBASE (Main): WebRTC VOIP init: registered radio receiver "Base VOR receiver" with id - 15
+2026-04-14 20:16:42.246 INFO    C130J (Main): Transition rejected
+2026-04-14 20:16:42.269 ERROR   ED_SOUND (Main): invalid host_params(HEADPHONES): gain
+2026-04-14 20:16:42.301 INFO    COCKPITBASE (Main): lua state still active ARC_210, 92
+2026-04-14 20:16:42.301 INFO    C130J (Main): Transition rejected
+2026-04-14 20:16:42.337 INFO    COCKPITBASE (Main): lua state still active GNS430, 1 (status undefined)
+2026-04-14 20:16:42.337 INFO    COCKPITBASE (Main): lua state still active GNS430_Radio, 3
+2026-04-14 20:16:43.198 INFO    C130J (CrBrowserMain): Query {"req_type":"set_window_size","requests":[{"name":"resize","width":800,"height":1100,"zoom":0}]} received with id 4 | Persist: No
+2026-04-14 20:16:43.435 INFO    C130J (CrBrowserMain): Query {"req_type":"set_window_size","requests":[{"name":"resize","width":800,"height":1100,"zoom":0}]} received with id 5 | Persist: No
+2026-04-14 20:16:43.606 INFO    JSAVIONICS (Main): loaded 129562 nav aids
+2026-04-14 20:16:44.655 INFO    JSAVIONICS (Main): loaded 146684 cities
+2026-04-14 20:16:44.682 ERROR   ED_SOUND (Main): source_add(host:COCKPIT_MAIN, proto:Aircrafts/C-130J-30/, alt_proto:Aircrafts//): can't find proto
+2026-04-14 20:16:44.683 WARNING LOG (14504): 1 duplicate message(s) skipped.
+2026-04-14 20:16:44.683 ERROR   ED_SOUND (Main): source_add(host:COCKPIT_MAIN, proto:Aircrafts/Engines/V2/, alt_proto:Aircrafts/Engines/): can't find proto
+2026-04-14 20:16:44.683 ERROR   ED_SOUND (Main): source_add(host:COCKPIT_MAIN, proto:Aircrafts/Engines/V2/cpt/eng_2/front_flight_hum, alt_proto:Aircrafts/Engines/cpt/eng_2/front_flight_hum): can't find proto
+2026-04-14 20:16:44.683 ERROR   ED_SOUND (Main): source_add(host:COCKPIT_MAIN, proto:Aircrafts/Engines/V2/, alt_proto:Aircrafts/Engines/): can't find proto
+2026-04-14 20:16:44.684 ERROR   ED_SOUND (Main): source_add(host:COCKPIT_MAIN, proto:Aircrafts/Engines/V2/cpt/eng_3/front_flight_hum, alt_proto:Aircrafts/Engines/cpt/eng_3/front_flight_hum): can't find proto
+2026-04-14 20:16:44.684 ERROR   ED_SOUND (Main): source_add(host:COCKPIT_MAIN, proto:Aircrafts/Engines/V2/, alt_proto:Aircrafts/Engines/): can't find proto
+2026-04-14 20:16:44.696 WARNING LOG (14504): 1 duplicate message(s) skipped.
+2026-04-14 20:16:44.696 INFO    WORLDGENERAL (Main): loaded from mission Scripts/World/birds.lua
+2026-04-14 20:16:44.696 INFO    APP (Main): dbox not found , skip
+2026-04-14 20:16:44.821 INFO    EDTERRAINGRAPHICS41 (3748):     surface5 gc() LOD 0 0 squares
+2026-04-14 20:16:44.821 INFO    EDTERRAINGRAPHICS41 (3748):     surface5 gc() LOD 1 0 squares
+2026-04-14 20:16:44.821 INFO    EDTERRAINGRAPHICS41 (3748):     surface5 gc() LOD 2 0 squares
+2026-04-14 20:16:44.821 INFO    EDTERRAINGRAPHICS41 (3748):     surface5 gc() LOD 3 0 squares
+2026-04-14 20:16:44.821 INFO    EDTERRAINGRAPHICS41 (3748): surface5 gc() 0.057700 ms
+2026-04-14 20:16:44.854 INFO    SRS-export (Main): Loading SimpleRadio Standalone Export...
+2026-04-14 20:16:44.878 INFO    SRS-export (Main): Loaded SimpleRadio Standalone Export version: 2.3.6.0
+2026-04-14 20:16:44.879 INFO    TACVIEW.EXPORT.LUA (Main): Starting [G:\Saved Games\DCS\Scripts/TacviewGameExport.lua]
+2026-04-14 20:16:44.879 INFO    TACVIEW.EXPORT.LUA (Main): Loading C++ flight data recorder from [G:\Saved Games\DCS\Mods\tech\Tacview\bin\]
+2026-04-14 20:16:44.879 INFO    TACVIEW.EXPORT.LUA (Main): Tacview 1.9.6.103 C++ flight data recorder successfully loaded.
+2026-04-14 20:16:44.879 INFO    DCS-DTC (Main): Initialized DTC
+2026-04-14 20:16:44.905 INFO    VISUALIZER (Main): Preload() radius: 32500.000000
+2026-04-14 20:16:44.927 INFO    EDTERRAINGRAPHICS41 (Main): ITerrainGraphicsImpl4::forceLoading(): pos=(-281612, 17.0066, 646457), radius=32500
+2026-04-14 20:16:45.137 ERROR   ASYNCNET (16912): HTTP request NORESULT failed with error 60: SSL peer certificate or SSH remote key was not OK
+2026-04-14 20:16:45.368 INFO    EDTERRAINGRAPHICS41 (3748): surface5 clean up LOD 0: left 0  released 0
+2026-04-14 20:16:45.368 INFO    EDTERRAINGRAPHICS41 (3748): surface5 clean up LOD 1: left 0  released 0
+2026-04-14 20:16:45.368 INFO    EDTERRAINGRAPHICS41 (3748): surface5 clean up 0.033000 ms
+2026-04-14 20:16:45.786 INFO    EDTERRAIN4 (3748): ITerrainContextImpl4::setTrafficDecimation(0)
+2026-04-14 20:16:45.786 INFO    EDTERRAIN4 (3748): ITerrainContextImpl4::setDate( day=5, month=4)
+2026-04-14 20:16:45.786 INFO    EDTERRAIN4 (3748): ITerrainContextImpl4::setTextureMode(full=1)
+2026-04-14 20:16:46.338 INFO    GRAPHICSVISTA (3748): Creating Resource "Unicode" of type 1
+2026-04-14 20:16:46.371 INFO    EDTERRAINGRAPHICS41 (3748): ComputeManager:
+2026-04-14 20:16:46.371 INFO    EDTERRAINGRAPHICS41 (3748):      Buffer  Squares Free      Free   Used      Fragm..ion
+2026-04-14 20:16:46.371 INFO    EDTERRAINGRAPHICS41 (3748):      size            intervals blocks intervals          
+2026-04-14 20:16:46.371 INFO    EDTERRAINGRAPHICS41 (3748):  old 4194304 0       1         100.0% 0         0.0      
+2026-04-14 20:16:46.371 INFO    EDTERRAINGRAPHICS41 (3748):  new 2936064 0       1         100.0% 0         1.0      
+2026-04-14 20:16:46.371 INFO    EDTERRAINGRAPHICS41 (3748): instancer factors has been changed. Update lod buffers.
+2026-04-14 20:16:46.371 INFO    EDTERRAINGRAPHICS41 (3748): 	 distanceFactor = 0.700000
+2026-04-14 20:16:46.371 INFO    EDTERRAINGRAPHICS41 (3748): 	 instancerDetailsFactor = 0.700000
+2026-04-14 20:16:46.371 INFO    EDTERRAINGRAPHICS41 (3748): 	 forestDistanceFactor = 1.000000
+2026-04-14 20:16:46.371 INFO    EDTERRAINGRAPHICS41 (3748): 	 forestDetailsFactor = 0.700000
+2026-04-14 20:17:17.424 INFO    VISUALIZER (Main): Preload() finished
+2026-04-14 20:17:17.454 INFO    TACVIEW.DLL (Main): Starting [G:\Saved Games\DCS\Mods\tech\Tacview\bin\tacview.dll]
+2026-04-14 20:17:17.454 INFO    TACVIEW.DLL (Main): Tacview Flight Data Recorder 1.9.6.103 Loaded.
+2026-04-14 20:17:17.455 INFO    TACVIEW.DLL (Main): Config={tacviewModuleEnabled=0, tacviewFlightDataRecordingEnabled=1, tacviewRecordSimulationPauses=0, tacviewSinglePlayerFlights=2, tacviewMultiplayerFlightsAsClient=1, tacviewMultiplayerFlightsAsHost=2, tacviewDataCaptureMode=8, tacviewAutoDiscardFlights=60, tacviewBookmarkShortcut=0, tacviewDebugMode=0, tacviewTerrainExport=0, tacviewPlaybackDelay=600, tacviewRealTimeTelemetryEnabled=0, tacviewRealTimeTelemetryPort=42674, tacviewRealTimeTelemetryPassword="", tacviewRemoteControlEnabled=0, tacviewRemoteControlPort=42675, tacviewRemoteControlPassword="", tacviewExportPath=""}
+2026-04-14 20:17:17.455 INFO    TACVIEW.DLL (Main): Running in single player mode.
+2026-04-14 20:17:17.455 INFO    TACVIEW.DLL (Main): Exporter module *DISABLED*
+2026-04-14 20:17:17.456 INFO    TACVIEW.DLL (Main): Export path: [C:\Users\fmang\Documents\Tacview\]
+2026-04-14 20:17:17.557 INFO    Dispatcher (Main): precache units resources in slots
+2026-04-14 20:17:17.559 INFO    OH6GunnerExport (Main): Gunner Export init
+2026-04-14 20:17:17.559 INFO    OpenKneeboard (Main): onSimulationStart
+2026-04-14 20:17:17.559 INFO    OpenKneeboard (Main): Aircraft: C-130J-30
+2026-04-14 20:17:17.827 INFO    EDCORE (Main): Created game pool: h:2 n:9 l:2
+2026-04-14 20:17:17.827 INFO    Dispatcher (Main): loadMission Done: Control passed to the player
+2026-04-14 20:17:17.927 ERROR   ASYNCNET (16912): HTTP request NORESULT failed with error 60: SSL peer certificate or SSH remote key was not OK
+2026-04-14 20:17:19.322 WARNING LOG (14504): 1 duplicate message(s) skipped.
+2026-04-14 20:17:19.322 INFO    DCS-DTC (Main): Opened connection
+2026-04-14 20:18:06.711 INFO    EDCORE (Main): try to write dump information
+2026-04-14 20:18:06.960 INFO    EDCORE (Main): # -------------- 20260414-201807 --------------
+2026-04-14 20:18:06.961 INFO    EDCORE (Main): DCS/2.9.25.21402 (x86_64; MT; Windows NT 10.0.26200)
+2026-04-14 20:18:06.962 INFO    EDCORE (Main): F:\Eagle Dynamics\DCS World\Mods\aircraft\C130J\bin\C130J.dll
+2026-04-14 20:18:06.963 INFO    EDCORE (Main): # C0000005 ACCESS_VIOLATION at 00007fffb3e057bd 00:00000000
+2026-04-14 20:18:06.963 INFO    EDCORE (Main): SymInit: Symbol-SearchPath: 'F:\Eagle Dynamics\DCS World\bin;', symOptions: 532, UserName: 'fmang'
+2026-04-14 20:18:06.964 INFO    EDCORE (Main): OS-Version: 10.0.26200 () 0x100-0x1
+2026-04-14 20:18:06.970 INFO    EDCORE (Main): 0x00000000004d57bd (C130J): ManweMaterial::DrawGeometry + 0x13F0DD
+2026-04-14 20:18:06.971 INFO    EDCORE (Main): 0x000000000036dd8f (C130J): ed_cockpit_sound_is_playing + 0x4615F
+2026-04-14 20:18:06.972 INFO    EDCORE (Main): 0x0000000000789186 (C130J): ed_setup_custom_messaging + 0x40376
+2026-04-14 20:18:06.973 INFO    EDCORE (Main): 0x000000000034f0d4 (C130J): ed_cockpit_sound_is_playing + 0x274A4
+2026-04-14 20:18:06.973 INFO    EDCORE (Main): 0x00000000003368a1 (C130J): ed_cockpit_sound_is_playing + 0xEC71
+2026-04-14 20:18:06.974 INFO    EDCORE (Main): 0x000000000032ad8a (C130J): ed_cockpit_sound_is_playing + 0x315A
+2026-04-14 20:18:06.974 INFO    EDCORE (Main): 0x0000000000234b63 (CockpitBase): cockpit::avDevice_BasicTimer::NextEvent + 0x23
+2026-04-14 20:18:06.974 INFO    EDCORE (Main): 0x0000000000004508 (World): wSimTrace::CommandsTraceDiscreteIsOn + 0x3D8
+2026-04-14 20:18:06.974 INFO    EDCORE (Main): 0x0000000000004aa2 (World): wSimCalendar::DoActionsUntil + 0x262
+2026-04-14 20:18:06.974 INFO    EDCORE (Main): 0x00000000009c1576 (DCS): SW + 0x45D206
+2026-04-14 20:18:06.974 INFO    EDCORE (Main): 0x00000000009c1254 (DCS): SW + 0x45CEE4
+2026-04-14 20:18:06.974 INFO    EDCORE (Main): 0x00000000009e4529 (DCS): SW + 0x4801B9
+2026-04-14 20:18:06.974 INFO    EDCORE (Main): 0x0000000000995a84 (DCS): SW + 0x431714
+2026-04-14 20:18:06.974 INFO    EDCORE (Main): 0x00000000009970b3 (DCS): SW + 0x432D43
+2026-04-14 20:18:06.975 INFO    EDCORE (Main): 0x0000000002316f42 (DCS): AmdPowerXpressRequestHighPerformance + 0xEB5F3E
+2026-04-14 20:18:06.975 INFO    EDCORE (Main): 0x0000000001041a76 (DCS): SW + 0xADD706
+2026-04-14 20:18:06.975 INFO    EDCORE (Main): 0x000000000002e8d7 (KERNEL32): BaseThreadInitThunk + 0x17
+2026-04-14 20:18:07.607 INFO    EDCORE (Main): Minidump created.
+2026-04-14 20:18:07.607 INFO    Lua::Config (Main): stack traceback:
+2026-04-14 20:18:07.607 WARNING LOG (14504): 3 duplicate message(s) skipped.
+2026-04-14 20:18:07.607 INFO    APP (Main): enumerating loaded modules
+2026-04-14 20:18:07.608 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\DCS.exe, 26495688 bytes, created 19:3:2026-23.52.44, written 19:3:2026-23.52.44, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.608 INFO    APP (Main): C:\WINDOWS\SYSTEM32\ntdll.dll, 2522088 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.608 INFO    APP (Main): C:\WINDOWS\System32\KERNEL32.DLL, 836232 bytes, created 26:3:2026-21.6.0, written 26:3:2026-21.6.0, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.608 INFO    APP (Main): C:\WINDOWS\System32\KERNELBASE.dll, 4154264 bytes, created 26:3:2026-21.6.0, written 26:3:2026-21.6.0, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.608 INFO    APP (Main): C:\WINDOWS\System32\WS2_32.dll, 534608 bytes, created 26:3:2026-21.6.5, written 26:3:2026-21.6.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.609 INFO    APP (Main): C:\WINDOWS\System32\ucrtbase.dll, 1373392 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.609 INFO    APP (Main): C:\WINDOWS\System32\RPCRT4.dll, 1162568 bytes, created 11:3:2026-0.48.41, written 11:3:2026-0.48.41, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.609 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\edCore.dll, 2164736 bytes, created 19:3:2026-23.52.53, written 19:3:2026-23.52.53, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.609 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\edObjects.dll, 265216 bytes, created 19:3:2026-23.52.42, written 19:3:2026-23.52.42, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.609 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Terrain.dll, 295936 bytes, created 19:3:2026-23.52.41, written 19:3:2026-23.52.41, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.609 INFO    APP (Main): C:\WINDOWS\System32\ADVAPI32.dll, 753568 bytes, created 26:3:2026-21.5.54, written 26:3:2026-21.5.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.609 INFO    APP (Main): C:\WINDOWS\System32\USER32.dll, 1873336 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.609 INFO    APP (Main): C:\WINDOWS\System32\msvcrt.dll, 699792 bytes, created 13:1:2026-22.26.23, written 13:1:2026-22.26.23, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.610 INFO    APP (Main): C:\WINDOWS\System32\win32u.dll, 170976 bytes, created 26:3:2026-21.6.5, written 26:3:2026-21.6.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.610 INFO    APP (Main): C:\WINDOWS\System32\sechost.dll, 695744 bytes, created 26:3:2026-21.6.2, written 26:3:2026-21.6.2, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.610 INFO    APP (Main): C:\WINDOWS\System32\GDI32.dll, 187416 bytes, created 11:3:2026-0.48.41, written 11:3:2026-0.48.41, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.610 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\World.dll, 67072 bytes, created 19:3:2026-23.52.38, written 19:3:2026-23.52.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.610 INFO    APP (Main): C:\WINDOWS\System32\gdi32full.dll, 1224616 bytes, created 26:3:2026-21.5.58, written 26:3:2026-21.5.58, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.610 INFO    APP (Main): C:\WINDOWS\System32\SHELL32.dll, 7806976 bytes, created 26:3:2026-21.6.3, written 26:3:2026-21.6.3, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.610 INFO    APP (Main): C:\WINDOWS\System32\msvcp_win.dll, 642024 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.610 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\WorldGeneral.dll, 10856136 bytes, created 19:3:2026-23.53.17, written 19:3:2026-23.53.17, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.610 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Inter.dll, 9348288 bytes, created 19:3:2026-23.53.5, written 19:3:2026-23.53.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.611 INFO    APP (Main): C:\WINDOWS\System32\wintypes.dll, 1501456 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.611 INFO    APP (Main): C:\WINDOWS\System32\ole32.dll, 1683264 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.611 INFO    APP (Main): C:\WINDOWS\System32\combase.dll, 3703832 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.611 INFO    APP (Main): C:\WINDOWS\System32\SHLWAPI.dll, 427152 bytes, created 26:3:2026-21.6.3, written 26:3:2026-21.6.3, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.611 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Flight.dll, 10334912 bytes, created 19:3:2026-23.53.37, written 19:3:2026-23.53.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.611 INFO    APP (Main): C:\WINDOWS\System32\Windows.Storage.dll, 8864720 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.611 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\FMBase.dll, 1280000 bytes, created 19:3:2026-23.52.46, written 19:3:2026-23.52.46, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.612 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\GraphicsCore.dll, 1198080 bytes, created 19:3:2026-23.52.48, written 19:3:2026-23.52.48, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.612 INFO    APP (Main): C:\WINDOWS\System32\CRYPT32.dll, 1534512 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.612 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\GraphicsVista.dll, 373760 bytes, created 19:3:2026-23.52.43, written 19:3:2026-23.52.43, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.612 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\enlight.dll, 672256 bytes, created 19:3:2026-23.52.44, written 19:3:2026-23.52.44, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.612 INFO    APP (Main): C:\WINDOWS\System32\WINTRUST.dll, 542832 bytes, created 26:3:2026-21.6.5, written 26:3:2026-21.6.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.612 INFO    APP (Main): C:\WINDOWS\System32\imagehlp.dll, 137832 bytes, created 30:5:2025-18.33.24, written 30:5:2025-18.33.24, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.612 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\wRadio.dll, 1170944 bytes, created 19:3:2026-23.52.46, written 19:3:2026-23.52.46, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.612 INFO    APP (Main): C:\WINDOWS\System32\OLEAUT32.dll, 889920 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.613 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Weapons.dll, 2179072 bytes, created 19:3:2026-23.52.50, written 19:3:2026-23.52.50, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.613 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Input.dll, 534528 bytes, created 19:3:2026-23.52.43, written 19:3:2026-23.52.43, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.613 INFO    APP (Main): C:\WINDOWS\System32\Normaliz.dll, 32768 bytes, created 1:4:2024-7.22.11, written 1:4:2024-7.22.11, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.613 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\WeaponsBase.dll, 923648 bytes, created 19:3:2026-23.52.45, written 19:3:2026-23.52.45, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.613 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\minizip.dll, 70144 bytes, created 21:2:2025-19.51.3, written 21:2:2025-19.51.3, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.613 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\zlib1.dll, 121856 bytes, created 19:3:2026-23.52.40, written 19:3:2026-23.52.40, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.613 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua.dll, 173056 bytes, created 10:4:2024-20.59.46, written 10:4:2024-20.59.46, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.613 INFO    APP (Main): C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL, 216408 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.613 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Space.dll, 1512960 bytes, created 19:3:2026-23.52.51, written 19:3:2026-23.52.51, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.613 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\renderer.dll, 108032 bytes, created 19:3:2026-23.52.39, written 19:3:2026-23.52.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.614 INFO    APP (Main): C:\WINDOWS\SYSTEM32\MSVCP140.dll, 553552 bytes, created 22:11:2025-1.56.30, written 22:11:2025-1.56.30, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.614 INFO    APP (Main): C:\WINDOWS\SYSTEM32\VCRUNTIME140_1.dll, 47264 bytes, created 22:11:2025-1.56.32, written 22:11:2025-1.56.32, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.614 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\ed_api.dll, 22528 bytes, created 19:3:2026-23.52.36, written 19:3:2026-23.52.36, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.614 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\ImGui.dll, 2224640 bytes, created 19:3:2026-23.52.50, written 19:3:2026-23.52.50, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.614 INFO    APP (Main): C:\WINDOWS\System32\IMM32.dll, 212272 bytes, created 26:3:2026-21.5.59, written 26:3:2026-21.5.59, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.614 INFO    APP (Main): C:\WINDOWS\SYSTEM32\VCRUNTIME140.dll, 123472 bytes, created 22:11:2025-1.56.32, written 22:11:2025-1.56.32, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.614 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\dxgui.dll, 1189376 bytes, created 19:3:2026-23.52.45, written 19:3:2026-23.52.45, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.615 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\uiBaseRenderer.dll, 88064 bytes, created 19:3:2026-23.52.39, written 19:3:2026-23.52.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.615 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\dxgui_win_adapter.dll, 58880 bytes, created 19:3:2026-23.52.38, written 19:3:2026-23.52.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.615 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\gui_map.dll, 240128 bytes, created 19:3:2026-23.52.41, written 19:3:2026-23.52.41, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.615 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Weather.dll, 255488 bytes, created 19:3:2026-23.52.42, written 19:3:2026-23.52.42, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.615 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Scripting.dll, 9527488 bytes, created 19:3:2026-23.53.25, written 19:3:2026-23.53.25, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.615 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\metaShader.dll, 1261568 bytes, created 19:3:2026-23.52.47, written 19:3:2026-23.52.47, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.615 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\CockpitBase.dll, 5688320 bytes, created 19:3:2026-23.52.56, written 19:3:2026-23.52.56, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.615 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Legacy_AFM_Base.dll, 738304 bytes, created 19:3:2026-23.52.43, written 19:3:2026-23.52.43, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.615 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Legacy_AFM_Su25.dll, 32768 bytes, created 19:3:2026-23.52.37, written 19:3:2026-23.52.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.615 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Legacy_AFM_Su39.dll, 32768 bytes, created 19:3:2026-23.52.37, written 19:3:2026-23.52.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.616 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Visualizer.dll, 3045888 bytes, created 19:3:2026-23.52.52, written 19:3:2026-23.52.52, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.616 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\blocksim.dll, 1045504 bytes, created 19:3:2026-23.52.44, written 19:3:2026-23.52.44, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.616 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Transport.dll, 3357696 bytes, created 19:3:2026-23.52.55, written 19:3:2026-23.52.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.616 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\WeaponBlocks.dll, 5392896 bytes, created 19:3:2026-23.52.55, written 19:3:2026-23.52.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.616 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\AIFM.dll, 1090048 bytes, created 19:3:2026-23.52.43, written 19:3:2026-23.52.43, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.616 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Sound.dll, 2278912 bytes, created 19:3:2026-23.52.49, written 19:3:2026-23.52.49, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.616 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\ed_sound.dll, 244224 bytes, created 19:3:2026-23.52.42, written 19:3:2026-23.52.42, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.616 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\edWebviewBrowser.dll, 460288 bytes, created 19:3:2026-23.52.42, written 19:3:2026-23.52.42, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.616 INFO    APP (Main): C:\WINDOWS\System32\shcore.dll, 1005616 bytes, created 26:3:2026-21.6.3, written 26:3:2026-21.6.3, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.617 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\IngameOverlay.dll, 171008 bytes, created 19:3:2026-23.52.40, written 19:3:2026-23.52.40, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.617 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\rts.dll, 3261440 bytes, created 19:3:2026-23.52.54, written 19:3:2026-23.52.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.617 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\animator.dll, 809472 bytes, created 19:3:2026-23.52.45, written 19:3:2026-23.52.45, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.617 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\edDebugDraw.dll, 202752 bytes, created 19:3:2026-23.52.40, written 19:3:2026-23.52.40, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.617 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\animator_logic.dll, 683520 bytes, created 19:3:2026-23.52.43, written 19:3:2026-23.52.43, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.617 INFO    APP (Main): C:\WINDOWS\SYSTEM32\VERSION.dll, 55192 bytes, created 5:10:2024-0.10.45, written 5:10:2024-0.10.45, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.617 INFO    APP (Main): C:\WINDOWS\SYSTEM32\WINMM.dll, 224688 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.618 INFO    APP (Main): C:\WINDOWS\SYSTEM32\POWRPROF.dll, 398160 bytes, created 11:5:2025-2.6.16, written 11:5:2025-2.6.16, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.618 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\dbghelp.dll, 1869264 bytes, created 14:4:2021-18.22.30, written 14:4:2021-18.22.30, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.618 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\rendererUtils.dll, 274944 bytes, created 19:3:2026-23.52.42, written 19:3:2026-23.52.42, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.618 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\assimp-vc140-mt.dll, 6530048 bytes, created 21:10:2023-23.17.5, written 21:10:2023-23.17.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.618 INFO    APP (Main): C:\WINDOWS\SYSTEM32\NETAPI32.dll, 117160 bytes, created 28:10:2025-22.10.16, written 28:10:2025-22.10.16, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.618 INFO    APP (Main): C:\WINDOWS\SYSTEM32\MSVCP140_ATOMIC_WAIT.dll, 48800 bytes, created 22:11:2025-1.56.32, written 22:11:2025-1.56.32, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.618 INFO    APP (Main): C:\WINDOWS\SYSTEM32\bcrypt.dll, 183376 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.619 INFO    APP (Main): C:\WINDOWS\SYSTEM32\ncrypt.dll, 208056 bytes, created 30:1:2026-19.8.8, written 30:1:2026-19.8.8, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.619 INFO    APP (Main): C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.8115_none_3e075c82e3354f9c\COMCTL32.dll, 2696680 bytes, created 26:3:2026-21.5.39, written 26:3:2026-21.5.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.619 INFO    APP (Main): C:\WINDOWS\SYSTEM32\DINPUT8.dll, 266240 bytes, created 26:3:2026-21.5.57, written 26:3:2026-21.5.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.619 INFO    APP (Main): C:\WINDOWS\SYSTEM32\D3DCOMPILER_47.dll, 4669440 bytes, created 31:3:2026-22.5.6, written 31:3:2026-22.5.6, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.619 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\freetype.dll, 599552 bytes, created 21:10:2023-23.15.34, written 21:10:2023-23.15.34, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.620 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\offshore.dll, 978432 bytes, created 19:3:2026-23.52.47, written 19:3:2026-23.52.47, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.620 INFO    APP (Main): C:\WINDOWS\WinSxS\amd64_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.26100.8115_none_6ef24f683dc7c96a\gdiplus.dll, 1929216 bytes, created 26:3:2026-21.5.39, written 26:3:2026-21.5.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.620 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-terrain.dll, 51200 bytes, created 19:3:2026-23.52.38, written 19:3:2026-23.52.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.620 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\PostEffects.dll, 310784 bytes, created 19:3:2026-23.52.41, written 19:3:2026-23.52.41, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.620 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\SpaceRenderer.dll, 69632 bytes, created 19:3:2026-23.52.39, written 19:3:2026-23.52.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.620 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Effects.dll, 428032 bytes, created 19:3:2026-23.52.43, written 19:3:2026-23.52.43, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.620 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Effects2.dll, 1259520 bytes, created 19:3:2026-23.52.48, written 19:3:2026-23.52.48, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.621 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\Scene.dll, 296960 bytes, created 19:3:2026-23.52.41, written 19:3:2026-23.52.41, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.621 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\SceneRenderer.dll, 439808 bytes, created 19:3:2026-23.52.43, written 19:3:2026-23.52.43, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.621 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\openvr_api.dll, 598816 bytes, created 22:12:2019-7.26.50, written 22:12:2019-7.26.50, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.621 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\VarjoLib.dll, 144896 bytes, created 19:3:2026-23.52.39, written 19:3:2026-23.52.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.621 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\LandVehicle.dll, 117760 bytes, created 19:3:2026-23.52.39, written 19:3:2026-23.52.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.621 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\libsndfile-1.dll, 2311168 bytes, created 22:12:2019-7.26.49, written 22:12:2019-7.26.49, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.621 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\libcef.dll, 178335744 bytes, created 21:10:2023-23.22.21, written 21:10:2023-23.22.21, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.622 INFO    APP (Main): C:\WINDOWS\System32\COMDLG32.dll, 958464 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.622 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\edterrain4.dll, 11796160 bytes, created 19:3:2026-23.53.1, written 19:3:2026-23.53.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.622 INFO    APP (Main): C:\WINDOWS\SYSTEM32\AVRT.dll, 55256 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.622 INFO    APP (Main): C:\WINDOWS\SYSTEM32\MSVCP140_2.dll, 278608 bytes, created 22:11:2025-1.56.30, written 22:11:2025-1.56.30, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.622 INFO    APP (Main): C:\WINDOWS\SYSTEM32\cryptsp.dll, 121328 bytes, created 30:1:2026-19.8.6, written 30:1:2026-19.8.6, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.622 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\zlib.dll, 113664 bytes, created 21:10:2023-23.12.15, written 21:10:2023-23.12.15, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.622 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\tbb.dll, 211456 bytes, created 21:10:2023-23.12.15, written 21:10:2023-23.12.15, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.623 INFO    APP (Main): C:\WINDOWS\SYSTEM32\dxgi.dll, 1319648 bytes, created 26:3:2026-21.5.57, written 26:3:2026-21.5.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.623 INFO    APP (Main): C:\WINDOWS\SYSTEM32\PROPSYS.dll, 1071768 bytes, created 26:3:2026-21.6.2, written 26:3:2026-21.6.2, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.623 INFO    APP (Main): C:\WINDOWS\SYSTEM32\UIAutomationCore.DLL, 4300800 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.623 INFO    APP (Main): C:\WINDOWS\SYSTEM32\OLEACC.dll, 479232 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.624 INFO    APP (Main): C:\WINDOWS\SYSTEM32\Secur32.dll, 53248 bytes, created 30:1:2026-19.8.7, written 30:1:2026-19.8.7, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.624 INFO    APP (Main): C:\WINDOWS\SYSTEM32\USERENV.dll, 220552 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.624 INFO    APP (Main): C:\WINDOWS\SYSTEM32\WTSAPI32.dll, 179232 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.624 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\chrome_elf.dll, 1250304 bytes, created 21:10:2023-23.15.56, written 21:10:2023-23.15.56, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.624 INFO    APP (Main): C:\WINDOWS\SYSTEM32\DWrite.dll, 2486272 bytes, created 26:3:2026-21.5.57, written 26:3:2026-21.5.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.624 INFO    APP (Main): C:\WINDOWS\SYSTEM32\UxTheme.dll, 684032 bytes, created 26:3:2026-21.6.5, written 26:3:2026-21.6.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.625 INFO    APP (Main): C:\WINDOWS\SYSTEM32\USP10.dll, 102400 bytes, created 1:4:2024-7.22.11, written 1:4:2024-7.22.11, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.625 INFO    APP (Main): C:\WINDOWS\SYSTEM32\WINSPOOL.DRV, 716800 bytes, created 26:3:2026-21.6.2, written 26:3:2026-21.6.2, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.625 INFO    APP (Main): C:\WINDOWS\SYSTEM32\urlmon.dll, 1916928 bytes, created 26:3:2026-21.5.58, written 26:3:2026-21.5.58, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.625 INFO    APP (Main): C:\WINDOWS\SYSTEM32\HID.DLL, 61440 bytes, created 5:10:2024-0.10.10, written 5:10:2024-0.10.10, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.625 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\edterrainCore.dll, 62976 bytes, created 19:3:2026-23.52.38, written 19:3:2026-23.52.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.626 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\edterrainExtra4.dll, 376320 bytes, created 19:3:2026-23.52.42, written 19:3:2026-23.52.42, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.626 INFO    APP (Main): C:\WINDOWS\SYSTEM32\WINHTTP.dll, 1245272 bytes, created 26:3:2026-21.6.6, written 26:3:2026-21.6.6, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.626 INFO    APP (Main): C:\WINDOWS\SYSTEM32\wevtapi.dll, 323752 bytes, created 2:12:2025-0.32.12, written 2:12:2025-0.32.12, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.626 INFO    APP (Main): C:\WINDOWS\SYSTEM32\dwmapi.dll, 187488 bytes, created 26:3:2026-21.5.56, written 26:3:2026-21.5.56, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.626 INFO    APP (Main): C:\WINDOWS\SYSTEM32\credui.dll, 114688 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.627 INFO    APP (Main): C:\WINDOWS\SYSTEM32\dhcpcsvc.DLL, 161256 bytes, created 26:3:2026-21.5.56, written 26:3:2026-21.5.56, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.627 INFO    APP (Main): C:\WINDOWS\SYSTEM32\WININET.dll, 2724544 bytes, created 26:3:2026-21.5.58, written 26:3:2026-21.5.58, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.627 INFO    APP (Main): C:\WINDOWS\SYSTEM32\ESENT.dll, 4313088 bytes, created 25:2:2026-1.13.24, written 25:2:2026-1.13.24, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.627 INFO    APP (Main): C:\WINDOWS\SYSTEM32\d3d9.dll, 1778320 bytes, created 26:3:2026-21.5.57, written 26:3:2026-21.5.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.627 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\dbgcore.DLL, 175056 bytes, created 14:4:2021-18.19.57, written 14:4:2021-18.19.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.628 INFO    APP (Main): C:\WINDOWS\SYSTEM32\CRYPTBASE.DLL, 59432 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.628 INFO    APP (Main): C:\WINDOWS\SYSTEM32\SspiCli.dll, 307328 bytes, created 26:3:2026-21.6.0, written 26:3:2026-21.6.0, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.628 INFO    APP (Main): C:\WINDOWS\SYSTEM32\cfgmgr32.dll, 340384 bytes, created 26:3:2026-21.5.54, written 26:3:2026-21.5.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.628 INFO    APP (Main): C:\WINDOWS\SYSTEM32\iertutil.dll, 2918736 bytes, created 26:3:2026-21.5.58, written 26:3:2026-21.5.58, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.628 INFO    APP (Main): C:\WINDOWS\SYSTEM32\dxva2.dll, 199880 bytes, created 26:3:2026-21.5.57, written 26:3:2026-21.5.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.629 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\png.dll, 195584 bytes, created 21:10:2023-23.12.37, written 21:10:2023-23.12.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.629 INFO    APP (Main): C:\WINDOWS\SYSTEM32\srvcli.dll, 146080 bytes, created 5:10:2024-0.10.39, written 5:10:2024-0.10.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.629 INFO    APP (Main): C:\WINDOWS\SYSTEM32\netutils.dll, 63336 bytes, created 5:10:2024-0.23.3, written 5:10:2024-0.23.3, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.629 INFO    APP (Main): C:\WINDOWS\SYSTEM32\dxcore.dll, 274256 bytes, created 26:3:2026-21.5.54, written 26:3:2026-21.5.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.629 INFO    APP (Main): C:\WINDOWS\SYSTEM32\CRYPTUI.dll, 385024 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.630 INFO    APP (Main): C:\WINDOWS\SYSTEM32\DSROLE.DLL, 55184 bytes, created 5:10:2024-0.10.8, written 5:10:2024-0.10.8, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.630 INFO    APP (Main): C:\WINDOWS\SYSTEM32\WKSCLI.DLL, 121280 bytes, created 28:10:2025-22.10.20, written 28:10:2025-22.10.20, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.630 INFO    APP (Main): C:\WINDOWS\SYSTEM32\SAMCLI.DLL, 110592 bytes, created 26:3:2026-21.5.56, written 26:3:2026-21.5.56, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.630 INFO    APP (Main): C:\WINDOWS\SYSTEM32\UMPDC.dll, 92448 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.630 INFO    APP (Main): C:\WINDOWS\System32\bcryptPrimitives.dll, 691624 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.631 INFO    APP (Main): C:\WINDOWS\SYSTEM32\MSASN1.dll, 88232 bytes, created 13:1:2026-22.26.23, written 13:1:2026-22.26.23, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.631 INFO    APP (Main): C:\WINDOWS\SYSTEM32\NTASN1.dll, 270056 bytes, created 5:10:2024-0.23.3, written 5:10:2024-0.23.3, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.631 INFO    APP (Main): C:\WINDOWS\SYSTEM32\inputhost.dll, 1997296 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.631 INFO    APP (Main): C:\WINDOWS\SYSTEM32\CoreMessaging.dll, 1224632 bytes, created 26:3:2026-21.5.54, written 26:3:2026-21.5.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.632 INFO    APP (Main): C:\WINDOWS\SYSTEM32\kernel.appcore.dll, 121296 bytes, created 25:2:2026-1.13.25, written 25:2:2026-1.13.25, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.632 INFO    APP (Main): C:\WINDOWS\System32\clbcatq.dll, 712264 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.632 INFO    APP (Main): C:\WINDOWS\SYSTEM32\amsi.dll, 114688 bytes, created 2:12:2025-0.32.9, written 2:12:2025-0.32.9, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.632 INFO    APP (Main): C:\WINDOWS\SYSTEM32\profapi.dll, 179232 bytes, created 26:3:2026-21.6.2, written 26:3:2026-21.6.2, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.632 INFO    APP (Main): C:\WINDOWS\system32\rsaenh.dll, 245264 bytes, created 30:1:2026-19.8.9, written 30:1:2026-19.8.9, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.633 INFO    APP (Main): C:\WINDOWS\SYSTEM32\cscapi.dll, 77824 bytes, created 1:4:2024-7.22.11, written 1:4:2024-7.22.11, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.633 INFO    APP (Main): C:\WINDOWS\System32\NSI.dll, 51152 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.633 INFO    APP (Main): C:\WINDOWS\SYSTEM32\Riched20.dll, 774144 bytes, created 26:3:2026-21.6.2, written 26:3:2026-21.6.2, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.633 INFO    APP (Main): C:\WINDOWS\SYSTEM32\msls31.dll, 282624 bytes, created 1:4:2024-7.22.11, written 1:4:2024-7.22.11, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.634 INFO    APP (Main): C:\WINDOWS\System32\MSCTF.dll, 1439496 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.634 INFO    APP (Main): C:\WINDOWS\system32\mswsock.dll, 451944 bytes, created 26:3:2026-21.6.5, written 26:3:2026-21.6.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.634 INFO    APP (Main): C:\WINDOWS\SYSTEM32\DNSAPI.dll, 1265936 bytes, created 26:3:2026-21.5.57, written 26:3:2026-21.5.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.634 INFO    APP (Main): C:\Windows\System32\rasadhlp.dll, 45056 bytes, created 25:2:2026-1.13.26, written 25:2:2026-1.13.26, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.634 INFO    APP (Main): C:\WINDOWS\SYSTEM32\textinputframework.dll, 1360968 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.635 INFO    APP (Main): C:\WINDOWS\System32\fwpuclnt.dll, 548864 bytes, created 25:2:2026-1.13.25, written 25:2:2026-1.13.25, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.635 INFO    APP (Main): C:\WINDOWS\SYSTEM32\CoreUIComponents.dll, 3030464 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.635 INFO    APP (Main): C:\WINDOWS\SYSTEM32\TextShaping.dll, 749432 bytes, created 26:3:2026-21.5.57, written 26:3:2026-21.5.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.635 INFO    APP (Main): C:\WINDOWS\SYSTEM32\WindowsCodecs.dll, 2311336 bytes, created 26:3:2026-21.6.5, written 26:3:2026-21.6.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.635 INFO    APP (Main): C:\WINDOWS\System32\MMDevApi.dll, 629616 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.636 INFO    APP (Main): C:\WINDOWS\System32\DEVOBJ.dll, 195560 bytes, created 5:10:2024-0.9.54, written 5:10:2024-0.9.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.636 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\dx11backend.dll, 1583104 bytes, created 19:3:2026-23.52.47, written 19:3:2026-23.52.47, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.636 INFO    APP (Main): C:\WINDOWS\SYSTEM32\d3d11.dll, 2522088 bytes, created 26:3:2026-21.5.57, written 26:3:2026-21.5.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.636 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\amd_ags_x64.dll, 105472 bytes, created 22:12:2019-7.26.40, written 22:12:2019-7.26.40, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.636 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\dxgui_edge_render.dll, 97792 bytes, created 19:3:2026-23.52.39, written 19:3:2026-23.52.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.636 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-direct_output.dll, 17920 bytes, created 19:3:2026-23.52.36, written 19:3:2026-23.52.36, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.636 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-dxgui.dll, 258560 bytes, created 19:3:2026-23.52.40, written 19:3:2026-23.52.40, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.637 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-dxguiWin.dll, 64512 bytes, created 19:3:2026-23.52.38, written 19:3:2026-23.52.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.637 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-ED_demosceneAPI.dll, 10752 bytes, created 19:3:2026-23.52.35, written 19:3:2026-23.52.35, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.637 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-guid.dll, 13312 bytes, created 19:3:2026-23.52.35, written 19:3:2026-23.52.35, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.637 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-gui_axes_tune.dll, 53248 bytes, created 19:3:2026-23.52.38, written 19:3:2026-23.52.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.637 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-gui_demoscene.dll, 34304 bytes, created 19:3:2026-23.52.37, written 19:3:2026-23.52.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.637 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-gui_nodes_map.dll, 58880 bytes, created 19:3:2026-23.52.38, written 19:3:2026-23.52.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.637 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-gui_overlay.dll, 45568 bytes, created 19:3:2026-23.52.37, written 19:3:2026-23.52.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.637 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-gui_ruler.dll, 53248 bytes, created 19:3:2026-23.52.37, written 19:3:2026-23.52.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.638 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-gui_user_container.dll, 45568 bytes, created 19:3:2026-23.52.37, written 19:3:2026-23.52.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.638 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-gui_video_player.dll, 69120 bytes, created 19:3:2026-23.52.38, written 19:3:2026-23.52.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.638 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\theora.dll, 208896 bytes, created 21:10:2023-23.12.37, written 21:10:2023-23.12.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.638 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\ogg.dll, 22528 bytes, created 21:10:2023-23.11.57, written 21:10:2023-23.11.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.638 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\vorbis.dll, 1196544 bytes, created 21:10:2023-23.12.37, written 21:10:2023-23.12.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.638 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-gui_webview.dll, 66560 bytes, created 19:3:2026-23.52.38, written 19:3:2026-23.52.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.638 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-librs232.dll, 28160 bytes, created 21:10:2023-23.11.57, written 21:10:2023-23.11.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.638 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-magvar.dll, 11776 bytes, created 19:3:2026-23.52.35, written 19:3:2026-23.52.35, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.639 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-md5.dll, 16384 bytes, created 21:10:2023-23.11.42, written 21:10:2023-23.11.42, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.639 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-mime.dll, 18432 bytes, created 21:10:2023-23.11.42, written 21:10:2023-23.11.42, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.639 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-minizip.dll, 18944 bytes, created 19:3:2026-23.52.36, written 19:3:2026-23.52.36, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.639 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-MissionGenerator.dll, 1525760 bytes, created 19:3:2026-23.52.49, written 19:3:2026-23.52.49, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.639 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-reg.dll, 14336 bytes, created 19:3:2026-23.52.36, written 19:3:2026-23.52.36, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.639 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-socket.dll, 40448 bytes, created 21:10:2023-23.12.1, written 21:10:2023-23.12.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.639 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\lua-textutil.dll, 32768 bytes, created 19:3:2026-23.52.37, written 19:3:2026-23.52.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.640 INFO    APP (Main): C:\WINDOWS\SYSTEM32\directxdatabasehelper.dll, 402344 bytes, created 26:3:2026-21.5.54, written 26:3:2026-21.5.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.640 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\nvldumdx.dll, 815976 bytes, created 13:3:2026-22.4.37, written 13:3:2026-22.4.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.640 INFO    APP (Main): C:\WINDOWS\SYSTEM32\cryptnet.dll, 253608 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.640 INFO    APP (Main): C:\WINDOWS\SYSTEM32\wldp.dll, 435424 bytes, created 26:3:2026-21.5.55, written 26:3:2026-21.5.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.640 INFO    APP (Main): C:\WINDOWS\SYSTEM32\drvstore.dll, 1555176 bytes, created 26:3:2026-21.5.57, written 26:3:2026-21.5.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.641 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\nvgpucomp64.dll, 83758904 bytes, created 13:3:2026-22.4.37, written 13:3:2026-22.4.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.641 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\NvMemMapStoragex.dll, 1283496 bytes, created 13:3:2026-22.4.37, written 13:3:2026-22.4.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.641 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\nvwgf2umx.dll, 88372128 bytes, created 13:3:2026-22.4.38, written 13:3:2026-22.4.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.641 INFO    APP (Main): C:\WINDOWS\system32\nvspcap64.dll, 1310832 bytes, created 11:5:2025-2.11.41, written 11:5:2025-2.11.41, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.641 INFO    APP (Main): C:\WINDOWS\SYSTEM32\ntmarta.dll, 224584 bytes, created 28:10:2025-22.10.17, written 28:10:2025-22.10.17, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.642 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\nvppex.dll, 7598656 bytes, created 13:3:2026-22.4.38, written 13:3:2026-22.4.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.642 INFO    APP (Main): C:\WINDOWS\SYSTEM32\dcomp.dll, 2245224 bytes, created 26:3:2026-21.5.56, written 26:3:2026-21.5.56, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.642 INFO    APP (Main): C:\WINDOWS\SYSTEM32\Microsoft.Internal.WarpPal.dll, 113104 bytes, created 26:3:2026-21.6.5, written 26:3:2026-21.6.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.642 INFO    APP (Main): C:\WINDOWS\System32\Setupapi.dll, 4790544 bytes, created 26:3:2026-21.6.3, written 26:3:2026-21.6.3, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.642 INFO    APP (Main): C:\WINDOWS\system32\nvapi64.dll, 5516480 bytes, created 13:3:2026-22.4.36, written 13:3:2026-22.4.36, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.643 INFO    APP (Main): C:\WINDOWS\SYSTEM32\gpapi.dll, 204008 bytes, created 26:3:2026-21.5.58, written 26:3:2026-21.5.58, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.643 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\_nvngx.dll, 1420520 bytes, created 13:3:2026-22.4.38, written 13:3:2026-22.4.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.643 INFO    APP (Main): C:\ProgramData\NVIDIA\NGX\models\dlss\versions\20317696\files\160_E658700.bin, 74061936 bytes, created 31:3:2026-21.46.41, written 31:3:2026-21.46.41, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.643 INFO    APP (Main): C:\Program Files\NVIDIA Corporation\NvTelemetry\NvTelemetryAPI64.dll, 4817520 bytes, created 11:5:2025-2.11.41, written 11:5:2025-2.11.41, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.643 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\nvcuda64.dll, 29705960 bytes, created 13:3:2026-22.4.36, written 13:3:2026-22.4.36, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.643 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\nvdxgdmal64.dll, 625384 bytes, created 13:3:2026-22.4.37, written 13:3:2026-22.4.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.644 INFO    APP (Main): C:\Program Files\NVIDIA Corporation\NvTelemetry\NvTelemetryBridge64.dll, 427120 bytes, created 11:5:2025-2.11.41, written 11:5:2025-2.11.41, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.644 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\ZweiBlau.dll, 119296 bytes, created 19:3:2026-23.52.39, written 19:3:2026-23.52.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.644 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\AVIMaker.dll, 104448 bytes, created 19:3:2026-23.52.39, written 19:3:2026-23.52.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.644 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\jpeg.dll, 151552 bytes, created 21:10:2023-23.12.15, written 21:10:2023-23.12.15, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.644 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\NGModel.dll, 481792 bytes, created 19:3:2026-23.52.43, written 19:3:2026-23.52.43, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.644 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\ModelDesc.dll, 382976 bytes, created 19:3:2026-23.52.42, written 19:3:2026-23.52.42, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.645 INFO    APP (Main): C:\Program Files (x86)\TrackIR5\NPClient64.dll, 35488 bytes, created 21:8:2024-14.21.6, written 21:8:2024-14.21.6, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.645 INFO    APP (Main): C:\WINDOWS\SYSTEM32\AUDIOSES.DLL, 1794848 bytes, created 26:3:2026-21.5.54, written 26:3:2026-21.5.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.645 INFO    APP (Main): C:\WINDOWS\SYSTEM32\resourcepolicyclient.dll, 92448 bytes, created 26:3:2026-21.5.54, written 26:3:2026-21.5.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.645 INFO    APP (Main): C:\WINDOWS\SYSTEM32\dhcpcsvc6.DLL, 128488 bytes, created 26:3:2026-21.5.56, written 26:3:2026-21.5.56, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.645 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\A-6E\bin\HeatblurCore.dll, 946688 bytes, created 11:3:2026-22.36.43, written 11:3:2026-22.36.43, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.645 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\A-6E\bin\HeatblurComponents.dll, 8399872 bytes, created 11:3:2026-22.44.54, written 11:3:2026-22.44.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.646 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\A-6E\bin\HeatblurDCSBase.dll, 896000 bytes, created 11:3:2026-22.43.53, written 11:3:2026-22.43.53, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.646 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\A-6E\bin\A-6E-AI.dll, 131584 bytes, created 11:3:2026-22.36.37, written 11:3:2026-22.36.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.646 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\AV8BNA\bin\AV8B_AI.dll, 90624 bytes, created 23:2:2024-11.10.16, written 23:2:2024-11.10.16, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.646 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\C-101\bin\C101Core.dll, 104448 bytes, created 11:3:2026-22.36.37, written 11:3:2026-22.36.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.646 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\C130J\bin\C130J_Sounder.dll, 155136 bytes, created 11:3:2026-22.36.38, written 11:3:2026-22.36.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.646 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\ChinaAssetPack\bin\CAP_AI.dll, 229376 bytes, created 27:11:2025-19.45.8, written 27:11:2025-19.45.8, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.647 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\ChinaAssetPack\bin\JF-17_AI.dll, 126976 bytes, created 27:11:2025-19.45.8, written 27:11:2025-19.45.8, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.647 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\Christen Eagle II\bin\CE2_AI.dll, 145920 bytes, created 22:12:2025-13.44.50, written 22:12:2025-13.44.50, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.647 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\F-15E\bin\F15E_AI.dll, 113664 bytes, created 10:4:2024-20.57.30, written 10:4:2024-20.57.30, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.647 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\F-4E\bin\HeatblurCore.dll, 946688 bytes, created 11:3:2026-22.43.52, written 11:3:2026-22.43.52, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.647 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\F-4E\bin\HeatblurComponents.dll, 8399872 bytes, created 11:3:2026-22.44.57, written 11:3:2026-22.44.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.647 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\F-4E\bin\HeatblurDCSBase.dll, 896000 bytes, created 11:3:2026-22.43.53, written 11:3:2026-22.43.53, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.647 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\F-4E\bin\F-4E-AI.dll, 131072 bytes, created 11:3:2026-22.36.38, written 11:3:2026-22.36.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.648 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\F14\bin\HeatblurCore.dll, 946688 bytes, created 11:3:2026-22.43.52, written 11:3:2026-22.43.52, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.648 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\F14\bin\HeatblurComponents.dll, 8399872 bytes, created 11:3:2026-22.44.55, written 11:3:2026-22.44.55, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.648 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\F14\bin\HeatblurDCSBase.dll, 896000 bytes, created 11:3:2026-22.43.53, written 11:3:2026-22.43.53, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.648 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\F14\bin\F14-AI.dll, 150528 bytes, created 11:3:2026-22.36.38, written 11:3:2026-22.36.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.648 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\F4U-1D\bin\F4U_AI.dll, 165376 bytes, created 22:12:2025-13.44.54, written 22:12:2025-13.44.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.648 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\M-2000C\bin\M2KC_AI.dll, 112640 bytes, created 3:1:2025-23.21.9, written 3:1:2025-23.21.9, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.649 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\MiG-21bis\bin\MiG21_AI.dll, 138752 bytes, created 22:12:2025-13.44.49, written 22:12:2025-13.44.49, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.649 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\Mirage-F1\bin\MirageF1Core.dll, 185856 bytes, created 11:3:2026-22.36.37, written 11:3:2026-22.36.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.649 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\OH-58D\bin\OH58D_AI.dll, 122880 bytes, created 22:10:2025-19.14.38, written 22:10:2025-19.14.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.649 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\aircraft\SA342\bin\SA342_ai.dll, 92160 bytes, created 22:10:2025-19.14.37, written 22:10:2025-19.14.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.649 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\services\CaptoGlove\bin\edCaptoGlove.dll, 698368 bytes, created 19:3:2026-23.52.35, written 19:3:2026-23.52.35, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.649 INFO    APP (Main): C:\WINDOWS\SYSTEM32\BluetoothApis.dll, 245760 bytes, created 26:3:2026-21.5.54, written 26:3:2026-21.5.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.650 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\services\LeapMotion\bin\edLeapMotion.dll, 84480 bytes, created 19:3:2026-23.52.34, written 19:3:2026-23.52.34, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.650 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\LeapC.dll, 11342128 bytes, created 19:3:2026-23.52.56, written 19:3:2026-23.52.56, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.650 INFO    APP (Main): C:\WINDOWS\SYSTEM32\CONCRT140.dll, 321696 bytes, created 22:11:2025-1.56.28, written 22:11:2025-1.56.28, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.650 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\services\SensoryxVRFree\bin\edSensoryxVRFree.dll, 63488 bytes, created 19:3:2026-23.52.34, written 19:3:2026-23.52.34, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.650 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\VRfreeC.dll, 214016 bytes, created 16:6:2021-23.3.47, written 16:6:2021-23.3.47, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.651 INFO    APP (Main): C:\WINDOWS\SYSTEM32\mscoree.dll, 430080 bytes, created 11:5:2025-1.22.5, written 11:5:2025-1.22.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.651 INFO    APP (Main): C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscoreei.dll, 609304 bytes, created 11:10:2025-1.19.0, written 11:10:2025-1.19.0, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.651 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\services\VoiceChat\bin\VoiceChat.dll, 5704192 bytes, created 19:3:2026-23.52.57, written 19:3:2026-23.52.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.651 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\webrtc_plugin.dll, 16107008 bytes, created 22:5:2025-0.6.51, written 22:5:2025-0.6.51, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.651 INFO    APP (Main): C:\WINDOWS\SYSTEM32\msdmo.dll, 67472 bytes, created 5:10:2024-0.10.5, written 5:10:2024-0.10.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.652 INFO    APP (Main): F:\Eagle Dynamics\DCS World\CoreMods\services\jsAvionics\bin\jsAvionics.dll, 18805248 bytes, created 19:3:2026-23.53.1, written 19:3:2026-23.53.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.652 INFO    APP (Main): F:\Eagle Dynamics\DCS World\Mods\tech\CombinedArms\bin\GroundCockpitBase.dll, 9510600 bytes, created 19:3:2026-23.53.21, written 19:3:2026-23.53.21, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.652 INFO    APP (Main): F:\Eagle Dynamics\DCS World\Mods\tech\CombinedArms\bin\CombinedArms.dll, 9338568 bytes, created 19:3:2026-23.53.5, written 19:3:2026-23.53.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.652 INFO    APP (Main): F:\Eagle Dynamics\DCS World\Mods\tech\Supercarrier\bin\edSupercarrier.dll, 9434824 bytes, created 19:3:2026-23.53.12, written 19:3:2026-23.53.12, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.652 INFO    APP (Main): F:\Eagle Dynamics\DCS World\Mods\aircraft\C130J\bin\C130J.dll, 12599496 bytes, created 19:3:2026-23.52.54, written 19:3:2026-23.52.54, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.652 INFO    APP (Main): F:\Eagle Dynamics\DCS World\Mods\aircraft\C130J\bin\Manwe.dll, 85860864 bytes, created 11:3:2026-22.52.28, written 11:3:2026-22.52.28, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.653 INFO    APP (Main): C:\WINDOWS\SYSTEM32\OPENGL32.dll, 995328 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.653 INFO    APP (Main): C:\WINDOWS\SYSTEM32\GLU32.dll, 180224 bytes, created 5:10:2024-0.10.20, written 5:10:2024-0.10.20, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.653 INFO    APP (Main): F:\Eagle Dynamics\DCS World\Mods\aircraft\NS430\bin\NS430.dll, 9413832 bytes, created 19:3:2026-23.53.8, written 19:3:2026-23.53.8, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.653 INFO    APP (Main): G:\Saved Games\DCS\Mods\aircraft\uh60l\bin\UH60L.dll, 944128 bytes, created 26:9:2025-14.44.39, written 26:9:2025-14.44.39, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.653 INFO    APP (Main): G:\Saved Games\DCS\Mods\services\DCS-SRS\bin\srs.dll, 29792 bytes, created 27:2:2026-20.1.17, written 27:2:2026-20.1.17, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.654 INFO    APP (Main): C:\WINDOWS\system32\explorerframe.dll, 3010560 bytes, created 26:3:2026-21.5.57, written 26:3:2026-21.5.57, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.654 INFO    APP (Main): C:\Windows\System32\OneCoreUAPCommonProxyStub.dll, 6699544 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.654 INFO    APP (Main): G:\Saved Games\DCS\Scripts\Hooks\OpenKneeboard_LuaAPI64.dll, 1000784 bytes, created 19:11:2024-15.16.0, written 19:11:2024-15.16.0, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.654 INFO    APP (Main): G:\Saved Games\DCS\Mods\tech\Tacview\bin\tacview.dll, 1238192 bytes, created 19:11:2024-15.16.13, written 19:11:2024-15.16.13, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.654 INFO    APP (Main): G:\Saved Games\DCS\Scripts\Hooks\OH6GunnerDataExport.dll, 26112 bytes, created 10:1:2026-22.10.7, written 10:1:2026-22.10.7, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.654 INFO    APP (Main): F:\Eagle Dynamics\DCS World\bin\edterrainGraphics41.dll, 1717248 bytes, created 19:3:2026-23.52.51, written 19:3:2026-23.52.51, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.655 INFO    APP (Main): C:\WINDOWS\SYSTEM32\vulkan-1.dll, 1625648 bytes, created 13:3:2026-22.4.38, written 13:3:2026-22.4.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.655 INFO    APP (Main): C:\WINDOWS\SYSTEM32\windows.staterepositorycore.dll, 129632 bytes, created 26:3:2026-21.6.7, written 26:3:2026-21.6.7, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.655 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\nvoglv64.dll, 46564584 bytes, created 13:3:2026-22.4.37, written 13:3:2026-22.4.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.655 INFO    APP (Main): C:\WINDOWS\SYSTEM32\rometadata.dll, 223200 bytes, created 28:10:2025-22.10.19, written 28:10:2025-22.10.19, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.656 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\nvrtum64.dll, 51164392 bytes, created 13:3:2026-22.4.38, written 13:3:2026-22.4.38, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.656 INFO    APP (Main): C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_4bf4c17fa8a478b5\nvobjectloader64.dll, 20422888 bytes, created 13:3:2026-22.4.37, written 13:3:2026-22.4.37, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.656 INFO    APP (Main): C:\WINDOWS\SYSTEM32\DPAPI.dll, 40960 bytes, created 1:4:2024-7.22.15, written 1:4:2024-7.22.15, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.656 INFO    APP (Main): C:\WINDOWS\system32\nlansp_c.dll, 139264 bytes, created 26:3:2026-21.6.1, written 26:3:2026-21.6.1, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.657 INFO    APP (Main): C:\WINDOWS\SYSTEM32\WINSTA.dll, 402344 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.657 INFO    APP (Main): C:\Windows\System32\Windows.UI.dll, 1422952 bytes, created 26:3:2026-21.6.5, written 26:3:2026-21.6.5, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.657 INFO    APP (Main): C:\WINDOWS\SYSTEM32\mscms.dll, 799016 bytes, created 26:3:2026-21.5.58, written 26:3:2026-21.5.58, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.657 INFO    APP (Main): C:\WINDOWS\SYSTEM32\DSREG.DLL, 1534528 bytes, created 26:3:2026-21.6.4, written 26:3:2026-21.6.4, accessed 14:4:2026-20.18.7
+2026-04-14 20:18:07.657 INFO    APP (Main): try to write track file
+2026-04-14 20:18:07.702 INFO    APP (Main): Removed G:\Saved Games\DCS\Logs\dcs.20260414-201806.crash
+2026-04-14 20:18:07.791 INFO    APP (Main): Removed G:\Saved Games\DCS\Logs\dcs.20260414-201806.dmp
+2026-04-14 20:18:08.064 ERROR   ASYNCNET (16912): HTTP request NORESULT failed with error 60: SSL peer certificate or SSH remote key was not OK
+2026-04-14 20:18:23.651 INFO    APP (Main): Device plugged: [SWD] Service Test Loopback A
+2026-04-14 20:18:23.772 INFO    APP (Main): Device plugged: [SWD] Service Test Loopback B
+2026-04-14 20:18:23.890 INFO    APP (Main): Device plugged: [SWD] Service Test Ping (Internal)
+2026-04-14 20:18:34.875 INFO    APP (Main): Removed G:\Saved Games\DCS\Logs\dxdiag.txt
+2026-04-14 20:18:34.875 ERROR   EDCORE (Main): Can't open file 'G:\Saved Games\DCS\Logs\voice_chat.log' from real path fs.
+2026-04-14 20:18:34.875 INFO    APP (Main): failed to open 'G:\Saved Games\DCS\Logs\voice_chat.log' for reading
+=== Log closed.
