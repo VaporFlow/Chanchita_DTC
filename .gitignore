@@ -1,9 +1,14 @@
 __pycache__/
 *.pyc
 *.pyo
+.venv/
 build/
 dist/
-*.spec
 *.exe
 chanchita_dtc.ini
 *.mbtiles
+user_data.db
+Logs/
+Chanchita_DTC_Alpha*.zip
+check_db.py
+test_nav_final.py
