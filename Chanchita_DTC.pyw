@@ -123,6 +123,249 @@ def is_valid_mgrs(mgrs_str):
 
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "chanchita_dtc.ini")
 
+# ── Internationalisation ─────────────────────────────────────────
+
+_LANG = "es"  # default language
+
+STRINGS = {
+    # ── Menus ──
+    "menu_load_dtc":        {"es": "Cargar DTC",              "en": "Load DTC"},
+    "menu_save":            {"es": "Guardar",                 "en": "Save"},
+    "menu_open_db":         {"es": "Abrir BD...",             "en": "Open DB..."},
+    "menu_save_as":         {"es": "Guardar como...",         "en": "Save As..."},
+    "menu_config_dcs":      {"es": "Configurar ruta DCS...",  "en": "Configure DCS path..."},
+    "menu_exit":            {"es": "Salir",                   "en": "Exit"},
+    "menu_file":            {"es": "Archivo",                 "en": "File"},
+    "menu_import_wpt_csv":  {"es": "Importar Waypoints CSV...", "en": "Import Waypoints CSV..."},
+    "menu_import_rte_csv":  {"es": "Importar Routes CSV...",    "en": "Import Routes CSV..."},
+    "menu_export_wpt_csv":  {"es": "Exportar Waypoints CSV...", "en": "Export Waypoints CSV..."},
+    "menu_export_rte_csv":  {"es": "Exportar Routes CSV...",    "en": "Export Routes CSV..."},
+    "menu_import_export":   {"es": "Importar/Exportar",        "en": "Import/Export"},
+    "menu_export_dtc":      {"es": "Exportar paquete .dtc...",  "en": "Export .dtc package..."},
+    "menu_import_dtc":      {"es": "Importar paquete .dtc...",  "en": "Import .dtc package..."},
+    "menu_dtc_pkg":         {"es": "Paquete DTC",              "en": "DTC Package"},
+    # ── Tabs ──
+    "tab_waypoints":        {"es": " Waypoints (custom_data) ", "en": " Waypoints (custom_data) "},
+    "tab_routes":           {"es": " Routes ",                   "en": " Routes "},
+    "tab_map":              {"es": " Mapa ",                     "en": " Map "},
+    # ── Waypoint toolbar ──
+    "btn_add":              {"es": "+ Agregar",   "en": "+ Add"},
+    "btn_edit":             {"es": "Editar",      "en": "Edit"},
+    "btn_delete":           {"es": "Eliminar",    "en": "Delete"},
+    "btn_duplicate":        {"es": "Duplicar",    "en": "Duplicate"},
+    # ── Route toolbar ──
+    "btn_new_route":        {"es": "+ Nueva",        "en": "+ New"},
+    "btn_save_route":       {"es": "💾 Guardar",    "en": "💾 Save"},
+    "btn_delete_route":     {"es": "Eliminar",       "en": "Delete"},
+    "btn_clone":            {"es": "Clonar",         "en": "Clone"},
+    "btn_show_map":         {"es": "🗺 Ver en Mapa", "en": "🗺 Show on Map"},
+    # ── Wpt list (main/alt pts) ──
+    "btn_list_add":         {"es": "+ Agregar",  "en": "+ Add"},
+    "btn_list_remove":      {"es": "Quitar",     "en": "Remove"},
+    # ── Search dialog ──
+    "btn_search":           {"es": "Buscar",      "en": "Search"},
+    "btn_select":           {"es": "Seleccionar", "en": "Select"},
+    "btn_cancel":           {"es": "Cancelar",    "en": "Cancel"},
+    "lbl_search":           {"es": "Buscar:",     "en": "Search:"},
+    "lbl_source":           {"es": "Fuente:",     "en": "Source:"},
+    "dlg_search_wpt":       {"es": "Buscar Waypoint", "en": "Search Waypoint"},
+    # ── Map toolbar ──
+    "btn_refresh":          {"es": "Actualizar",       "en": "Refresh"},
+    "btn_center_wpts":      {"es": "Centrar en WPTs",  "en": "Center on WPTs"},
+    "btn_load_mbtiles":     {"es": "Cargar MBTiles...", "en": "Load MBTiles..."},
+    "lbl_tiles":            {"es": "Tiles:",            "en": "Tiles:"},
+    "map_create_wpt":       {"es": "Crear waypoint aquí", "en": "Create waypoint here"},
+    # ── Waypoint edit dialog ──
+    "btn_save":             {"es": "Guardar",     "en": "Save"},
+    "dlg_new_wpt":          {"es": "Nuevo Waypoint",  "en": "New Waypoint"},
+    "dlg_edit_wpt":         {"es": "Editar Waypoint", "en": "Edit Waypoint"},
+    "lbl_wpt_name":         {"es": "Name:",                "en": "Name:"},
+    "lbl_wpt_mgrs":         {"es": "MGRS (entry_pos):",    "en": "MGRS (entry_pos):"},
+    "lbl_wpt_lat":          {"es": "Lat (DDM):",           "en": "Lat (DDM):"},
+    "lbl_wpt_lon":          {"es": "Lon (DDM):",           "en": "Lon (DDM):"},
+    "lbl_wpt_elev":         {"es": "Elevación (ft):",      "en": "Elevation (ft):"},
+    "hint_lat":             {"es": "N 41° 23.456'",   "en": "N 41° 23.456'"},
+    "hint_lon":             {"es": "E 044° 12.345'",  "en": "E 044° 12.345'"},
+    "hint_elev":            {"es": "en pies (MSL)",    "en": "in feet (MSL)"},
+    # ── Conflict dialog ──
+    "btn_rename_imported":  {"es": "📝 Renombrar el importado",          "en": "📝 Rename imported"},
+    "btn_rename_existing":  {"es": "📝 Renombrar el existente",          "en": "📝 Rename existing"},
+    "btn_overwrite":        {"es": "⚡ Sobrescribir con el importado",   "en": "⚡ Overwrite with imported"},
+    "btn_skip":             {"es": "⏭  Omitir (no importar)",            "en": "⏭  Skip (don't import)"},
+    "lbl_conflict":         {"es": "¿Qué querés hacer?",    "en": "What do you want to do?"},
+    "dlg_conflict":         {"es": "Conflicto — {tipo}",    "en": "Conflict — {tipo}"},
+    # ── Route field labels ──
+    "fld_nombre":           {"es": "Nombre",       "en": "Name"},
+    "fld_origen":           {"es": "Origen",       "en": "Origin"},
+    "fld_destino":          {"es": "Destino",      "en": "Destination"},
+    "fld_alternativa":      {"es": "Alternativa",  "en": "Alternate"},
+    "fld_wpt_trans":        {"es": "WPT Trans",    "en": "WPT Trans"},
+    "fld_rwy_dep":          {"es": "RWY Dep",      "en": "RWY Dep"},
+    "fld_rwy_arr":          {"es": "RWY Arr",      "en": "RWY Arr"},
+    "fld_rwy_dep_ret":      {"es": "RWY Dep Ret",  "en": "RWY Dep Ret"},
+    "fld_rwy_alt":          {"es": "RWY Alt",      "en": "RWY Alt"},
+    "fld_sid":              {"es": "SID",           "en": "SID"},
+    "fld_star_arr":         {"es": "STAR Arr",      "en": "STAR Arr"},
+    "fld_star_alt":         {"es": "STAR Alt",      "en": "STAR Alt"},
+    "fld_star_dep_ret":     {"es": "STAR Dep Ret",  "en": "STAR Dep Ret"},
+    "fld_trans_dep":        {"es": "Trans Dep",     "en": "Trans Dep"},
+    "fld_trans_arr":        {"es": "Trans Arr",     "en": "Trans Arr"},
+    # ── LabelFrames ──
+    "lf_route_data":        {"es": "Datos de la Ruta",   "en": "Route Data"},
+    "lf_main_pts":          {"es": "Main Points (main_pts)", "en": "Main Points (main_pts)"},
+    "lf_alt_pts":           {"es": "Alt Points (alt_pts)",   "en": "Alt Points (alt_pts)"},
+    "lf_raw_edit":          {"es": "Edición manual (pipe-delimited)", "en": "Manual editing (pipe-delimited)"},
+    "chk_show_raw":         {"es": "Mostrar campos de texto raw", "en": "Show raw text fields"},
+    # ── Table headings ──
+    "hd_name":              {"es": "Name",      "en": "Name"},
+    "hd_mgrs":              {"es": "MGRS",      "en": "MGRS"},
+    "hd_lat_ddm":           {"es": "Lat (DDM)", "en": "Lat (DDM)"},
+    "hd_lon_ddm":           {"es": "Lon (DDM)", "en": "Lon (DDM)"},
+    "hd_elev":              {"es": "Elev (ft)", "en": "Elev (ft)"},
+    "hd_origin":            {"es": "Origin",    "en": "Origin"},
+    "hd_dest":              {"es": "Dest",      "en": "Dest"},
+    "hd_waypoint":          {"es": "Waypoint",  "en": "Waypoint"},
+    "hd_nombre":            {"es": "Nombre",    "en": "Name"},
+    "hd_fuente":            {"es": "Fuente",    "en": "Source"},
+    "hd_id":                {"es": "ID",        "en": "ID"},
+    "hd_lat":               {"es": "Lat",       "en": "Lat"},
+    "hd_lon":               {"es": "Lon",       "en": "Lon"},
+    # ── Status bar / misc labels ──
+    "lbl_no_db":            {"es": "Sin BD cargada",  "en": "No DB loaded"},
+    "lbl_wpts_loaded":      {"es": "{n} waypoints cargados — {f}", "en": "{n} waypoints loaded — {f}"},
+    # ── Messageboxes ──
+    "ttl_error":            {"es": "Error",      "en": "Error"},
+    "ttl_confirm":          {"es": "Confirmar",  "en": "Confirm"},
+    "ttl_warning":          {"es": "Aviso",      "en": "Warning"},
+    "ttl_saved":            {"es": "Guardado",   "en": "Saved"},
+    "ttl_exported":         {"es": "Exportado",  "en": "Exported"},
+    "ttl_import_done":      {"es": "Importación completa", "en": "Import complete"},
+    "ttl_dcs_not_found":    {"es": "DCS.C130J no encontrado", "en": "DCS.C130J not found"},
+    "ttl_mgrs_invalid":     {"es": "MGRS inválido", "en": "Invalid MGRS"},
+    "ttl_mgrs_conv":        {"es": "Conversión MGRS", "en": "MGRS Conversion"},
+    "msg_route_name_required": {"es": "El nombre de la ruta es obligatorio", "en": "Route name is required"},
+    "msg_name_required":    {"es": "El nombre es obligatorio", "en": "Name is required"},
+    "msg_load_db_first":    {"es": "Primero cargá la BD\n(Archivo → Cargar DTC)", "en": "Load the DB first\n(File → Load DTC)"},
+    "msg_select_wpt":       {"es": "Seleccioná un waypoint primero", "en": "Select a waypoint first"},
+    "msg_saved_to":         {"es": "Guardado en:\n{path}", "en": "Saved to:\n{path}"},
+    "msg_path_set":         {"es": "Ruta configurada:\n{path}", "en": "Path configured:\n{path}"},
+    "msg_route_saved":      {"es": "Ruta '{name}' guardada", "en": "Route '{name}' saved"},
+    "msg_confirm_del_wpt":  {"es": "¿Eliminar waypoint '{name}'?", "en": "Delete waypoint '{name}'?"},
+    "msg_confirm_del_rte":  {"es": "¿Eliminar ruta '{name}'?", "en": "Delete route '{name}'?"},
+    "msg_clone_prompt":     {"es": "Nombre para la copia de '{name}':", "en": "Name for copy of '{name}':"},
+    "dlg_clone_route":      {"es": "Clonar Ruta", "en": "Clone Route"},
+    "msg_route_exists":     {"es": "Ya existe una ruta '{name}'", "en": "Route '{name}' already exists"},
+    "msg_select_route_clone": {"es": "Seleccioná una ruta para clonar", "en": "Select a route to clone"},
+    "msg_map_unavailable":  {"es": "El mapa no está disponible", "en": "Map is not available"},
+    "msg_no_wpts_route":    {"es": "No hay waypoints en la ruta", "en": "No waypoints in route"},
+    "msg_wpt_exists":       {"es": "Ya existe un waypoint con nombre '{name}'", "en": "A waypoint named '{name}' already exists"},
+    "msg_invalid_elev":     {"es": "Elevación inválida: '{val}'", "en": "Invalid elevation: '{val}'"},
+    "msg_invalid_value":    {"es": "Valor inválido:\n{err}", "en": "Invalid value:\n{err}"},
+    "msg_mgrs_invalid":     {"es": "El MGRS '{mgrs}' tiene un número impar de dígitos u otro error de formato.\nVerificá que la coordenada sea correcta.",
+                             "en": "The MGRS '{mgrs}' has an odd digit count or format error.\nPlease check the coordinate."},
+    "msg_mgrs_conv_fail":   {"es": "La librería no pudo convertir este MGRS a lat/lon.\nIngresá lat/lon manualmente (copiá del CDU de DCS).",
+                             "en": "The library could not convert this MGRS to lat/lon.\nEnter lat/lon manually (copy from DCS CDU)."},
+    "msg_tiles_loaded":     {"es": "Tiles cargados:\n{name}", "en": "Tiles loaded:\n{name}"},
+    "msg_tiles_error":      {"es": "No se pudo iniciar el servidor de tiles.\nEl puerto puede estar en uso.",
+                             "en": "Could not start tile server.\nThe port may be in use."},
+    "msg_dcs_not_found":    {"es": "No se encontró la carpeta DCS.C130J automáticamente.\nSeleccioná manualmente el archivo user_data.db",
+                             "en": "DCS.C130J folder not found automatically.\nSelect user_data.db manually"},
+    "msg_select_export":    {"es": "Seleccioná al menos un waypoint o una ruta para exportar.\n(Usá Ctrl+Click o Shift+Click para selección múltiple)",
+                             "en": "Select at least one waypoint or route to export.\n(Use Ctrl+Click or Shift+Click for multiple selection)"},
+    "msg_dtc_exported":     {"es": "Paquete DTC guardado:\n{name}\n\n• {wpts} waypoint(s)\n• {routes} ruta(s)",
+                             "en": "DTC package saved:\n{name}\n\n• {wpts} waypoint(s)\n• {routes} route(s)"},
+    "msg_import_summary":   {"es": "Waypoints: {wi} importados, {ws} omitidos\nRutas: {ri} importadas, {rs} omitidas",
+                             "en": "Waypoints: {wi} imported, {ws} skipped\nRoutes: {ri} imported, {rs} skipped"},
+    "msg_invalid_dtc":      {"es": "El archivo no es un paquete DTC válido.", "en": "The file is not a valid DTC package."},
+    "msg_wpts_imported":    {"es": "{n} waypoints importados", "en": "{n} waypoints imported"},
+    "msg_routes_imported":  {"es": "{n} rutas importadas", "en": "{n} routes imported"},
+    "msg_wpts_exported":    {"es": "Waypoints exportados a:\n{path}", "en": "Waypoints exported to:\n{path}"},
+    "msg_routes_exported":  {"es": "Rutas exportadas a:\n{path}", "en": "Routes exported to:\n{path}"},
+    "msg_conflict_exists":  {"es": "⚠  {tipo} '{name}' ya existe", "en": "⚠  {tipo} '{name}' already exists"},
+    "msg_conflict_action":  {"es": "¿Qué querés hacer?", "en": "What do you want to do?"},
+    "msg_min_chars":        {"es": "Ingresá al menos 2 caracteres", "en": "Enter at least 2 characters"},
+    "msg_search_hint":      {"es": "Escribí un nombre o ICAO y presioná Buscar", "en": "Type a name or ICAO and press Search"},
+    "msg_results":          {"es": "{n} resultados encontrados", "en": "{n} results found"},
+    "msg_max_100":          {"es": " (máx 100)", "en": " (max 100)"},
+    # ── File dialogs ──
+    "dlg_select_db":        {"es": "Seleccionar user_data.db de DCS.C130J", "en": "Select DCS.C130J user_data.db"},
+    "dlg_export_dtc":       {"es": "Exportar paquete DTC", "en": "Export DTC package"},
+    "dlg_import_dtc":       {"es": "Importar paquete DTC", "en": "Import DTC package"},
+    "dlg_conflict":         {"es": "Conflicto — {tipo}", "en": "Conflict — {tipo}"},
+    "ft_sqlite":            {"es": "SQLite DB",     "en": "SQLite DB"},
+    "ft_all":               {"es": "Todos",         "en": "All files"},
+    "ft_dtc":               {"es": "Paquete DTC",   "en": "DTC Package"},
+    "src_all":              {"es": "Todos",          "en": "All"},
+    # ── DCS multi-path dialog ──
+    "lbl_dcs_multi":        {"es": "Se encontraron varias instalaciones de DCS.C130J.\nSeleccioná cuál usar:",
+                             "en": "Multiple DCS.C130J installations found.\nSelect which to use:"},
+    "btn_accept":           {"es": "Aceptar", "en": "OK"},
+    # ── Rename dialogs ──
+    "dlg_rename_imported":  {"es": "Renombrar importado", "en": "Rename imported"},
+    "dlg_rename_existing":  {"es": "Renombrar existente", "en": "Rename existing"},
+    "msg_rename_imported":  {"es": "Nuevo nombre para el {tipo} que estás importando:",
+                             "en": "New name for the {tipo} you are importing:"},
+    "msg_rename_existing":  {"es": "Nuevo nombre para el {tipo} que ya tenés guardado:",
+                             "en": "New name for the {tipo} you already have:"},
+    # ── Map tile names ──
+    "tile_mbtiles":         {"es": "MBTiles (local)", "en": "MBTiles (local)"},
+    "tile_google_sat":      {"es": "Google Satélite", "en": "Google Satellite"},
+    "tile_arcgis_sat":      {"es": "ArcGIS Satélite", "en": "ArcGIS Satellite"},
+    # ── MBTiles dialog ──
+    "dlg_select_mbtiles":   {"es": "Seleccionar archivo MBTiles", "en": "Select MBTiles file"},
+    # ── Language picker ──
+}
+
+
+def _t(key, **kwargs):
+    """Translate a string key to the current language."""
+    s = STRINGS.get(key, {}).get(_LANG) or STRINGS.get(key, {}).get("es", key)
+    if kwargs:
+        s = s.format(**kwargs)
+    return s
+
+
+def _load_lang_config():
+    cfg = configparser.ConfigParser()
+    if os.path.isfile(CONFIG_FILE):
+        cfg.read(CONFIG_FILE, encoding="utf-8")
+    return cfg.get("ui", "language", fallback="")
+
+
+def _save_lang_config(lang):
+    cfg = configparser.ConfigParser()
+    if os.path.isfile(CONFIG_FILE):
+        cfg.read(CONFIG_FILE, encoding="utf-8")
+    if not cfg.has_section("ui"):
+        cfg.add_section("ui")
+    cfg.set("ui", "language", lang)
+    with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+        cfg.write(f)
+
+
+def _ask_language(root):
+    """Show a first-run language picker dialog. Returns 'es' or 'en'."""
+    result = ["es"]
+    dlg = tk.Toplevel(root)
+    dlg.title("Idioma / Language")
+    dlg.geometry("320x150")
+    dlg.transient(root)
+    dlg.grab_set()
+    dlg.resizable(False, False)
+    dlg.configure(bg="#0a0a0a")
+    ttk.Label(dlg, text="Seleccioná tu idioma\nSelect your language",
+              font=("Consolas", 11), anchor="center", justify="center").pack(pady=(20, 15))
+    bf = ttk.Frame(dlg)
+    bf.pack()
+    def pick(lang):
+        result[0] = lang
+        dlg.destroy()
+    ttk.Button(bf, text="Español", width=12, command=lambda: pick("es")).pack(side=tk.LEFT, padx=10)
+    ttk.Button(bf, text="English", width=12, command=lambda: pick("en")).pack(side=tk.LEFT, padx=10)
+    dlg.protocol("WM_DELETE_WINDOW", lambda: pick("es"))
+    root.wait_window(dlg)
+    return result[0]
+
 
 def _find_dcs_c130j_paths():
     """Search for DCS.C130J user_data.db in Saved Games across all drives."""
@@ -299,7 +542,17 @@ class DBEditor:
 
     def __init__(self, root):
         self.root = root
-        self.version = "Alpha 0.2 (260413)"
+        self.version = "Alpha 0.2b (260414)"
+
+        # ── Language selection ──
+        global _LANG
+        saved_lang = _load_lang_config()
+        if saved_lang in ("es", "en"):
+            _LANG = saved_lang
+        else:
+            _LANG = _ask_language(root)
+            _save_lang_config(_LANG)
+
         self.root.title(f"Chanchita DTC — {self.version}")
         self.root.geometry("1100x700")
         self.root.configure(bg=self.CDU_BG)
@@ -393,29 +646,29 @@ class DBEditor:
         menubar = tk.Menu(self.root, **menu_kw)
 
         file_menu = tk.Menu(menubar, tearoff=0, **menu_kw)
-        file_menu.add_command(label="Cargar DTC", command=self.load_dcs_dtc, accelerator="Ctrl+L")
-        file_menu.add_command(label="Guardar", command=self.save_dcs_dtc, accelerator="Ctrl+S")
+        file_menu.add_command(label=_t("menu_load_dtc"), command=self.load_dcs_dtc, accelerator="Ctrl+L")
+        file_menu.add_command(label=_t("menu_save"), command=self.save_dcs_dtc, accelerator="Ctrl+S")
         file_menu.add_separator()
-        file_menu.add_command(label="Abrir BD...", command=self.open_db, accelerator="Ctrl+O")
-        file_menu.add_command(label="Guardar como...", command=self.save_db_as, accelerator="Ctrl+Shift+S")
+        file_menu.add_command(label=_t("menu_open_db"), command=self.open_db, accelerator="Ctrl+O")
+        file_menu.add_command(label=_t("menu_save_as"), command=self.save_db_as, accelerator="Ctrl+Shift+S")
         file_menu.add_separator()
-        file_menu.add_command(label="Configurar ruta DCS...", command=self.configure_dcs_path)
+        file_menu.add_command(label=_t("menu_config_dcs"), command=self.configure_dcs_path)
         file_menu.add_separator()
-        file_menu.add_command(label="Salir", command=self.root.quit)
-        menubar.add_cascade(label="Archivo", menu=file_menu)
+        file_menu.add_command(label=_t("menu_exit"), command=self.root.quit)
+        menubar.add_cascade(label=_t("menu_file"), menu=file_menu)
 
         imp_menu = tk.Menu(menubar, tearoff=0, **menu_kw)
-        imp_menu.add_command(label="Importar Waypoints CSV...", command=self.import_waypoints_csv)
-        imp_menu.add_command(label="Importar Routes CSV...", command=self.import_routes_csv)
+        imp_menu.add_command(label=_t("menu_import_wpt_csv"), command=self.import_waypoints_csv)
+        imp_menu.add_command(label=_t("menu_import_rte_csv"), command=self.import_routes_csv)
         imp_menu.add_separator()
-        imp_menu.add_command(label="Exportar Waypoints CSV...", command=self.export_waypoints_csv)
-        imp_menu.add_command(label="Exportar Routes CSV...", command=self.export_routes_csv)
-        menubar.add_cascade(label="Importar/Exportar", menu=imp_menu)
+        imp_menu.add_command(label=_t("menu_export_wpt_csv"), command=self.export_waypoints_csv)
+        imp_menu.add_command(label=_t("menu_export_rte_csv"), command=self.export_routes_csv)
+        menubar.add_cascade(label=_t("menu_import_export"), menu=imp_menu)
 
         dtc_menu = tk.Menu(menubar, tearoff=0, **menu_kw)
-        dtc_menu.add_command(label="Exportar paquete .dtc...", command=self.export_dtc, accelerator="Ctrl+E")
-        dtc_menu.add_command(label="Importar paquete .dtc...", command=self.import_dtc, accelerator="Ctrl+I")
-        menubar.add_cascade(label="Paquete DTC", menu=dtc_menu)
+        dtc_menu.add_command(label=_t("menu_export_dtc"), command=self.export_dtc, accelerator="Ctrl+E")
+        dtc_menu.add_command(label=_t("menu_import_dtc"), command=self.import_dtc, accelerator="Ctrl+I")
+        menubar.add_cascade(label=_t("menu_dtc_pkg"), menu=dtc_menu)
 
         self.root.config(menu=menubar)
         self.root.bind("<Control-l>", lambda e: self.load_dcs_dtc())
@@ -430,16 +683,16 @@ class DBEditor:
         self.notebook.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
         self.wpt_frame = ttk.Frame(self.notebook)
-        self.notebook.add(self.wpt_frame, text=" Waypoints (custom_data) ")
+        self.notebook.add(self.wpt_frame, text=_t("tab_waypoints"))
         self._build_waypoints_tab()
 
         self.route_frame = ttk.Frame(self.notebook)
-        self.notebook.add(self.route_frame, text=" Routes ")
+        self.notebook.add(self.route_frame, text=_t("tab_routes"))
         self._build_routes_tab()
 
         if _HAS_MAPVIEW:
             self.map_frame = ttk.Frame(self.notebook)
-            self.notebook.add(self.map_frame, text=" Mapa ")
+            self.notebook.add(self.map_frame, text=_t("tab_map"))
             self._build_map_tab()
 
     # ── Waypoints tab ────────────────────────────────────────────────
@@ -447,10 +700,10 @@ class DBEditor:
     def _build_waypoints_tab(self):
         toolbar = ttk.Frame(self.wpt_frame)
         toolbar.pack(fill=tk.X, padx=5, pady=5)
-        ttk.Button(toolbar, text="+ Agregar", command=self.add_waypoint).pack(side=tk.LEFT, padx=2)
-        ttk.Button(toolbar, text="Editar", command=self.edit_waypoint).pack(side=tk.LEFT, padx=2)
-        ttk.Button(toolbar, text="Eliminar", command=self.delete_waypoint).pack(side=tk.LEFT, padx=2)
-        ttk.Button(toolbar, text="Duplicar", command=self.duplicate_waypoint).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text=_t("btn_add"), command=self.add_waypoint).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text=_t("btn_edit"), command=self.edit_waypoint).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text=_t("btn_delete"), command=self.delete_waypoint).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text=_t("btn_duplicate"), command=self.duplicate_waypoint).pack(side=tk.LEFT, padx=2)
 
         tree_frame = ttk.Frame(self.wpt_frame)
         tree_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0, 5))
@@ -458,9 +711,9 @@ class DBEditor:
         cols = ("name", "entry_pos", "lat", "lon", "alt")
         self.wpt_tree = ttk.Treeview(tree_frame, columns=cols, show="headings", selectmode="extended")
         for col, heading, w in [
-            ("name", "Name", 100), ("entry_pos", "MGRS", 170),
-            ("lat", "Lat (DDM)", 160), ("lon", "Lon (DDM)", 160),
-            ("alt", "Elev (ft)", 80),
+            ("name", _t("hd_name"), 100), ("entry_pos", _t("hd_mgrs"), 170),
+            ("lat", _t("hd_lat_ddm"), 160), ("lon", _t("hd_lon_ddm"), 160),
+            ("alt", _t("hd_elev"), 80),
         ]:
             self.wpt_tree.heading(col, text=heading, command=lambda c=col: self._sort_wpt(c))
             self.wpt_tree.column(col, width=w)
@@ -473,7 +726,7 @@ class DBEditor:
         self.wpt_tree.bind("<Double-1>", lambda e: self.edit_waypoint())
 
         # Status
-        self.wpt_status = ttk.Label(self.wpt_frame, text="Sin BD cargada")
+        self.wpt_status = ttk.Label(self.wpt_frame, text=_t("lbl_no_db"))
         self.wpt_status.pack(fill=tk.X, padx=5, pady=(0, 5))
 
     def _sort_wpt(self, col):
@@ -497,15 +750,15 @@ class DBEditor:
 
         tb = ttk.Frame(left)
         tb.pack(fill=tk.X, pady=(0, 5))
-        ttk.Button(tb, text="+ Nueva", command=self.add_route).pack(side=tk.LEFT, padx=2)
-        ttk.Button(tb, text="💾 Guardar", command=self.save_route).pack(side=tk.LEFT, padx=2)
-        ttk.Button(tb, text="Eliminar", command=self.delete_route).pack(side=tk.LEFT, padx=2)
-        ttk.Button(tb, text="Clonar", command=self.clone_route).pack(side=tk.LEFT, padx=2)
-        ttk.Button(tb, text="🗺 Ver en Mapa", command=self.show_route_on_map).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text=_t("btn_new_route"), command=self.add_route).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text=_t("btn_save_route"), command=self.save_route).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text=_t("btn_delete_route"), command=self.delete_route).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text=_t("btn_clone"), command=self.clone_route).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text=_t("btn_show_map"), command=self.show_route_on_map).pack(side=tk.LEFT, padx=2)
 
         cols = ("name", "origin", "dest")
         self.route_tree = ttk.Treeview(left, columns=cols, show="headings", selectmode="extended")
-        for col, heading, w in [("name", "Name", 110), ("origin", "Origin", 70), ("dest", "Dest", 70)]:
+        for col, heading, w in [("name", _t("hd_name"), 110), ("origin", _t("hd_origin"), 70), ("dest", _t("hd_dest"), 70)]:
             self.route_tree.heading(col, text=heading)
             self.route_tree.column(col, width=w)
         self.route_tree.pack(fill=tk.BOTH, expand=True)
@@ -529,16 +782,16 @@ class DBEditor:
         inner = self.detail_inner
 
         # Fields grid
-        fields_frame = ttk.LabelFrame(inner, text="Datos de la Ruta")
+        fields_frame = ttk.LabelFrame(inner, text=_t("lf_route_data"))
         fields_frame.pack(fill=tk.X, padx=5, pady=5)
 
         self.route_vars = {}
         route_fields = [
-            ("name", "Nombre"), ("origin", "Origen"), ("dest", "Destino"),
-            ("alt", "Alternativa"), ("wpt_trans", "WPT Trans"), ("rwy_dep", "RWY Dep"),
-            ("rwy_arr", "RWY Arr"), ("rwy_dep_return", "RWY Dep Ret"), ("rwy_alt", "RWY Alt"),
-            ("rwy_dep_sid", "SID"), ("rwy_arr_star", "STAR Arr"), ("rwy_alt_star", "STAR Alt"),
-            ("rwy_dep_return_star", "STAR Dep Ret"), ("rwy_dep_trans", "Trans Dep"), ("rwy_arr_trans", "Trans Arr"),
+            ("name", _t("fld_nombre")), ("origin", _t("fld_origen")), ("dest", _t("fld_destino")),
+            ("alt", _t("fld_alternativa")), ("wpt_trans", _t("fld_wpt_trans")), ("rwy_dep", _t("fld_rwy_dep")),
+            ("rwy_arr", _t("fld_rwy_arr")), ("rwy_dep_return", _t("fld_rwy_dep_ret")), ("rwy_alt", _t("fld_rwy_alt")),
+            ("rwy_dep_sid", _t("fld_sid")), ("rwy_arr_star", _t("fld_star_arr")), ("rwy_alt_star", _t("fld_star_alt")),
+            ("rwy_dep_return_star", _t("fld_star_dep_ret")), ("rwy_dep_trans", _t("fld_trans_dep")), ("rwy_arr_trans", _t("fld_trans_arr")),
         ]
         for i, (key, label) in enumerate(route_fields):
             row, col = divmod(i, 3)
@@ -548,20 +801,20 @@ class DBEditor:
             self.route_vars[key] = var
 
         # Main points — waypoint list with toolbar
-        mp_frame = ttk.LabelFrame(inner, text="Main Points (main_pts)")
+        mp_frame = ttk.LabelFrame(inner, text=_t("lf_main_pts"))
         mp_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0, 5))
         self._build_wpt_list(mp_frame, "main")
 
         # Alt points — waypoint list with toolbar
-        ap_frame = ttk.LabelFrame(inner, text="Alt Points (alt_pts)")
+        ap_frame = ttk.LabelFrame(inner, text=_t("lf_alt_pts"))
         ap_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0, 5))
         self._build_wpt_list(ap_frame, "alt")
 
         # Raw text (collapsed by default, for advanced editing)
-        raw_frame = ttk.LabelFrame(inner, text="Edición manual (pipe-delimited)")
+        raw_frame = ttk.LabelFrame(inner, text=_t("lf_raw_edit"))
         raw_frame.pack(fill=tk.X, padx=5, pady=(0, 5))
         self._raw_visible = tk.BooleanVar(value=False)
-        ttk.Checkbutton(raw_frame, text="Mostrar campos de texto raw",
+        ttk.Checkbutton(raw_frame, text=_t("chk_show_raw"),
                         variable=self._raw_visible,
                         command=self._toggle_raw_text).pack(anchor="w", padx=5, pady=2)
         self._raw_container = ttk.Frame(raw_frame)
@@ -582,8 +835,8 @@ class DBEditor:
         """Build a waypoint list with toolbar for main or alt points."""
         tb = ttk.Frame(parent)
         tb.pack(fill=tk.X, padx=5, pady=(5, 0))
-        ttk.Button(tb, text="+ Agregar", command=lambda: self._wpt_list_add(tag)).pack(side=tk.LEFT, padx=2)
-        ttk.Button(tb, text="Quitar", command=lambda: self._wpt_list_remove(tag)).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text=_t("btn_list_add"), command=lambda: self._wpt_list_add(tag)).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text=_t("btn_list_remove"), command=lambda: self._wpt_list_remove(tag)).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text="▲", width=3, command=lambda: self._wpt_list_move(tag, -1)).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text="▼", width=3, command=lambda: self._wpt_list_move(tag, 1)).pack(side=tk.LEFT, padx=2)
 
@@ -591,11 +844,11 @@ class DBEditor:
         tree = ttk.Treeview(parent, columns=cols, show="headings", height=6, selectmode="extended")
         tree.heading("seq", text="#")
         tree.column("seq", width=35, stretch=False)
-        tree.heading("wpt_id", text="Waypoint")
+        tree.heading("wpt_id", text=_t("hd_waypoint"))
         tree.column("wpt_id", width=100)
-        tree.heading("nombre", text="Nombre")
+        tree.heading("nombre", text=_t("hd_nombre"))
         tree.column("nombre", width=200)
-        tree.heading("source", text="Fuente")
+        tree.heading("source", text=_t("hd_fuente"))
         tree.column("source", width=80)
         tree.pack(fill=tk.BOTH, expand=True, padx=5, pady=(3, 5))
 
@@ -830,7 +1083,7 @@ class DBEditor:
     def _wpt_search_dialog(self):
         """Search dialog that queries custom_data + nav_data.db. Returns (wpt_id, source) or None."""
         dlg = tk.Toplevel(self.root)
-        dlg.title("Buscar Waypoint")
+        dlg.title(_t("dlg_search_wpt"))
         dlg.geometry("680x420")
         dlg.transient(self.root)
         dlg.grab_set()
@@ -842,32 +1095,32 @@ class DBEditor:
         # Search bar
         search_frame = ttk.Frame(dlg)
         search_frame.pack(fill=tk.X, padx=10, pady=(10, 5))
-        ttk.Label(search_frame, text="Buscar:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Label(search_frame, text=_t("lbl_search")).pack(side=tk.LEFT, padx=(0, 5))
         search_var = tk.StringVar()
         search_entry = ttk.Entry(search_frame, textvariable=search_var, width=25, font=self.CDU_FONT)
         search_entry.pack(side=tk.LEFT, padx=(0, 5))
-        ttk.Button(search_frame, text="Buscar",
+        ttk.Button(search_frame, text=_t("btn_search"),
                    command=lambda: do_search()).pack(side=tk.LEFT, padx=2)
 
         # Source filter
-        src_var = tk.StringVar(value="Todos")
-        ttk.Label(search_frame, text="Fuente:").pack(side=tk.LEFT, padx=(10, 5))
+        src_var = tk.StringVar(value=_t("src_all"))
+        ttk.Label(search_frame, text=_t("lbl_source")).pack(side=tk.LEFT, padx=(10, 5))
         src_combo = ttk.Combobox(search_frame, textvariable=src_var, width=12, state="readonly",
-                                  values=["Todos", "custom_data", "airports", "navaids", "waypoints"])
+                                  values=[_t("src_all"), "custom_data", "airports", "navaids", "waypoints"])
         src_combo.pack(side=tk.LEFT)
 
         # Results tree
         cols = ("wpt_id", "name", "source", "lat", "lon")
         res_tree = ttk.Treeview(dlg, columns=cols, show="headings", height=14)
-        res_tree.heading("wpt_id", text="ID")
+        res_tree.heading("wpt_id", text=_t("hd_id"))
         res_tree.column("wpt_id", width=80)
-        res_tree.heading("name", text="Nombre")
+        res_tree.heading("name", text=_t("hd_nombre"))
         res_tree.column("name", width=250)
-        res_tree.heading("source", text="Fuente")
+        res_tree.heading("source", text=_t("hd_fuente"))
         res_tree.column("source", width=70)
-        res_tree.heading("lat", text="Lat")
+        res_tree.heading("lat", text=_t("hd_lat"))
         res_tree.column("lat", width=80)
-        res_tree.heading("lon", text="Lon")
+        res_tree.heading("lon", text=_t("hd_lon"))
         res_tree.column("lon", width=80)
         res_tree.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
 
@@ -875,7 +1128,7 @@ class DBEditor:
         res_tree.configure(yscrollcommand=vsb.set)
 
         # Status label
-        status_var = tk.StringVar(value="Escribí un nombre o ICAO y presioná Buscar")
+        status_var = tk.StringVar(value=_t("msg_search_hint"))
         ttk.Label(dlg, textvariable=status_var, foreground=self.CDU_FG_DIM).pack(padx=10, anchor="w")
 
         # Buttons
@@ -892,18 +1145,18 @@ class DBEditor:
         def do_search():
             query = search_var.get().strip().upper()
             if len(query) < 2:
-                status_var.set("Ingresá al menos 2 caracteres")
+                status_var.set(_t("msg_min_chars"))
                 return
             source = src_var.get()
             results = self._search_waypoints(query, source)
             res_tree.delete(*res_tree.get_children())
             for r in results:
                 res_tree.insert("", tk.END, values=r)
-            status_var.set(f"{len(results)} resultados encontrados" +
-                           (" (máx 100)" if len(results) >= 100 else ""))
+            status_var.set(_t("msg_results", n=len(results)) +
+                           (_t("msg_max_100") if len(results) >= 100 else ""))
 
-        ttk.Button(btn_frame, text="Seleccionar", command=do_select).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="Cancelar", command=dlg.destroy).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text=_t("btn_select"), command=do_select).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text=_t("btn_cancel"), command=dlg.destroy).pack(side=tk.LEFT, padx=5)
 
         # Bind enter and double-click
         search_entry.bind("<Return>", lambda e: do_search())
@@ -914,13 +1167,14 @@ class DBEditor:
         self.root.wait_window(dlg)
         return result[0]
 
-    def _search_waypoints(self, query, source="Todos", limit=100):
+    def _search_waypoints(self, query, source="all", limit=100):
         """Search across custom_data and nav_data.db. Returns list of (id, name, source, lat, lon)."""
         results = []
         like = f"%{query}%"
+        is_all = source not in ("custom_data", "airports", "navaids", "waypoints")
 
         # custom_data
-        if source in ("Todos", "custom_data") and self.conn:
+        if (is_all or source == "custom_data") and self.conn:
             cur = self.conn.cursor()
             cur.execute(
                 "SELECT name, name, 'custom', lat, lon FROM custom_data WHERE UPPER(name) LIKE ? LIMIT ?",
@@ -937,7 +1191,7 @@ class DBEditor:
         nav = self.nav_conn.cursor()
 
         # airports (search by ICAO and also by name via airport_names.db)
-        if source in ("Todos", "airports"):
+        if is_all or source == "airports":
             found_icaos = set()
             if self.names_conn:
                 # Search airport_names by ident, icao, name, or municipality
@@ -977,7 +1231,7 @@ class DBEditor:
             remaining = limit - len(results)
 
         # navaids
-        if remaining > 0 and source in ("Todos", "navaids"):
+        if remaining > 0 and (is_all or source == "navaids"):
             nav.execute(
                 "SELECT name, name, 'navaid', lat, lon FROM navaids "
                 "WHERE UPPER(name) LIKE ? LIMIT ?",
@@ -986,7 +1240,7 @@ class DBEditor:
             remaining = limit - len(results)
 
         # waypoints/fixes
-        if remaining > 0 and source in ("Todos", "waypoints"):
+        if remaining > 0 and (is_all or source == "waypoints"):
             nav.execute(
                 "SELECT waypoint_identifier, waypoint_name, 'fix', "
                 "waypoint_latitude, waypoint_longitude FROM waypoints "
@@ -1002,16 +1256,16 @@ class DBEditor:
         toolbar = ttk.Frame(self.map_frame)
         toolbar.pack(fill=tk.X, padx=5, pady=5)
 
-        ttk.Button(toolbar, text="Actualizar",
+        ttk.Button(toolbar, text=_t("btn_refresh"),
                    command=self._refresh_map_markers).pack(side=tk.LEFT, padx=2)
-        ttk.Button(toolbar, text="Centrar en WPTs",
+        ttk.Button(toolbar, text=_t("btn_center_wpts"),
                    command=self._center_map_on_wpts).pack(side=tk.LEFT, padx=2)
 
         ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=8, pady=2)
 
-        ttk.Label(toolbar, text="Tiles:").pack(side=tk.LEFT, padx=(0, 4))
+        ttk.Label(toolbar, text=_t("lbl_tiles")).pack(side=tk.LEFT, padx=(0, 4))
         self._tile_var = tk.StringVar(value="DCS Caucasus")
-        tile_values = ["OpenStreetMap", "Google Satélite", "ArcGIS Satélite",
+        tile_values = ["OpenStreetMap", _t("tile_google_sat"), _t("tile_arcgis_sat"),
                        "DCS Caucasus", "DCS Marianas", "DCS Nevada",
                        "DCS Persian Gulf", "DCS Syria"]
         self._mbtiles_server = None
@@ -1020,14 +1274,14 @@ class DBEditor:
         if mbtiles_path and os.path.isfile(mbtiles_path):
             self._mbtiles_server = _start_mbtiles_server(mbtiles_path)
             if self._mbtiles_server:
-                tile_values.append("MBTiles (local)")
+                tile_values.append(_t("tile_mbtiles"))
 
         self._tile_combo = ttk.Combobox(toolbar, textvariable=self._tile_var,
                                          values=tile_values, state="readonly", width=22)
         self._tile_combo.pack(side=tk.LEFT, padx=2)
         self._tile_combo.bind("<<ComboboxSelected>>", self._on_tile_change)
 
-        ttk.Button(toolbar, text="Cargar MBTiles...",
+        ttk.Button(toolbar, text=_t("btn_load_mbtiles"),
                    command=self._load_mbtiles_file).pack(side=tk.LEFT, padx=(8, 2))
 
         # Map widget
@@ -1059,7 +1313,7 @@ class DBEditor:
 
         # Right-click context menu
         self.map_widget.add_right_click_menu_command(
-            "Crear waypoint aquí", self._map_create_wpt, pass_coords=True)
+            _t("map_create_wpt"), self._map_create_wpt, pass_coords=True)
 
         self._map_markers = []
         self._map_route_markers = []
@@ -1171,10 +1425,10 @@ class DBEditor:
         if choice == "OpenStreetMap":
             self.map_widget.set_tile_server(
                 "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png")
-        elif choice == "Google Satélite":
+        elif choice == _t("tile_google_sat"):
             self.map_widget.set_tile_server(
                 "https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga")
-        elif choice == "ArcGIS Satélite":
+        elif choice == _t("tile_arcgis_sat"):
             self.map_widget.set_tile_server(
                 "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}")
         elif choice == "DCS Caucasus":
@@ -1197,15 +1451,15 @@ class DBEditor:
             self.map_widget.set_tile_server(
                 "https://maps.bigbeautifulboards.com/alt-syria/{z}/{x}/{y}.png",
                 max_zoom=15)
-        elif choice == "MBTiles (local)":
+        elif choice == _t("tile_mbtiles"):
             self.map_widget.set_tile_server(
                 "http://127.0.0.1:" + str(_MBTILES_PORT) + "/tiles/{z}/{x}/{y}.png",
                 max_zoom=12)
 
     def _load_mbtiles_file(self):
         path = filedialog.askopenfilename(
-            title="Seleccionar archivo MBTiles",
-            filetypes=[("MBTiles", "*.mbtiles"), ("Todos", "*.*")])
+            title=_t("dlg_select_mbtiles"),
+            filetypes=[("MBTiles", "*.mbtiles"), (_t("ft_all"), "*.*")])
         if not path or not os.path.isfile(path):
             return
         if self._mbtiles_server:
@@ -1214,15 +1468,16 @@ class DBEditor:
         if self._mbtiles_server:
             _save_mbtiles_config(path)
             vals = list(self._tile_combo["values"])
-            if "MBTiles (local)" not in vals:
-                vals.append("MBTiles (local)")
+            mbt_label = _t("tile_mbtiles")
+            if mbt_label not in vals:
+                vals.append(mbt_label)
                 self._tile_combo["values"] = vals
-            self._tile_var.set("MBTiles (local)")
+            self._tile_var.set(mbt_label)
             self._on_tile_change()
-            messagebox.showinfo("MBTiles", f"Tiles cargados:\n{os.path.basename(path)}")
+            messagebox.showinfo("MBTiles", _t("msg_tiles_loaded", name=os.path.basename(path)))
         else:
-            messagebox.showwarning("Error",
-                "No se pudo iniciar el servidor de tiles.\nEl puerto puede estar en uso.")
+            messagebox.showwarning(_t("ttl_error"),
+                _t("msg_tiles_error"))
 
     def _refresh_map_markers(self):
         if not hasattr(self, "map_widget"):
@@ -1308,7 +1563,7 @@ class DBEditor:
 
     def _ensure_db(self):
         if not self.conn:
-            messagebox.showwarning("Aviso", "Primero cargá la BD\n(Archivo → Cargar DTC)")
+            messagebox.showwarning(_t("ttl_warning"), _t("msg_load_db_first"))
             return False
         return True
 
@@ -1411,13 +1666,13 @@ class DBEditor:
         elif len(found) > 1:
             # Let user pick
             dlg = tk.Toplevel(self.root)
-            dlg.title("Seleccionar ruta DCS.C130J")
+            dlg.title(_t("dlg_select_db"))
             dlg.transient(self.root)
             dlg.grab_set()
             dlg.resizable(False, False)
             dlg.configure(bg=self.CDU_BG)
 
-            ttk.Label(dlg, text="Se encontraron varias instalaciones de DCS.C130J.\nSeleccioná cuál usar:",
+            ttk.Label(dlg, text=_t("lbl_dcs_multi"),
                       font=self.CDU_FONT).pack(padx=20, pady=(15, 10))
 
             selected = tk.StringVar(value=found[0])
@@ -1430,7 +1685,7 @@ class DBEditor:
                 result[0] = selected.get()
                 dlg.destroy()
 
-            ttk.Button(dlg, text="Aceptar", command=on_ok).pack(pady=(10, 15))
+            ttk.Button(dlg, text=_t("btn_accept"), command=on_ok).pack(pady=(10, 15))
             dlg.protocol("WM_DELETE_WINDOW", dlg.destroy)
             dlg.update_idletasks()
             w, h = 550, 80 + len(found) * 30 + 80
@@ -1448,12 +1703,11 @@ class DBEditor:
         # 3. Not found — ask user
         if not silent:
             messagebox.showinfo(
-                "DCS.C130J no encontrado",
-                "No se encontró la carpeta DCS.C130J automáticamente.\n"
-                "Seleccioná manualmente el archivo user_data.db")
+                _t("ttl_dcs_not_found"),
+                _t("msg_dcs_not_found"))
             path = filedialog.askopenfilename(
-                title="Seleccionar user_data.db de DCS.C130J",
-                filetypes=[("SQLite DB", "user_data.db"), ("Todos", "*.*")])
+                title=_t("dlg_select_db"),
+                filetypes=[(_t("ft_sqlite"), "user_data.db"), (_t("ft_all"), "*.*")])
             if path and os.path.isfile(path):
                 self.dcs_path = path
                 _save_config(path)
@@ -1472,22 +1726,22 @@ class DBEditor:
         if not self._ensure_db():
             return
         self.conn.commit()
-        messagebox.showinfo("Guardado", f"Cambios guardados en:\n{self.db_path}")
+        messagebox.showinfo(_t("ttl_saved"), _t("msg_saved_to", path=self.db_path))
 
     def configure_dcs_path(self):
         """Let the user manually set the DCS.C130J path."""
         current = _load_config()
         path = filedialog.askopenfilename(
-            title="Seleccionar user_data.db de DCS.C130J",
+            title=_t("dlg_select_db"),
             initialdir=os.path.dirname(current) if current else None,
-            filetypes=[("SQLite DB", "user_data.db"), ("SQLite DB", "*.db"), ("Todos", "*.*")])
+            filetypes=[(_t("ft_sqlite"), "user_data.db"), (_t("ft_sqlite"), "*.db"), (_t("ft_all"), "*.*")])
         if path and os.path.isfile(path):
             self.dcs_path = path
             _save_config(path)
-            messagebox.showinfo("OK", f"Ruta configurada:\n{path}")
+            messagebox.showinfo("OK", _t("msg_path_set", path=path))
 
     def open_db(self):
-        path = filedialog.askopenfilename(filetypes=[("SQLite DB", "*.db"), ("Todos", "*.*")])
+        path = filedialog.askopenfilename(filetypes=[(_t("ft_sqlite"), "*.db"), (_t("ft_all"), "*.*")])
         if not path:
             return
         self._load_db(path)
@@ -1495,14 +1749,14 @@ class DBEditor:
     def save_db_as(self):
         if not self._ensure_db():
             return
-        path = filedialog.asksaveasfilename(defaultextension=".db", filetypes=[("SQLite DB", "*.db")])
+        path = filedialog.asksaveasfilename(defaultextension=".db", filetypes=[(_t("ft_sqlite"), "*.db")])
         if not path:
             return
         self.conn.commit()
         self.conn.close()
         shutil.copy2(self.db_path, path)
         self._load_db(path)
-        messagebox.showinfo("OK", f"Guardado en:\n{path}")
+        messagebox.showinfo("OK", _t("msg_saved_to", path=path))
 
     # ── Waypoint CRUD ────────────────────────────────────────────────
 
@@ -1523,7 +1777,7 @@ class DBEditor:
                 m_to_ft(row[4]) if row[4] is not None else "",
             )
             self.wpt_tree.insert("", tk.END, values=display)
-        self.wpt_status.config(text=f"{len(rows)} waypoints cargados — {os.path.basename(self.db_path)}")
+        self.wpt_status.config(text=_t("lbl_wpts_loaded", n=len(rows), f=os.path.basename(self.db_path)))
         if _HAS_MAPVIEW and hasattr(self, "map_widget"):
             self._refresh_map_markers()
 
@@ -1537,7 +1791,7 @@ class DBEditor:
             return
         sel = self.wpt_tree.selection()
         if not sel:
-            messagebox.showinfo("Info", "Seleccioná un waypoint primero")
+            messagebox.showinfo("Info", _t("msg_select_wpt"))
             return
         self._waypoint_dialog(self.wpt_tree.item(sel[0], "values"))
 
@@ -1558,21 +1812,21 @@ class DBEditor:
         if not sel:
             return
         name = self.wpt_tree.item(sel[0], "values")[0]
-        if messagebox.askyesno("Confirmar", f"¿Eliminar waypoint '{name}'?"):
+        if messagebox.askyesno(_t("ttl_confirm"), _t("msg_confirm_del_wpt", name=name)):
             self.conn.execute("DELETE FROM custom_data WHERE name = ?", (name,))
             self.conn.commit()
             self.refresh_waypoints()
 
     def _waypoint_dialog(self, existing=None, is_duplicate=False):
         dlg = tk.Toplevel(self.root)
-        dlg.title("Nuevo Waypoint" if (not existing or is_duplicate) else "Editar Waypoint")
+        dlg.title(_t("dlg_new_wpt") if (not existing or is_duplicate) else _t("dlg_edit_wpt"))
         dlg.geometry("540x290")
         dlg.transient(self.root)
         dlg.grab_set()
         dlg.resizable(False, False)
         dlg.configure(bg=self.CDU_BG)
 
-        labels = ["Name:", "MGRS (entry_pos):", "Lat (DDM):", "Lon (DDM):", "Elevación (ft):"]
+        labels = [_t("lbl_wpt_name"), _t("lbl_wpt_mgrs"), _t("lbl_wpt_lat"), _t("lbl_wpt_lon"), _t("lbl_wpt_elev")]
         entries = []
         for i, lbl in enumerate(labels):
             ttk.Label(dlg, text=lbl, style="TLabel").grid(row=i, column=0, sticky="e", padx=(15, 5), pady=6)
@@ -1583,9 +1837,9 @@ class DBEditor:
             entries.append(e)
 
         # Hint labels (dimmed green, visible on dark bg)
-        ttk.Label(dlg, text="N 41° 23.456'", foreground=self.CDU_FG_DIM).grid(row=2, column=2, sticky="w")
-        ttk.Label(dlg, text="E 044° 12.345'", foreground=self.CDU_FG_DIM).grid(row=3, column=2, sticky="w")
-        ttk.Label(dlg, text="en pies (MSL)", foreground=self.CDU_FG_DIM).grid(row=4, column=2, sticky="w")
+        ttk.Label(dlg, text=_t("hint_lat"), foreground=self.CDU_FG_DIM).grid(row=2, column=2, sticky="w")
+        ttk.Label(dlg, text=_t("hint_lon"), foreground=self.CDU_FG_DIM).grid(row=3, column=2, sticky="w")
+        ttk.Label(dlg, text=_t("hint_elev"), foreground=self.CDU_FG_DIM).grid(row=4, column=2, sticky="w")
 
         is_edit = existing and not is_duplicate and bool(existing[0])
         old_name = existing[0] if is_edit else None
@@ -1595,7 +1849,7 @@ class DBEditor:
         def save():
             vals = [e.get().strip() for e in entries]
             if not vals[0]:
-                messagebox.showwarning("Error", "El nombre es obligatorio", parent=dlg)
+                messagebox.showwarning(_t("ttl_error"), _t("msg_name_required"), parent=dlg)
                 return
 
             mgrs_str = vals[1]
@@ -1604,9 +1858,8 @@ class DBEditor:
             if mgrs_str and not mgrs_str[0].isalpha():
                 if not is_valid_mgrs(mgrs_str):
                     messagebox.showwarning(
-                        "MGRS inválido",
-                        f"El MGRS '{mgrs_str}' tiene un número impar de dígitos u otro error de formato.\n"
-                        "Verificá que la coordenada sea correcta.",
+                        _t("ttl_mgrs_invalid"),
+                        _t("msg_mgrs_invalid", mgrs=mgrs_str),
                         parent=dlg,
                     )
                     return
@@ -1615,7 +1868,7 @@ class DBEditor:
                 lat = ddm_to_dd(vals[2]) if vals[2] else None
                 lon = ddm_to_dd(vals[3]) if vals[3] else None
             except ValueError as exc:
-                messagebox.showwarning("Error", f"Valor inválido:\n{exc}", parent=dlg)
+                messagebox.showwarning(_t("ttl_error"), _t("msg_invalid_value", err=exc), parent=dlg)
                 return
 
             # Auto-fill lat/lon from MGRS if not provided
@@ -1627,9 +1880,8 @@ class DBEditor:
                     # Library failed — let user enter manually
                     if lat is None or lon is None:
                         messagebox.showwarning(
-                            "Conversión MGRS",
-                            "La librería no pudo convertir este MGRS a lat/lon.\n"
-                            "Ingresá lat/lon manualmente (copiá del CDU de DCS).",
+                            _t("ttl_mgrs_conv"),
+                            _t("msg_mgrs_conv_fail"),
                             parent=dlg,
                         )
                         return
@@ -1641,7 +1893,7 @@ class DBEditor:
             try:
                 alt_m = ft_to_m(float(alt_ft_str)) if alt_ft_str else None
             except ValueError:
-                messagebox.showwarning("Error", f"Elevación inválida: '{alt_ft_str}'", parent=dlg)
+                messagebox.showwarning(_t("ttl_error"), _t("msg_invalid_elev", val=alt_ft_str), parent=dlg)
                 return
 
             if is_edit:
@@ -1656,7 +1908,7 @@ class DBEditor:
                         (vals[0], vals[1], lat, lon, alt_m),
                     )
                 except sqlite3.IntegrityError:
-                    messagebox.showwarning("Error", f"Ya existe un waypoint con nombre '{vals[0]}'", parent=dlg)
+                    messagebox.showwarning(_t("ttl_error"), _t("msg_wpt_exists", name=vals[0]), parent=dlg)
                     return
             self.conn.commit()
             self.refresh_waypoints()
@@ -1664,8 +1916,8 @@ class DBEditor:
 
         btn_frame = ttk.Frame(dlg)
         btn_frame.grid(row=len(labels), column=0, columnspan=2, pady=12)
-        ttk.Button(btn_frame, text="Guardar", command=save).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="Cancelar", command=dlg.destroy).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text=_t("btn_save"), command=save).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text=_t("btn_cancel"), command=dlg.destroy).pack(side=tk.LEFT, padx=5)
 
         dlg.bind("<Return>", lambda e: save())
         dlg.bind("<Escape>", lambda e: dlg.destroy())
@@ -1727,7 +1979,7 @@ class DBEditor:
             return
         name = self.route_vars["name"].get().strip()
         if not name:
-            messagebox.showwarning("Error", "El nombre de la ruta es obligatorio")
+            messagebox.showwarning(_t("ttl_error"), _t("msg_route_name_required"))
             return
 
         # Sync lists → raw text before saving
@@ -1820,7 +2072,7 @@ class DBEditor:
 
         self.conn.commit()
         self.refresh_routes()
-        messagebox.showinfo("OK", f"Ruta '{name}' guardada")
+        messagebox.showinfo("OK", _t("msg_route_saved", name=name))
 
     def delete_route(self):
         if not self._ensure_db():
@@ -1829,7 +2081,7 @@ class DBEditor:
         if not sel:
             return
         name = self.route_tree.item(sel[0], "values")[0]
-        if messagebox.askyesno("Confirmar", f"¿Eliminar ruta '{name}'?"):
+        if messagebox.askyesno(_t("ttl_confirm"), _t("msg_confirm_del_rte", name=name)):
             self.conn.execute("DELETE FROM routes WHERE name = ?", (name,))
             self.conn.commit()
             self.refresh_routes()
@@ -1839,11 +2091,11 @@ class DBEditor:
             return
         sel = self.route_tree.selection()
         if not sel:
-            messagebox.showwarning("Error", "Selecciona una ruta para clonar")
+            messagebox.showwarning(_t("ttl_error"), _t("msg_select_route_clone"))
             return
         src_name = self.route_tree.item(sel[0], "values")[0]
         new_name = simpledialog.askstring(
-            "Clonar Ruta", f"Nombre para la copia de '{src_name}':",
+            _t("dlg_clone_route"), _t("msg_clone_prompt", name=src_name),
             parent=self.root)
         if not new_name or not new_name.strip():
             return
@@ -1851,7 +2103,7 @@ class DBEditor:
         cur = self.conn.cursor()
         cur.execute("SELECT COUNT(*) FROM routes WHERE name = ?", (new_name,))
         if cur.fetchone()[0] > 0:
-            messagebox.showwarning("Error", f"Ya existe una ruta '{new_name}'")
+            messagebox.showwarning(_t("ttl_error"), _t("msg_route_exists", name=new_name))
             return
         cur.execute("SELECT * FROM routes WHERE name = ?", (src_name,))
         row = cur.fetchone()
@@ -1872,12 +2124,12 @@ class DBEditor:
 
     def show_route_on_map(self):
         if not hasattr(self, "map_widget"):
-            messagebox.showwarning("Error", "El mapa no está disponible")
+            messagebox.showwarning(_t("ttl_error"), _t("msg_map_unavailable"))
             return
         tree = self._main_wpt_tree
         items = tree.get_children()
         if not items:
-            messagebox.showwarning("Error", "No hay waypoints en la ruta")
+            messagebox.showwarning(_t("ttl_error"), _t("msg_no_wpts_route"))
             return
         # Clear previous route overlay
         self._clear_route_overlay()
@@ -1943,15 +2195,14 @@ class DBEditor:
         route_sel = self.route_tree.selection()
 
         if not wpt_sel and not route_sel:
-            messagebox.showwarning("Aviso",
-                "Seleccioná al menos un waypoint o una ruta para exportar.\n"
-                "(Usá Ctrl+Click o Shift+Click para selección múltiple)")
+            messagebox.showwarning(_t("ttl_warning"),
+                _t("msg_select_export"))
             return
 
         path = filedialog.asksaveasfilename(
             defaultextension=".dtc",
-            filetypes=[("Paquete DTC", "*.dtc"), ("Todos", "*.*")],
-            title="Exportar paquete DTC",
+            filetypes=[(_t("ft_dtc"), "*.dtc"), (_t("ft_all"), "*.*")],
+            title=_t("dlg_export_dtc"),
         )
         if not path:
             return
@@ -1998,9 +2249,8 @@ class DBEditor:
         dtc_conn.commit()
         dtc_conn.close()
 
-        messagebox.showinfo("Exportado",
-            f"Paquete DTC guardado:\n{os.path.basename(path)}\n\n"
-            f"• {len(wpt_names)} waypoint(s)\n• {len(route_names)} ruta(s)")
+        messagebox.showinfo(_t("ttl_exported"),
+            _t("msg_dtc_exported", name=os.path.basename(path), wpts=len(wpt_names), routes=len(route_names)))
 
     def import_dtc(self):
         """Import a .dtc package, merging into the current DB with conflict resolution."""
@@ -2008,8 +2258,8 @@ class DBEditor:
             return
 
         path = filedialog.askopenfilename(
-            filetypes=[("Paquete DTC", "*.dtc"), ("SQLite DB", "*.db"), ("Todos", "*.*")],
-            title="Importar paquete DTC",
+            filetypes=[(_t("ft_dtc"), "*.dtc"), (_t("ft_sqlite"), "*.db"), (_t("ft_all"), "*.*")],
+            title=_t("dlg_import_dtc"),
         )
         if not path:
             return
@@ -2018,7 +2268,7 @@ class DBEditor:
             dtc_conn = sqlite3.connect(path)
             dtc_conn.execute("SELECT 1 FROM custom_data LIMIT 1")
         except Exception:
-            messagebox.showerror("Error", "El archivo no es un paquete DTC válido.")
+            messagebox.showerror(_t("ttl_error"), _t("msg_invalid_dtc"))
             return
 
         # ── Import waypoints ──
@@ -2120,23 +2370,22 @@ class DBEditor:
         self.refresh_waypoints()
         self.refresh_routes()
 
-        messagebox.showinfo("Importación completa",
-            f"Waypoints: {wpt_imported} importados, {wpt_skipped} omitidos\n"
-            f"Rutas: {route_imported} importadas, {route_skipped} omitidas")
+        messagebox.showinfo(_t("ttl_import_done"),
+            _t("msg_import_summary", wi=wpt_imported, ws=wpt_skipped, ri=route_imported, rs=route_skipped))
 
     def _conflict_dialog(self, tipo, name):
         """Show conflict resolution dialog. Returns action string."""
         dlg = tk.Toplevel(self.root)
-        dlg.title(f"Conflicto — {tipo}")
+        dlg.title(_t("dlg_conflict", tipo=tipo))
         dlg.resizable(False, False)
         dlg.transient(self.root)
         dlg.configure(bg=self.CDU_BG)
 
         result = tk.StringVar(value="skip")
 
-        ttk.Label(dlg, text=f"⚠  {tipo} '{name}' ya existe",
+        ttk.Label(dlg, text=_t("msg_conflict_exists", tipo=tipo, name=name),
                   font=self.CDU_FONT_HDR, foreground=self.CDU_AMBER).pack(padx=20, pady=(18, 5))
-        ttk.Label(dlg, text="¿Qué querés hacer?",
+        ttk.Label(dlg, text=_t("msg_conflict_action"),
                   font=self.CDU_FONT_SM).pack(padx=20, pady=(0, 12))
 
         btn_frame = ttk.Frame(dlg)
@@ -2148,8 +2397,8 @@ class DBEditor:
 
         def do_rename_new():
             dlg.grab_release()
-            new = simpledialog.askstring("Renombrar importado",
-                f"Nuevo nombre para el {tipo.lower()} que estás importando:",
+            new = simpledialog.askstring(_t("dlg_rename_imported"),
+                _t("msg_rename_imported", tipo=tipo.lower()),
                 initialvalue=name + "_imp", parent=self.root)
             if new and new.strip():
                 result.set(f"rename_new:{new.strip()}")
@@ -2159,8 +2408,8 @@ class DBEditor:
 
         def do_rename_old():
             dlg.grab_release()
-            new = simpledialog.askstring("Renombrar existente",
-                f"Nuevo nombre para el {tipo.lower()} que ya tenés guardado:",
+            new = simpledialog.askstring(_t("dlg_rename_existing"),
+                _t("msg_rename_existing", tipo=tipo.lower()),
                 initialvalue=name + "_old", parent=self.root)
             if new and new.strip():
                 result.set(f"rename_old:{new.strip()}")
@@ -2172,13 +2421,13 @@ class DBEditor:
             result.set("skip")
             dlg.destroy()
 
-        ttk.Button(btn_frame, text="📝 Renombrar el importado",
+        ttk.Button(btn_frame, text=_t("btn_rename_imported"),
                    command=do_rename_new).pack(fill=tk.X, pady=3)
-        ttk.Button(btn_frame, text="📝 Renombrar el existente",
+        ttk.Button(btn_frame, text=_t("btn_rename_existing"),
                    command=do_rename_old).pack(fill=tk.X, pady=3)
-        ttk.Button(btn_frame, text="⚡ Sobrescribir con el importado",
+        ttk.Button(btn_frame, text=_t("btn_overwrite"),
                    command=do_overwrite).pack(fill=tk.X, pady=3)
-        ttk.Button(btn_frame, text="⏭  Omitir (no importar)",
+        ttk.Button(btn_frame, text=_t("btn_skip"),
                    command=do_skip).pack(fill=tk.X, pady=3)
 
         dlg.protocol("WM_DELETE_WINDOW", do_skip)
@@ -2203,7 +2452,7 @@ class DBEditor:
     def import_waypoints_csv(self):
         if not self._ensure_db():
             return
-        path = filedialog.askopenfilename(filetypes=[("CSV", "*.csv"), ("Todos", "*.*")])
+        path = filedialog.askopenfilename(filetypes=[("CSV", "*.csv"), (_t("ft_all"), "*.*")])
         if not path:
             return
         count = 0
@@ -2223,12 +2472,12 @@ class DBEditor:
                 count += 1
         self.conn.commit()
         self.refresh_waypoints()
-        messagebox.showinfo("OK", f"{count} waypoints importados")
+        messagebox.showinfo("OK", _t("msg_wpts_imported", n=count))
 
     def import_routes_csv(self):
         if not self._ensure_db():
             return
-        path = filedialog.askopenfilename(filetypes=[("CSV", "*.csv"), ("Todos", "*.*")])
+        path = filedialog.askopenfilename(filetypes=[("CSV", "*.csv"), (_t("ft_all"), "*.*")])
         if not path:
             return
         route_cols = [
@@ -2250,7 +2499,7 @@ class DBEditor:
                 count += 1
         self.conn.commit()
         self.refresh_routes()
-        messagebox.showinfo("OK", f"{count} rutas importadas")
+        messagebox.showinfo("OK", _t("msg_routes_imported", n=count))
 
     def export_waypoints_csv(self):
         if not self._ensure_db():
@@ -2264,7 +2513,7 @@ class DBEditor:
             writer = csv.writer(f)
             writer.writerow(["name", "entry_pos", "lat", "lon", "alt"])
             writer.writerows(cur.fetchall())
-        messagebox.showinfo("OK", f"Waypoints exportados a:\n{path}")
+        messagebox.showinfo("OK", _t("msg_wpts_exported", path=path))
 
     def export_routes_csv(self):
         if not self._ensure_db():
@@ -2279,7 +2528,7 @@ class DBEditor:
             writer = csv.writer(f)
             writer.writerow(cols)
             writer.writerows(cur.fetchall())
-        messagebox.showinfo("OK", f"Rutas exportadas a:\n{path}")
+        messagebox.showinfo("OK", _t("msg_routes_exported", path=path))
 
 
 if __name__ == "__main__":
