@@ -267,6 +267,10 @@ NOTAS TÉCNICAS
 
 LOG DE VERSIÓN / VERSION LOG
 -----------------------------
+Alpha 0.2c (260424)
+  - Map auto-centers on selected DCS theater.
+  - Waypoint name conflict now asks to overwrite instead of erroring.
+
 Alpha 0.2b (260414)
   - Full English/Spanish i18n (language picker on first launch).
   - Bilingual README with step-by-step tutorial.

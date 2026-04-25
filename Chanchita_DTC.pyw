@@ -259,6 +259,7 @@ STRINGS = {
     "msg_map_unavailable":  {"es": "El mapa no está disponible", "en": "Map is not available"},
     "msg_no_wpts_route":    {"es": "No hay waypoints en la ruta", "en": "No waypoints in route"},
     "msg_wpt_exists":       {"es": "Ya existe un waypoint con nombre '{name}'", "en": "A waypoint named '{name}' already exists"},
+    "msg_wpt_overwrite":    {"es": "Ya existe un waypoint con nombre '{name}'.\n¿Querés sobreescribirlo?", "en": "A waypoint named '{name}' already exists.\nDo you want to overwrite it?"},
     "msg_invalid_elev":     {"es": "Elevación inválida: '{val}'", "en": "Invalid elevation: '{val}'"},
     "msg_invalid_value":    {"es": "Valor inválido:\n{err}", "en": "Invalid value:\n{err}"},
     "msg_mgrs_invalid":     {"es": "El MGRS '{mgrs}' tiene un número impar de dígitos u otro error de formato.\nVerificá que la coordenada sea correcta.",
@@ -542,7 +543,7 @@ class DBEditor:
 
     def __init__(self, root):
         self.root = root
-        self.version = "Alpha 0.2b (260414)"
+        self.version = "Alpha 0.2c (260424)"
 
         # ── Language selection ──
         global _LANG
@@ -1435,22 +1436,32 @@ class DBEditor:
             self.map_widget.set_tile_server(
                 "https://maps.bigbeautifulboards.com/alt-caucasus/{z}/{x}/{y}.png",
                 max_zoom=15)
+            self.map_widget.set_position(42.35, 43.32)
+            self.map_widget.set_zoom(7)
         elif choice == "DCS Marianas":
             self.map_widget.set_tile_server(
                 "https://maps.bigbeautifulboards.com/alt-marianasislands/{z}/{x}/{y}.png",
                 max_zoom=15)
+            self.map_widget.set_position(15.2, 145.7)
+            self.map_widget.set_zoom(8)
         elif choice == "DCS Nevada":
             self.map_widget.set_tile_server(
                 "https://maps.bigbeautifulboards.com/alt-nevada/{z}/{x}/{y}.png",
                 max_zoom=15)
+            self.map_widget.set_position(36.2, -115.0)
+            self.map_widget.set_zoom(8)
         elif choice == "DCS Persian Gulf":
             self.map_widget.set_tile_server(
                 "https://maps.bigbeautifulboards.com/alt-persiangulf/{z}/{x}/{y}.png",
                 max_zoom=15)
+            self.map_widget.set_position(26.0, 56.0)
+            self.map_widget.set_zoom(7)
         elif choice == "DCS Syria":
             self.map_widget.set_tile_server(
                 "https://maps.bigbeautifulboards.com/alt-syria/{z}/{x}/{y}.png",
                 max_zoom=15)
+            self.map_widget.set_position(35.0, 38.5)
+            self.map_widget.set_zoom(7)
         elif choice == _t("tile_mbtiles"):
             self.map_widget.set_tile_server(
                 "http://127.0.0.1:" + str(_MBTILES_PORT) + "/tiles/{z}/{x}/{y}.png",
@@ -1908,8 +1919,12 @@ class DBEditor:
                         (vals[0], vals[1], lat, lon, alt_m),
                     )
                 except sqlite3.IntegrityError:
-                    messagebox.showwarning(_t("ttl_error"), _t("msg_wpt_exists", name=vals[0]), parent=dlg)
-                    return
+                    if not messagebox.askyesno(_t("ttl_warning"), _t("msg_wpt_overwrite", name=vals[0]), parent=dlg):
+                        return
+                    self.conn.execute(
+                        "UPDATE custom_data SET entry_pos=?, lat=?, lon=?, alt=? WHERE name=?",
+                        (vals[1], lat, lon, alt_m, vals[0]),
+                    )
             self.conn.commit()
             self.refresh_waypoints()
             dlg.destroy()
