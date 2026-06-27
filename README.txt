@@ -55,6 +55,7 @@ STEP-BY-STEP TUTORIAL
    - "Edit" or double-click to modify an existing waypoint.
    - "Delete" to remove selected waypoints.
    - "Duplicate" to copy a waypoint with a new name.
+   - "Delete All" to remove every custom waypoint (with confirmation).
 
 3. CREATE AND EDIT ROUTES
    - Go to the "Routes" tab.
@@ -71,21 +72,43 @@ STEP-BY-STEP TUTORIAL
      waypoint.
    - "Save" (💾) to save the route to the database.
    - "Clone" to duplicate a route with a new name.
+   - "Back Route" to reverse waypoints and swap Origin/Destination; appends R to
+     the route name (replaces last character if name is already 10 chars).
+   - Two-waypoint routes (origin + destination only) automatically add the
+     destination again in the middle (AAA → BBB becomes AAA, BBB, BBB).
+     When origin and destination are the same point, the list keeps two
+     entries — origin first, destination last (AAA, FIX1, AAA).
    - "🗺 Show on Map" to visualize the route on the map tab with blue
      markers and a polyline.
+   - Flight Plan Calculator (below Main Points): enter speed (kts),
+     altitude (ft) and fuel flow (lbs/hr), then Calculate to see per-leg
+     distance, time and fuel, plus route totals.
 
 4. USE THE MAP
    - Go to the "Map" tab.
-   - All custom waypoints are shown as green circle markers.
+   - Custom waypoints are red circle markers; airports from nav_data.db
+     are yellow diamonds with ICAO labels (click for airport info).
+     Click a custom waypoint for ID, coordinates, Copy ID, or Add to route.
+   - Optional "Fixes" checkbox shows nav fixes/waypoints from nav_data.db
+     as small cyan triangles in the current map view (click for ID, name,
+     coordinates; Add to route or Copy ID).
    - Use the Tiles dropdown to switch between:
-       * DCS theater tiles (Caucasus, Marianas, Nevada, Persian Gulf, Syria)
+       * DCS theater tiles (Caucasus, Marianas, Nevada, Persian Gulf, Syria,
+         Normandy, Germany CW, Marianas WWII)
+       * South Atlantic / Falklands (ArcGIS satellite)
        * OpenStreetMap, Google Satellite, ArcGIS Satellite
        * Local MBTiles files (Load MBTiles...)
    - Right-click on the map to create a waypoint at that position.
      Coordinates are auto-filled from the click location (MGRS, DDM,
-     and elevation fetched from Open-Meteo API).
+     and elevation fetched from Open-Meteo API). Use "Save and add to route"
+     to save the waypoint and insert it into the active route plan.
    - The status bar at the bottom shows cursor coordinates in DDM, MGRS,
-     elevation (ft), and current zoom level.
+     elevation (ft), zoom level, and ruler bearing/distance when active.
+   - Middle-click sets a ruler origin; move the mouse for magnetic heading
+     and distance (NM) to the cursor. Esc clears the ruler.
+   - "Search" opens the waypoint/airport search dialog and centers the map
+     on the selected result.
+   - A "Loading map…" message appears while tiles load after pan or zoom.
    - "Refresh" to update markers after external changes.
    - "Center on WPTs" to fit all waypoints in view.
 
@@ -183,6 +206,8 @@ TUTORIAL PASO A PASO
    - "Editar" o doble clic para modificar un waypoint existente.
    - "Eliminar" para borrar waypoints seleccionados.
    - "Duplicar" para copiar un waypoint con nuevo nombre.
+   - "Eliminar todo" para borrar todos los waypoints personalizados
+     (con confirmación).
 
 3. CREAR Y EDITAR RUTAS
    - Ir a la pestaña "Routes".
@@ -200,22 +225,43 @@ TUTORIAL PASO A PASO
      desde el primer/último waypoint.
    - "💾 Guardar" para guardar la ruta en la base de datos.
    - "Clonar" para duplicar una ruta con nuevo nombre.
+   - "Ruta inversa" invierte waypoints e intercambia Origen/Destino; agrega R al
+     nombre (reemplaza el último carácter si el nombre tiene 10 chars).
+   - Rutas de solo origen y destino agregan automáticamente el destino en el
+     medio (AAA → BBB pasa a ser AAA, BBB, BBB). Si origen y destino son el
+     mismo punto, la lista queda con dos entradas — origen primero, destino
+     al final (AAA, FIX1, AAA).
    - "🗺 Ver en Mapa" para visualizar la ruta en la pestaña del mapa
      con marcadores azules y una polilínea.
+   - Calculadora de plan de vuelo (debajo de Main Points): ingresar
+     velocidad (kts), altitud (ft) y flujo de combustible (lbs/hr);
+     Calcular muestra distancia, tiempo y combustible por tramo y totales.
 
 4. USAR EL MAPA
    - Ir a la pestaña "Mapa".
-   - Todos los waypoints personalizados se muestran como marcadores
-     verdes circulares.
+   - Los waypoints personalizados son círculos rojos; los aeropuertos de
+     nav_data.db son rombos amarillos con etiqueta ICAO (clic para info).
+     Clic en un waypoint personalizado: ID, coordenadas, Copiar ID o
+     Agregar a ruta.
+   - Casilla opcional "Fixes" muestra fixes/waypoints de nav_data.db como
+     triángulos cian en el área visible del mapa (clic para ID, nombre,
+     coordenadas; Agregar a ruta o Copiar ID).
    - Usar el desplegable Tiles para cambiar entre:
-       * Tiles de teatros DCS (Caucasus, Marianas, Nevada, Persian Gulf, Syria)
+       * Tiles de teatros DCS (Caucasus, Marianas, Nevada, Persian Gulf,
+         Syria, Normandy, Germany CW, Marianas WWII)
+       * South Atlantic / Falklands (satélite ArcGIS)
        * OpenStreetMap, Google Satélite, ArcGIS Satélite
        * Archivos MBTiles locales (Cargar MBTiles...)
    - Click derecho en el mapa para crear un waypoint en esa posición.
      Las coordenadas se auto-completan desde la posición del clic
-     (MGRS, DDM y elevación obtenida de la API Open-Meteo).
+     (MGRS, DDM y elevación obtenida de la API Open-Meteo). "Guardar y
+     agregar a ruta" guarda el waypoint y lo inserta en el plan de vuelo.
    - La barra de estado inferior muestra las coordenadas del cursor
-     en DDM, MGRS, elevación (ft) y nivel de zoom actual.
+     en DDM, MGRS, elevación (ft), zoom y regla (rumbo/distancia) si está activa.
+   - Clic medio fija el origen de la regla; mover el mouse muestra rumbo
+     magnético y distancia (NM). Esc borra la regla.
+   - "Buscar" abre el diálogo de búsqueda y centra el mapa en el resultado.
+   - Aparece "Cargando mapa…" mientras cargan los tiles al mover o hacer zoom.
    - "Actualizar" para refrescar los marcadores después de cambios.
    - "Centrar en WPTs" para ajustar la vista a todos los waypoints.
 
@@ -267,6 +313,60 @@ NOTAS TÉCNICAS
 
 LOG DE VERSIÓN / VERSION LOG
 -----------------------------
+Alpha 0.2l (260627)
+  - Routes: same Origin and Destination — origin stays first, destination
+    last; enroute waypoints insert between them (AAA, FIX1, AAA).
+
+Alpha 0.2k (260627)
+  - Map: smoother panning — tile loading and fix refresh deferred until drag ends.
+  - Map: click custom waypoint — popup with Copy ID and Add to route.
+  - Map: mouse wheel zoom steps one level at a time (Z:9 → 10 → 11; fixes skip).
+  - Map: Fixes layer viewport bounds corrected (tile-based query).
+
+Alpha 0.2j (260627)
+  - Map: optional Fixes layer — nav_data waypoints as cyan triangles in the
+    current view; click for info, Copy ID, or Add to route.
+  - Map: right-click Create waypoint — "Save and add to route" button.
+  - Routes: when Origin and Destination are the same point, Add to route,
+    save, and load keep two list entries (AAA, AAA).
+  - Routes: Add to route no longer treats ICAO vs DCS alias as a duplicate
+    skip when they refer to the same airport.
+
+Alpha 0.2i (260627)
+  - Waypoints / Routes: Delete now removes all selected items (multi-select with
+    Ctrl+Click or Shift+Click), not only the first.
+
+Alpha 0.2h (260627)
+  - Routes: Back Route — reverse Main Points, swap Origin/Destination, suffix name with R
+    (at 10 chars, last character becomes R).
+  - Routes: origin+destination only routes auto-insert destination in the middle
+    (AAA, BBB → AAA, BBB, BBB) for C-130J flight plan format.
+
+Alpha 0.2g (260626)
+  - Routes: Flight Plan Calculator — leg distances (NM), time per leg and total,
+    fuel per leg and total (lbs); inputs for speed (kts), altitude (ft), fuel flow (lbs/hr).
+  - Calculator auto-updates when Main Points change or a route is loaded.
+
+Alpha 0.2f (260626)
+  - Map: fix airport click opening two dialog windows.
+  - Map: opening another airport closes the previous info dialog first.
+  - Map: Search button — find waypoint/airport/navaid and center the map on it.
+
+Alpha 0.2e (260626)
+  - Routes: Set Origin / Destination / Add to route now update Main Points
+    immediately (flight plan list), not only on Save.
+  - Map: ruler tool — middle-click sets origin; cursor shows magnetic heading
+    and distance (NM); Esc or second middle-click on origin clears.
+  - Map: "Loading map…" overlay while tiles load after pan, zoom, or layer change.
+
+Alpha 0.2d (260626)
+  - Map: clickable airport markers from nav_data.db (ICAO labels + info panel).
+  - Airport popup actions: Copy ICAO, Add to route, Set Origin, Set Destination.
+  - Map: new tile layers — DCS Normandy, Germany CW, Marianas WWII (dcsolympus.com),
+    South Atlantic / Falklands (ArcGIS satellite).
+  - Waypoints tab: Delete All button (clears all custom_data with confirmation).
+  - Map: reliable airport click detection on icon and ICAO text.
+
 Alpha 0.2c (260424)
   - Map auto-centers on selected DCS theater.
   - Waypoint name conflict now asks to overwrite instead of erroring.

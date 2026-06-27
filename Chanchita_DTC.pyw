@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox, filedialog, simpledialog
 import sqlite3
 import csv
 import json
+import math
 import os
 import re
 import shutil
@@ -80,6 +81,38 @@ def ft_to_m(ft):
     return float(ft) * FEET_TO_METERS
 
 
+def true_bearing_deg(lat1, lon1, lat2, lon2):
+    """Initial true bearing from point 1 to point 2, degrees 0–360."""
+    lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
+    dlon = lon2 - lon1
+    x = math.sin(dlon) * math.cos(lat2)
+    y = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dlon)
+    return (math.degrees(math.atan2(x, y)) + 360) % 360
+
+
+def haversine_nm(lat1, lon1, lat2, lon2):
+    """Great-circle distance in nautical miles."""
+    lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    a = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+    return 3440.065 * 2 * math.asin(math.sqrt(a))
+
+
+def format_duration_hours(hours):
+    """Format fractional hours as HH:MM."""
+    if hours is None or hours < 0:
+        return "—"
+    if hours < 1 / 120:
+        return "00:00"
+    h = int(hours)
+    m = int(round((hours - h) * 60))
+    if m == 60:
+        h += 1
+        m = 0
+    return f"{h:02d}:{m:02d}"
+
+
 def mgrs_to_latlon(mgrs_str):
     """Convert MGRS string to (lat, lon). Returns None on failure."""
     if not _mgrs:
@@ -122,6 +155,7 @@ def is_valid_mgrs(mgrs_str):
 # ── DCS.C130J path detection ─────────────────────────────────────
 
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "chanchita_dtc.ini")
+DCS_OLYMPUS_MAPS = "https://maps.dcsolympus.com/maps"
 
 # ── Internationalisation ─────────────────────────────────────────
 
@@ -153,17 +187,45 @@ STRINGS = {
     "btn_edit":             {"es": "Editar",      "en": "Edit"},
     "btn_delete":           {"es": "Eliminar",    "en": "Delete"},
     "btn_duplicate":        {"es": "Duplicar",    "en": "Duplicate"},
+    "btn_delete_all":       {"es": "Eliminar todo", "en": "Delete All"},
     # ── Route toolbar ──
     "btn_new_route":        {"es": "+ Nueva",        "en": "+ New"},
     "btn_save_route":       {"es": "💾 Guardar",    "en": "💾 Save"},
     "btn_delete_route":     {"es": "Eliminar",       "en": "Delete"},
     "btn_clone":            {"es": "Clonar",         "en": "Clone"},
+    "btn_back_route":       {"es": "Ruta inversa",   "en": "Back Route"},
     "btn_show_map":         {"es": "🗺 Ver en Mapa", "en": "🗺 Show on Map"},
+    "msg_route_no_wpts":    {"es": "No hay waypoints en Main Points para invertir.",
+                            "en": "No waypoints in Main Points to reverse."},
+    "btn_fp_calc":          {"es": "Calcular", "en": "Calculate"},
+    "lbl_fp_speed":         {"es": "Velocidad:", "en": "Speed:"},
+    "lbl_fp_kts":           {"es": "kts", "en": "kts"},
+    "lbl_fp_alt":           {"es": "Altitud:", "en": "Altitude:"},
+    "lbl_fp_ft":            {"es": "ft", "en": "ft"},
+    "lbl_fp_ff":            {"es": "Flujo combustible:", "en": "Fuel flow:"},
+    "lbl_fp_lbs_hr":        {"es": "lbs/hr", "en": "lbs/hr"},
+    "lbl_fp_total_dist":    {"es": "Distancia total:", "en": "Total distance:"},
+    "lbl_fp_total_time":    {"es": "Tiempo total:", "en": "Total time:"},
+    "lbl_fp_total_fuel":    {"es": "Combustible total:", "en": "Total fuel:"},
+    "lbl_fp_legs":          {"es": "Tramos", "en": "Legs"},
+    "hd_fp_from":           {"es": "Desde", "en": "From"},
+    "hd_fp_to":             {"es": "Hasta", "en": "To"},
+    "hd_fp_dist":           {"es": "NM", "en": "NM"},
+    "hd_fp_time":           {"es": "Tiempo", "en": "Time"},
+    "hd_fp_fuel":           {"es": "Comb. (lbs)", "en": "Fuel (lbs)"},
+    "msg_fp_need_wpts":     {"es": "Agregá al menos 2 waypoints en Main Points.",
+                            "en": "Add at least 2 waypoints in Main Points."},
+    "msg_fp_bad_speed":     {"es": "Ingresá una velocidad válida en kts (> 0).",
+                            "en": "Enter a valid speed in kts (> 0)."},
+    "msg_fp_bad_ff":        {"es": "Ingresá un flujo de combustible válido (lbs/hr ≥ 0).",
+                            "en": "Enter a valid fuel flow (lbs/hr ≥ 0)."},
     # ── Wpt list (main/alt pts) ──
     "btn_list_add":         {"es": "+ Agregar",  "en": "+ Add"},
     "btn_list_remove":      {"es": "Quitar",     "en": "Remove"},
     # ── Search dialog ──
     "btn_search":           {"es": "Buscar",      "en": "Search"},
+    "btn_goto_map":         {"es": "Ir al punto", "en": "Go to"},
+    "msg_no_coords_map":    {"es": "Sin coordenadas para '{id}'", "en": "No coordinates for '{id}'"},
     "btn_select":           {"es": "Seleccionar", "en": "Select"},
     "btn_cancel":           {"es": "Cancelar",    "en": "Cancel"},
     "lbl_search":           {"es": "Buscar:",     "en": "Search:"},
@@ -175,8 +237,24 @@ STRINGS = {
     "btn_load_mbtiles":     {"es": "Cargar MBTiles...", "en": "Load MBTiles..."},
     "lbl_tiles":            {"es": "Tiles:",            "en": "Tiles:"},
     "map_create_wpt":       {"es": "Crear waypoint aquí", "en": "Create waypoint here"},
+    "map_loading":          {"es": "Cargando mapa…", "en": "Loading map…"},
+    "map_ruler_hint":       {"es": "Regla: clic medio = origen", "en": "Ruler: middle-click = origin"},
+    "map_ruler_clear":      {"es": "Regla: —", "en": "Ruler: —"},
+    "map_ruler_fmt":        {"es": "Regla: M{brg:03.0f}°  {dist:.1f} NM",
+                            "en": "Ruler: M{brg:03.0f}°  {dist:.1f} NM"},
+    "map_ruler_fmt_true":   {"es": "Regla: T{brg:03.0f}°  {dist:.1f} NM",
+                            "en": "Ruler: T{brg:03.0f}°  {dist:.1f} NM"},
+    "map_show_fixes":       {"es": "Fixes", "en": "Fixes"},
+    "dlg_fix":              {"es": "Fix — {id}", "en": "Fix — {id}"},
+    "lbl_fix_name":         {"es": "Nombre:", "en": "Name:"},
+    "btn_copy_fix":         {"es": "Copiar ID", "en": "Copy ID"},
+    "msg_fix_copied":       {"es": "ID copiado: {id}", "en": "ID copied: {id}"},
+    "msg_fix_added_route":  {"es": "'{id}' agregado a la ruta", "en": "'{id}' added to route"},
+    "dlg_custom_wpt":       {"es": "Waypoint — {id}", "en": "Waypoint — {id}"},
+    "lbl_wpt_elev_ft":      {"es": "Elevación (ft):", "en": "Elevation (ft):"},
     # ── Waypoint edit dialog ──
     "btn_save":             {"es": "Guardar",     "en": "Save"},
+    "btn_save_add_route":   {"es": "Guardar y agregar a ruta", "en": "Save and add to route"},
     "dlg_new_wpt":          {"es": "Nuevo Waypoint",  "en": "New Waypoint"},
     "dlg_edit_wpt":         {"es": "Editar Waypoint", "en": "Edit Waypoint"},
     "lbl_wpt_name":         {"es": "Name:",                "en": "Name:"},
@@ -213,6 +291,7 @@ STRINGS = {
     # ── LabelFrames ──
     "lf_route_data":        {"es": "Datos de la Ruta",   "en": "Route Data"},
     "lf_main_pts":          {"es": "Main Points (main_pts)", "en": "Main Points (main_pts)"},
+    "lf_flight_plan":       {"es": "Calculadora de plan de vuelo", "en": "Flight Plan Calculator"},
     "lf_alt_pts":           {"es": "Alt Points (alt_pts)",   "en": "Alt Points (alt_pts)"},
     "lf_raw_edit":          {"es": "Edición manual (pipe-delimited)", "en": "Manual editing (pipe-delimited)"},
     "chk_show_raw":         {"es": "Mostrar campos de texto raw", "en": "Show raw text fields"},
@@ -251,7 +330,16 @@ STRINGS = {
     "msg_path_set":         {"es": "Ruta configurada:\n{path}", "en": "Path configured:\n{path}"},
     "msg_route_saved":      {"es": "Ruta '{name}' guardada", "en": "Route '{name}' saved"},
     "msg_confirm_del_wpt":  {"es": "¿Eliminar waypoint '{name}'?", "en": "Delete waypoint '{name}'?"},
+    "msg_confirm_del_wpts": {"es": "¿Eliminar {n} waypoints?\n{names}",
+                            "en": "Delete {n} waypoints?\n{names}"},
+    "msg_confirm_del_all_wpt": {"es": "¿Eliminar los {n} waypoints?\nNo se puede deshacer.",
+                                "en": "Delete all {n} waypoints?\nThis cannot be undone."},
+    "msg_del_all_routes_warn": {"es": "\n\nLas rutas no se eliminan pero pueden referenciar waypoints inexistentes.",
+                                "en": "\n\nRoutes are not deleted but may reference missing waypoints."},
+    "msg_no_wpts":          {"es": "No hay waypoints para eliminar", "en": "No waypoints to delete"},
     "msg_confirm_del_rte":  {"es": "¿Eliminar ruta '{name}'?", "en": "Delete route '{name}'?"},
+    "msg_confirm_del_rtes": {"es": "¿Eliminar {n} rutas?\n{names}",
+                            "en": "Delete {n} routes?\n{names}"},
     "msg_clone_prompt":     {"es": "Nombre para la copia de '{name}':", "en": "Name for copy of '{name}':"},
     "dlg_clone_route":      {"es": "Clonar Ruta", "en": "Clone Route"},
     "msg_route_exists":     {"es": "Ya existe una ruta '{name}'", "en": "Route '{name}' already exists"},
@@ -314,6 +402,24 @@ STRINGS = {
     "tile_arcgis_sat":      {"es": "ArcGIS Satélite", "en": "ArcGIS Satellite"},
     # ── MBTiles dialog ──
     "dlg_select_mbtiles":   {"es": "Seleccionar archivo MBTiles", "en": "Select MBTiles file"},
+    # ── Airport map popup ──
+    "dlg_airport":          {"es": "Aeropuerto — {icao}", "en": "Airport — {icao}"},
+    "lbl_apt_icao":         {"es": "ICAO:",         "en": "ICAO:"},
+    "lbl_apt_alias":        {"es": "Alias DCS:",    "en": "DCS alias:"},
+    "lbl_apt_name":         {"es": "Nombre:",       "en": "Name:"},
+    "lbl_apt_municipality": {"es": "Municipio:",    "en": "Municipality:"},
+    "lbl_apt_type":         {"es": "Tipo:",         "en": "Type:"},
+    "lbl_apt_coords":       {"es": "Coordenadas:",  "en": "Coordinates:"},
+    "lbl_apt_mgrs":         {"es": "MGRS:",         "en": "MGRS:"},
+    "lbl_apt_elev":         {"es": "Elevación:",    "en": "Elevation:"},
+    "btn_copy_icao":        {"es": "Copiar ICAO",   "en": "Copy ICAO"},
+    "btn_add_to_route":     {"es": "Agregar a ruta", "en": "Add to route"},
+    "btn_set_origin":       {"es": "Origen",        "en": "Set Origin"},
+    "btn_set_dest":         {"es": "Destino",       "en": "Set Destination"},
+    "msg_icao_copied":      {"es": "ICAO copiado: {icao}", "en": "ICAO copied: {icao}"},
+    "msg_apt_added_route":  {"es": "'{icao}' agregado a la ruta", "en": "'{icao}' added to route"},
+    "msg_apt_set_origin":   {"es": "Origen: {icao}", "en": "Origin set: {icao}"},
+    "msg_apt_set_dest":     {"es": "Destino: {icao}", "en": "Destination set: {icao}"},
     # ── Language picker ──
 }
 
@@ -543,7 +649,7 @@ class DBEditor:
 
     def __init__(self, root):
         self.root = root
-        self.version = "Alpha 0.2c (260424)"
+        self.version = "Alpha 0.2l (260627)"
 
         # ── Language selection ──
         global _LANG
@@ -705,6 +811,8 @@ class DBEditor:
         ttk.Button(toolbar, text=_t("btn_edit"), command=self.edit_waypoint).pack(side=tk.LEFT, padx=2)
         ttk.Button(toolbar, text=_t("btn_delete"), command=self.delete_waypoint).pack(side=tk.LEFT, padx=2)
         ttk.Button(toolbar, text=_t("btn_duplicate"), command=self.duplicate_waypoint).pack(side=tk.LEFT, padx=2)
+        ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=6, pady=2)
+        ttk.Button(toolbar, text=_t("btn_delete_all"), command=self.delete_all_waypoints).pack(side=tk.LEFT, padx=2)
 
         tree_frame = ttk.Frame(self.wpt_frame)
         tree_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0, 5))
@@ -755,6 +863,7 @@ class DBEditor:
         ttk.Button(tb, text=_t("btn_save_route"), command=self.save_route).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text=_t("btn_delete_route"), command=self.delete_route).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text=_t("btn_clone"), command=self.clone_route).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text=_t("btn_back_route"), command=self.reverse_route).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text=_t("btn_show_map"), command=self.show_route_on_map).pack(side=tk.LEFT, padx=2)
 
         cols = ("name", "origin", "dest")
@@ -805,6 +914,8 @@ class DBEditor:
         mp_frame = ttk.LabelFrame(inner, text=_t("lf_main_pts"))
         mp_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0, 5))
         self._build_wpt_list(mp_frame, "main")
+
+        self._build_flight_plan_panel(inner)
 
         # Alt points — waypoint list with toolbar
         ap_frame = ttk.LabelFrame(inner, text=_t("lf_alt_pts"))
@@ -857,6 +968,161 @@ class DBEditor:
             self._main_wpt_tree = tree
         else:
             self._alt_wpt_tree = tree
+
+    def _build_flight_plan_panel(self, parent):
+        """Flight plan calculator: leg distances, time and fuel from cruise inputs."""
+        fp_frame = ttk.LabelFrame(parent, text=_t("lf_flight_plan"))
+        fp_frame.pack(fill=tk.X, padx=5, pady=(0, 5))
+
+        params = ttk.Frame(fp_frame)
+        params.pack(fill=tk.X, padx=5, pady=(5, 2))
+
+        self._fp_speed_var = tk.StringVar(value="250")
+        self._fp_alt_var = tk.StringVar(value="25000")
+        self._fp_ff_var = tk.StringVar(value="5000")
+
+        ttk.Label(params, text=_t("lbl_fp_speed")).grid(row=0, column=0, sticky="e", padx=(0, 4))
+        ttk.Entry(params, textvariable=self._fp_speed_var, width=7).grid(row=0, column=1, sticky="w")
+        ttk.Label(params, text=_t("lbl_fp_kts")).grid(row=0, column=2, sticky="w", padx=(2, 14))
+
+        ttk.Label(params, text=_t("lbl_fp_alt")).grid(row=0, column=3, sticky="e", padx=(0, 4))
+        ttk.Entry(params, textvariable=self._fp_alt_var, width=8).grid(row=0, column=4, sticky="w")
+        ttk.Label(params, text=_t("lbl_fp_ft")).grid(row=0, column=5, sticky="w", padx=(2, 14))
+
+        ttk.Label(params, text=_t("lbl_fp_ff")).grid(row=0, column=6, sticky="e", padx=(0, 4))
+        ttk.Entry(params, textvariable=self._fp_ff_var, width=7).grid(row=0, column=7, sticky="w")
+        ttk.Label(params, text=_t("lbl_fp_lbs_hr")).grid(row=0, column=8, sticky="w", padx=(2, 14))
+
+        ttk.Button(params, text=_t("btn_fp_calc"),
+                   command=self._calculate_flight_plan).grid(row=0, column=9, padx=(4, 0))
+
+        legs_cols = ("leg", "from_wpt", "to_wpt", "dist", "time", "fuel")
+        self._fp_legs_tree = ttk.Treeview(
+            fp_frame, columns=legs_cols, show="headings", height=5)
+        self._fp_legs_tree.heading("leg", text="#")
+        self._fp_legs_tree.column("leg", width=30, stretch=False)
+        self._fp_legs_tree.heading("from_wpt", text=_t("hd_fp_from"))
+        self._fp_legs_tree.column("from_wpt", width=80)
+        self._fp_legs_tree.heading("to_wpt", text=_t("hd_fp_to"))
+        self._fp_legs_tree.column("to_wpt", width=80)
+        self._fp_legs_tree.heading("dist", text=_t("hd_fp_dist"))
+        self._fp_legs_tree.column("dist", width=55, anchor="e")
+        self._fp_legs_tree.heading("time", text=_t("hd_fp_time"))
+        self._fp_legs_tree.column("time", width=55, anchor="e")
+        self._fp_legs_tree.heading("fuel", text=_t("hd_fp_fuel"))
+        self._fp_legs_tree.column("fuel", width=75, anchor="e")
+        self._fp_legs_tree.pack(fill=tk.X, padx=5, pady=(2, 5))
+
+        totals = ttk.Frame(fp_frame)
+        totals.pack(fill=tk.X, padx=5, pady=(0, 8))
+        self._fp_total_dist_var = tk.StringVar(value="—")
+        self._fp_total_time_var = tk.StringVar(value="—")
+        self._fp_total_fuel_var = tk.StringVar(value="—")
+        ttk.Label(totals, text=_t("lbl_fp_total_dist"), font=self.CDU_FONT_SM).pack(side=tk.LEFT)
+        ttk.Label(totals, textvariable=self._fp_total_dist_var,
+                  font=("Consolas", 9, "bold")).pack(side=tk.LEFT, padx=(2, 16))
+        ttk.Label(totals, text=_t("lbl_fp_total_time"), font=self.CDU_FONT_SM).pack(side=tk.LEFT)
+        ttk.Label(totals, textvariable=self._fp_total_time_var,
+                  font=("Consolas", 9, "bold")).pack(side=tk.LEFT, padx=(2, 16))
+        ttk.Label(totals, text=_t("lbl_fp_total_fuel"), font=self.CDU_FONT_SM).pack(side=tk.LEFT)
+        ttk.Label(totals, textvariable=self._fp_total_fuel_var,
+                  font=("Consolas", 9, "bold")).pack(side=tk.LEFT, padx=(2, 0))
+
+    def _coords_for_route_wpt(self, vals):
+        """Resolve (lat, lon) for a main-route waypoint tree row."""
+        wpt_id = vals[1]
+        native = vals[4] if len(vals) > 4 else None
+        lat, lon = None, None
+        if native and str(native).startswith("("):
+            fields = str(native).strip("()").split("|")
+            try:
+                lat = float(fields[2])
+                lon = float(fields[3])
+            except (IndexError, ValueError):
+                pass
+        if lat is None or lon is None or (lat == 0 and lon == 0):
+            lat, lon, _ = self._lookup_wpt_coords(wpt_id)
+        return lat, lon
+
+    def _get_main_route_points(self):
+        """Ordered list of (wpt_id, lat, lon) for Main Points with valid coordinates."""
+        if not hasattr(self, "_main_wpt_tree"):
+            return []
+        points = []
+        for item in self._main_wpt_tree.get_children():
+            vals = self._main_wpt_tree.item(item, "values")
+            wpt_id = vals[1]
+            lat, lon = self._coords_for_route_wpt(vals)
+            if lat is not None and lon is not None and not (lat == 0 and lon == 0):
+                points.append((wpt_id, lat, lon))
+        return points
+
+    def _clear_flight_plan(self):
+        if not hasattr(self, "_fp_legs_tree"):
+            return
+        self._fp_legs_tree.delete(*self._fp_legs_tree.get_children())
+        self._fp_total_dist_var.set("—")
+        self._fp_total_time_var.set("—")
+        self._fp_total_fuel_var.set("—")
+
+    def _refresh_flight_plan(self):
+        if hasattr(self, "_fp_legs_tree"):
+            self._calculate_flight_plan(silent=True)
+
+    def _calculate_flight_plan(self, silent=False):
+        if not hasattr(self, "_fp_legs_tree"):
+            return
+        self._fp_legs_tree.delete(*self._fp_legs_tree.get_children())
+
+        points = self._get_main_route_points()
+        if len(points) < 2:
+            self._fp_total_dist_var.set("—")
+            self._fp_total_time_var.set("—")
+            self._fp_total_fuel_var.set("—")
+            return
+
+        try:
+            speed = float(self._fp_speed_var.get().strip())
+        except ValueError:
+            if not silent:
+                messagebox.showwarning(_t("ttl_warning"), _t("msg_fp_bad_speed"))
+            return
+        if speed <= 0:
+            if not silent:
+                messagebox.showwarning(_t("ttl_warning"), _t("msg_fp_bad_speed"))
+            return
+
+        try:
+            fuel_flow = float(self._fp_ff_var.get().strip())
+        except ValueError:
+            if not silent:
+                messagebox.showwarning(_t("ttl_warning"), _t("msg_fp_bad_ff"))
+            return
+        if fuel_flow < 0:
+            if not silent:
+                messagebox.showwarning(_t("ttl_warning"), _t("msg_fp_bad_ff"))
+            return
+
+        total_dist = 0.0
+        total_time = 0.0
+        total_fuel = 0.0
+
+        for i in range(len(points) - 1):
+            id1, lat1, lon1 = points[i]
+            id2, lat2, lon2 = points[i + 1]
+            dist = haversine_nm(lat1, lon1, lat2, lon2)
+            time_h = dist / speed
+            fuel = time_h * fuel_flow
+            total_dist += dist
+            total_time += time_h
+            total_fuel += fuel
+            self._fp_legs_tree.insert("", tk.END, values=(
+                i + 1, id1, id2, f"{dist:.1f}", format_duration_hours(time_h), f"{fuel:.0f}",
+            ))
+
+        self._fp_total_dist_var.set(f"{total_dist:.1f} NM")
+        self._fp_total_time_var.set(format_duration_hours(total_time))
+        self._fp_total_fuel_var.set(f"{total_fuel:.0f} lbs")
 
     def _toggle_raw_text(self):
         if self._raw_visible.get():
@@ -963,9 +1229,11 @@ class DBEditor:
         """Open search dialog and add selected waypoint to the list."""
         result = self._wpt_search_dialog()
         if result:
-            tree = self._get_wpt_tree(tag)
-            seq = len(tree.get_children()) + 1
             wpt_id, source = result[0], result[1]
+            if tag == "main":
+                self._add_to_route_plan(wpt_id)
+                return
+            tree = self._get_wpt_tree(tag)
             nombre = self._get_airport_name(wpt_id) if source == "airport" else ""
             native = self._build_native_wpt_for_id(wpt_id)
             tree.insert("", tk.END, values=(seq, wpt_id, nombre, source, native))
@@ -977,6 +1245,8 @@ class DBEditor:
         for item in sel:
             tree.delete(item)
         self._renumber_wpt_list(tag)
+        if tag == "main":
+            self._refresh_flight_plan()
         self._sync_list_to_raw(tag)
 
     def _wpt_list_move(self, tag, direction):
@@ -994,6 +1264,8 @@ class DBEditor:
             tree.move(items[idx], "", idx + direction)
         self._renumber_wpt_list(tag)
         self._sync_list_to_raw(tag)
+        if tag == "main":
+            self._refresh_flight_plan()
 
     def _renumber_wpt_list(self, tag):
         tree = self._get_wpt_tree(tag)
@@ -1081,8 +1353,9 @@ class DBEditor:
 
     # ── Waypoint Search Dialog ───────────────────────────────────────
 
-    def _wpt_search_dialog(self):
-        """Search dialog that queries custom_data + nav_data.db. Returns (wpt_id, source) or None."""
+    def _wpt_search_dialog(self, for_map=False):
+        """Search dialog that queries custom_data + nav_data.db.
+        Returns (wpt_id, source) or (wpt_id, source, lat, lon) when for_map=True."""
         dlg = tk.Toplevel(self.root)
         dlg.title(_t("dlg_search_wpt"))
         dlg.geometry("680x420")
@@ -1140,7 +1413,16 @@ class DBEditor:
             sel = res_tree.selection()
             if sel:
                 vals = res_tree.item(sel[0], "values")
-                result[0] = (vals[0], vals[2])
+                if for_map:
+                    lat, lon = None, None
+                    if len(vals) >= 5 and vals[3] and vals[4]:
+                        try:
+                            lat, lon = float(vals[3]), float(vals[4])
+                        except ValueError:
+                            pass
+                    result[0] = (vals[0], vals[2], lat, lon)
+                else:
+                    result[0] = (vals[0], vals[2])
                 dlg.destroy()
 
         def do_search():
@@ -1156,7 +1438,8 @@ class DBEditor:
             status_var.set(_t("msg_results", n=len(results)) +
                            (_t("msg_max_100") if len(results) >= 100 else ""))
 
-        ttk.Button(btn_frame, text=_t("btn_select"), command=do_select).pack(side=tk.LEFT, padx=5)
+        select_label = _t("btn_goto_map") if for_map else _t("btn_select")
+        ttk.Button(btn_frame, text=select_label, command=do_select).pack(side=tk.LEFT, padx=5)
         ttk.Button(btn_frame, text=_t("btn_cancel"), command=dlg.destroy).pack(side=tk.LEFT, padx=5)
 
         # Bind enter and double-click
@@ -1258,9 +1541,16 @@ class DBEditor:
         toolbar.pack(fill=tk.X, padx=5, pady=5)
 
         ttk.Button(toolbar, text=_t("btn_refresh"),
-                   command=self._refresh_map_markers).pack(side=tk.LEFT, padx=2)
+                   command=self._refresh_map_overlays).pack(side=tk.LEFT, padx=2)
         ttk.Button(toolbar, text=_t("btn_center_wpts"),
                    command=self._center_map_on_wpts).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text=_t("btn_search"),
+                   command=self._map_search_goto).pack(side=tk.LEFT, padx=2)
+        self._show_fix_markers = tk.BooleanVar(value=True)
+        ttk.Checkbutton(toolbar, text=_t("map_show_fixes"), variable=self._show_fix_markers,
+                        command=self._on_fix_layer_toggle).pack(side=tk.LEFT, padx=(8, 2))
+        ttk.Label(toolbar, text=_t("map_ruler_hint"),
+                  font=("Segoe UI", 8), foreground="#666666").pack(side=tk.LEFT, padx=(12, 0))
 
         ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=8, pady=2)
 
@@ -1268,7 +1558,9 @@ class DBEditor:
         self._tile_var = tk.StringVar(value="DCS Caucasus")
         tile_values = ["OpenStreetMap", _t("tile_google_sat"), _t("tile_arcgis_sat"),
                        "DCS Caucasus", "DCS Marianas", "DCS Nevada",
-                       "DCS Persian Gulf", "DCS Syria"]
+                       "DCS Persian Gulf", "DCS Syria",
+                       "DCS Normandy", "DCS Germany CW", "DCS Marianas WWII",
+                       "DCS South Atlantic"]
         self._mbtiles_server = None
 
         mbtiles_path = _load_mbtiles_config()
@@ -1278,7 +1570,7 @@ class DBEditor:
                 tile_values.append(_t("tile_mbtiles"))
 
         self._tile_combo = ttk.Combobox(toolbar, textvariable=self._tile_var,
-                                         values=tile_values, state="readonly", width=22)
+                                         values=tile_values, state="readonly", width=24)
         self._tile_combo.pack(side=tk.LEFT, padx=2)
         self._tile_combo.bind("<<ComboboxSelected>>", self._on_tile_change)
 
@@ -1296,6 +1588,8 @@ class DBEditor:
         self._map_mgrs_var = tk.StringVar(value="---")
         self._map_elev_var = tk.StringVar(value="---")
         self._map_zoom_var = tk.StringVar(value="Z: 7")
+        self._map_ruler_var = tk.StringVar(value=_t("map_ruler_clear"))
+        self._map_loading_var = tk.StringVar(value="")
         ttk.Label(self._map_status, textvariable=self._map_lat_lon_var,
                   font=("Consolas", 9), width=32, anchor="w").pack(side=tk.LEFT, padx=(0, 8))
         ttk.Label(self._map_status, textvariable=self._map_mgrs_var,
@@ -1303,7 +1597,14 @@ class DBEditor:
         ttk.Label(self._map_status, textvariable=self._map_elev_var,
                   font=("Consolas", 9), width=16, anchor="w").pack(side=tk.LEFT, padx=(0, 8))
         ttk.Label(self._map_status, textvariable=self._map_zoom_var,
-                  font=("Consolas", 9), width=6, anchor="w").pack(side=tk.LEFT)
+                  font=("Consolas", 9), width=6, anchor="w").pack(side=tk.LEFT, padx=(0, 8))
+        ttk.Label(self._map_status, textvariable=self._map_ruler_var,
+                  font=("Consolas", 9), width=28, anchor="w").pack(side=tk.LEFT, padx=(0, 8))
+        self._map_loading_label = ttk.Label(
+            self.map_widget, textvariable=self._map_loading_var,
+            font=("Segoe UI", 10, "bold"), foreground="#333333")
+        self._map_loading_label.place(relx=0.5, rely=0.5, anchor="center")
+        self._map_loading_label.place_forget()
 
         # Default: Caucasus region (DCS theater)
         self.map_widget.set_tile_server(
@@ -1317,17 +1618,199 @@ class DBEditor:
             _t("map_create_wpt"), self._map_create_wpt, pass_coords=True)
 
         self._map_markers = []
+        self._map_airport_markers = []
+        self._map_fix_markers = []
         self._map_route_markers = []
         self._map_route_path = None
+        self._route_overlay_active = False
+        self._airport_dlg = None
+        self._fix_dlg = None
+        self._wpt_dlg = None
+        self._map_dragging = False
         self._wpt_marker_icons = {}  # cache: size -> PhotoImage
+        self._airport_marker_icons = {}
+        self._fix_marker_icons = {}
+        self._fix_refresh_after = None
+
+        # Ruler (middle-click origin → magnetic bearing + distance to cursor)
+        self._ruler_origin = None
+        self._ruler_cursor = None
+        self._ruler_path = None
+        self._ruler_marker = None
+        self._decl_cache = {}
+        self._decl_pending = None
+
+        # Tile loading indicator
+        self._map_loading_after = None
+        self._map_loading_poll = None
 
         # Bind events on the map's internal canvas
+        self._map_click_pos = None
         self.map_widget.canvas.bind("<Motion>", self._on_map_mouse_motion)
-        self.map_widget.canvas.bind("<MouseWheel>", self._on_map_zoom_event, add="+")
-        self.map_widget.canvas.bind("<ButtonRelease-1>", lambda e: self.root.after(100, self._on_map_zoom), add="+")
+        self.map_widget.canvas.bind("<ButtonPress-1>", self._on_map_canvas_press, add="+")
+        self.map_widget.canvas.bind("<ButtonRelease-1>", self._on_map_canvas_release, add="+")
+        self.map_widget.canvas.bind("<ButtonPress-2>", self._on_map_ruler_press, add="+")
+        self.map_widget.canvas.bind("<B1-Motion>", self._on_map_pan_motion, add="+")
+        self.map_widget.canvas.unbind("<MouseWheel>")
+        self.map_widget.canvas.unbind("<Button-4>")
+        self.map_widget.canvas.unbind("<Button-5>")
+        self.map_widget.canvas.bind("<MouseWheel>", self._on_map_wheel)
+        self.map_widget.canvas.bind("<Button-4>", self._on_map_wheel_linux_in)
+        self.map_widget.canvas.bind("<Button-5>", self._on_map_wheel_linux_out)
+        self.map_widget.canvas.bind(
+            "<ButtonRelease-1>", lambda e: self.root.after(100, self._on_map_zoom), add="+")
+        self.map_frame.bind("<Escape>", lambda e: self._clear_ruler())
         self._last_zoom = self.map_widget.zoom
         self._elev_cache = {}  # (lat_round, lon_round) -> elevation
         self._elev_pending = None  # scheduled after-id for elevation query
+        self._refresh_airport_markers()
+        if self._show_fix_markers.get():
+            self.root.after(300, self._refresh_fix_markers)
+        self._schedule_map_loading_check()
+
+    def _on_map_canvas_press(self, event):
+        self._map_click_pos = (event.x, event.y)
+        self._map_dragging = False
+
+    def _on_map_canvas_release(self, event):
+        """Pick airport/waypoint markers on click (icon tag_bind is unreliable on small tiles)."""
+        was_drag = (
+            self._map_click_pos is not None
+            and self._map_click_pos != (event.x, event.y))
+        if was_drag:
+            self._map_dragging = False
+            self._map_click_pos = None
+            self._on_map_drag_finished()
+            return
+        self._map_click_pos = None
+        icao = self._pick_airport_at_canvas(event.x, event.y)
+        if icao:
+            self._on_airport_click(icao)
+            return
+        fix_id = self._pick_fix_at_canvas(event.x, event.y)
+        if fix_id:
+            self._on_fix_click(fix_id)
+            return
+        wpt = self._pick_wpt_at_canvas(event.x, event.y)
+        if wpt:
+            self._on_custom_wpt_click(wpt)
+
+    def _on_map_drag_finished(self):
+        """Deferred map overlay work after pan — avoids jank during drag/inertia."""
+        self._schedule_map_loading_check()
+        if self._show_fix_markers.get():
+            if self._fix_refresh_after:
+                self.root.after_cancel(self._fix_refresh_after)
+            self._fix_refresh_after = self.root.after(700, self._fix_refresh_markers_debounced)
+
+    def _marker_hit_points(self, marker):
+        """Canvas x,y points to test for a map marker click."""
+        cx, cy = marker.get_canvas_pos(marker.position)
+        points = [(cx, cy)]
+        text = getattr(marker, "text", None) or getattr(marker, "_orig_text", "")
+        if text:
+            ty = cy + getattr(marker, "text_y_offset", -12)
+            points.append((cx, ty))
+        return points, text
+
+    def _pick_airport_at_canvas(self, x, y, icon_radius=18):
+        best = None
+        best_score = icon_radius
+        for marker in reversed(self._map_airport_markers):
+            if getattr(marker, "deleted", False):
+                continue
+            points, label = self._marker_hit_points(marker)
+            for px, py in points:
+                dist = ((x - px) ** 2 + (y - py) ** 2) ** 0.5
+                if dist <= icon_radius and dist < best_score:
+                    best_score = dist
+                    best = marker
+            if label:
+                _, cy = points[0]
+                ty = cy + getattr(marker, "text_y_offset", -12)
+                half_w = max(22, len(label) * 5)
+                if abs(y - ty) <= 14 and abs(x - points[0][0]) <= half_w:
+                    return (marker.data or {}).get("icao")
+        if best:
+            return (best.data or {}).get("icao")
+        return None
+
+    def _pick_fix_at_canvas(self, x, y, icon_radius=14):
+        best = None
+        best_score = icon_radius
+        for marker in reversed(self._map_fix_markers):
+            if getattr(marker, "deleted", False):
+                continue
+            points, label = self._marker_hit_points(marker)
+            for px, py in points:
+                dist = ((x - px) ** 2 + (y - py) ** 2) ** 0.5
+                if dist <= icon_radius and dist < best_score:
+                    best_score = dist
+                    best = marker
+            if label:
+                _, cy = points[0]
+                ty = cy + getattr(marker, "text_y_offset", -12)
+                half_w = max(20, len(label) * 5)
+                if abs(y - ty) <= 12 and abs(x - points[0][0]) <= half_w:
+                    return (marker.data or {}).get("fix_id")
+        if best:
+            return (best.data or {}).get("fix_id")
+        return None
+
+    def _pick_wpt_at_canvas(self, x, y, icon_radius=16):
+        for marker in reversed(self._map_markers):
+            if getattr(marker, "deleted", False):
+                continue
+            points, label = self._marker_hit_points(marker)
+            for px, py in points:
+                if ((x - px) ** 2 + (y - py) ** 2) ** 0.5 <= icon_radius:
+                    return getattr(marker, "_orig_text", None) or label
+        return None
+
+    def _raise_map_markers(self):
+        """Keep marker labels above map tiles after redraw."""
+        if not hasattr(self, "map_widget"):
+            return
+        self.map_widget.canvas.tag_raise("marker")
+        self.map_widget.canvas.tag_raise("marker_text")
+
+    def _make_airport_icon(self, size=14, fill="#ffcc33", outline="#996600"):
+        """Small diamond marker for airports. Cached by size."""
+        if size in self._airport_marker_icons:
+            return self._airport_marker_icons[size]
+        dim = size + 4
+        img = tk.PhotoImage(width=dim, height=dim)
+        cx, cy = dim // 2, dim // 2
+        r = size // 2
+        for y in range(dim):
+            for x in range(dim):
+                if abs(x - cx) + abs(y - cy) <= r:
+                    img.put(fill, (x, y))
+                elif abs(x - cx) + abs(y - cy) == r + 1:
+                    img.put(outline, (x, y))
+        self._airport_marker_icons[size] = img
+        return img
+
+    def _make_fix_icon(self, size=12, fill="#00ccff", outline="#006688"):
+        """Small upward triangle for nav fixes/waypoints."""
+        if size in self._fix_marker_icons:
+            return self._fix_marker_icons[size]
+        dim = size + 8
+        img = tk.PhotoImage(width=dim, height=dim)
+        cx = dim // 2
+        top = 1
+        base = dim - 2
+        half_base = size // 2 + 1
+        for y in range(dim):
+            for x in range(dim):
+                if y < top or y > base:
+                    continue
+                span = int((y - top) / max(base - top, 1) * half_base)
+                if abs(x - cx) <= span:
+                    on_edge = abs(x - cx) >= span - 1 and span > 0
+                    img.put(outline if on_edge else fill, (x, y))
+        self._fix_marker_icons[size] = img
+        return img
 
     def _make_circle_icon(self, size=10, fill="#33ff33", outline="#1a8c1a"):
         """Create a small circle marker icon as PhotoImage. Cached by size."""
@@ -1350,9 +1833,45 @@ class DBEditor:
         self._wpt_marker_icons[size] = img
         return img
 
-    def _on_map_zoom_event(self, event=None):
-        """Called after mouse wheel on map canvas."""
+    def _on_map_wheel(self, event):
+        """Integer zoom steps (library default uses fractional wheel delta and can skip levels)."""
+        current = round(self.map_widget.zoom)
+        if event.delta > 0:
+            new_zoom = min(current + 1, self.map_widget.max_zoom)
+        elif event.delta < 0:
+            new_zoom = max(current - 1, self.map_widget.min_zoom)
+        else:
+            return "break"
+        cw = max(self.map_widget.canvas.winfo_width(), 1)
+        ch = max(self.map_widget.canvas.winfo_height(), 1)
+        self.map_widget.set_zoom(
+            new_zoom,
+            relative_pointer_x=event.x / cw,
+            relative_pointer_y=event.y / ch)
+        self._schedule_map_loading_check()
+        if self._show_fix_markers.get():
+            self._schedule_fix_refresh()
         self.root.after(200, self._on_map_zoom)
+        return "break"
+
+    def _on_map_wheel_linux_in(self, event):
+        event.delta = 120
+        return self._on_map_wheel(event)
+
+    def _on_map_wheel_linux_out(self, event):
+        event.delta = -120
+        return self._on_map_wheel(event)
+
+    def _on_map_pan_motion(self, event=None):
+        if (self._map_click_pos is not None and event is not None
+                and self._map_click_pos != (event.x, event.y)):
+            self._map_dragging = True
+        if self._ruler_origin:
+            try:
+                coords = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
+                self._update_ruler_display(coords[0], coords[1])
+            except Exception:
+                pass
 
     def _on_map_zoom(self):
         """Update marker text visibility based on zoom level."""
@@ -1361,6 +1880,8 @@ class DBEditor:
         zoom = self.map_widget.zoom
         self._map_zoom_var.set(f"Z: {zoom:.0f}")
         if zoom == self._last_zoom:
+            if self._ruler_origin and getattr(self, "_ruler_cursor", None):
+                self._update_ruler_display(*self._ruler_cursor)
             return
         self._last_zoom = zoom
         # At zoom >= 9 show text labels, below that hide them
@@ -1371,6 +1892,142 @@ class DBEditor:
                 else:
                     marker.text = ""
                 marker.draw()
+        for marker in self._map_airport_markers:
+            if hasattr(marker, '_orig_text'):
+                if zoom >= 8:
+                    marker.text = marker._orig_text
+                else:
+                    marker.text = ""
+                marker.draw()
+        for marker in self._map_fix_markers:
+            if hasattr(marker, '_orig_text'):
+                if zoom >= 10:
+                    marker.text = marker._orig_text
+                else:
+                    marker.text = ""
+                marker.draw()
+        self._raise_map_markers()
+        if self._ruler_origin and getattr(self, "_ruler_cursor", None):
+            self._update_ruler_display(*self._ruler_cursor)
+        self._schedule_map_loading_check()
+
+    def _on_map_ruler_press(self, event):
+        """Middle-click sets ruler origin; click again at origin to clear."""
+        try:
+            coords = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
+        except Exception:
+            return
+        lat, lon = coords
+        if self._ruler_origin:
+            o_lat, o_lon = self._ruler_origin
+            if abs(o_lat - lat) < 1e-5 and abs(o_lon - lon) < 1e-5:
+                self._clear_ruler()
+                return
+        self._clear_ruler()
+        self._ruler_origin = (lat, lon)
+        icon = self._make_circle_icon(8, fill="#ff9900", outline="#cc6600")
+        self._ruler_marker = self.map_widget.set_marker(lat, lon, icon=icon)
+        self._update_ruler_display(lat, lon)
+        self._fetch_declination(lat, lon)
+
+    def _clear_ruler(self):
+        self._ruler_origin = None
+        self._ruler_cursor = None
+        if self._ruler_path:
+            self._ruler_path.delete()
+            self._ruler_path = None
+        if self._ruler_marker:
+            self._ruler_marker.delete()
+            self._ruler_marker = None
+        self._map_ruler_var.set(_t("map_ruler_clear"))
+
+    def _update_ruler_display(self, lat2, lon2):
+        if not self._ruler_origin:
+            return
+        self._ruler_cursor = (lat2, lon2)
+        lat1, lon1 = self._ruler_origin
+        if self._ruler_path:
+            self._ruler_path.delete()
+        if abs(lat1 - lat2) > 1e-9 or abs(lon1 - lon2) > 1e-9:
+            self._ruler_path = self.map_widget.set_path(
+                [(lat1, lon1), (lat2, lon2)], color="#ff6600", width=2)
+        dist = haversine_nm(lat1, lon1, lat2, lon2)
+        brg_t = true_bearing_deg(lat1, lon1, lat2, lon2)
+        decl = self._decl_cache.get((round(lat1, 1), round(lon1, 1)))
+        if decl is not None:
+            brg_m = (brg_t + decl) % 360
+            self._map_ruler_var.set(_t("map_ruler_fmt", brg=brg_m, dist=dist))
+        else:
+            self._map_ruler_var.set(_t("map_ruler_fmt_true", brg=brg_t, dist=dist))
+
+    def _fetch_declination(self, lat, lon):
+        key = (round(lat, 1), round(lon, 1))
+        if key in self._decl_cache:
+            return
+
+        def _worker():
+            decl = 0.0
+            try:
+                url = (
+                    "https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination"
+                    f"?lat1={lat}&lon1={lon}&model=WMM&startYear=2025&resultFormat=json"
+                )
+                req = urllib.request.Request(url, headers={"User-Agent": "ChanchitaDTC/0.2"})
+                with urllib.request.urlopen(req, timeout=6) as resp:
+                    data = json.loads(resp.read())
+                decl = float(data["result"][0][0]["declination"])
+            except Exception:
+                pass
+            self._decl_cache[key] = decl
+            self.root.after(0, self._on_declination_ready)
+
+        threading.Thread(target=_worker, daemon=True).start()
+
+    def _on_declination_ready(self):
+        if self._ruler_origin and self._ruler_cursor:
+            self._update_ruler_display(*self._ruler_cursor)
+
+    def _map_tiles_pending(self):
+        if not hasattr(self, "map_widget"):
+            return False
+        mw = self.map_widget
+        if len(mw.image_load_queue_tasks) > 0:
+            return True
+        try:
+            for col in mw.canvas_tile_array:
+                for tile in col:
+                    if tile.image == mw.not_loaded_tile_image:
+                        return True
+        except Exception:
+            pass
+        return False
+
+    def _schedule_map_loading_check(self):
+        if not hasattr(self, "map_widget"):
+            return
+        if self._map_loading_after:
+            self.root.after_cancel(self._map_loading_after)
+        self._map_loading_after = self.root.after(120, self._start_map_loading_poll)
+
+    def _start_map_loading_poll(self):
+        self._map_loading_after = None
+        self._update_map_loading_state()
+
+    def _update_map_loading_state(self):
+        if self._map_loading_poll:
+            self.root.after_cancel(self._map_loading_poll)
+            self._map_loading_poll = None
+        if getattr(self, "_map_dragging", False):
+            self._map_loading_poll = self.root.after(150, self._update_map_loading_state)
+            return
+        if self._map_tiles_pending():
+            self._map_loading_var.set(_t("map_loading"))
+            self._map_loading_label.place(relx=0.5, rely=0.5, anchor="center")
+            self._map_loading_label.lift()
+            self._map_loading_poll = self.root.after(100, self._update_map_loading_state)
+        else:
+            self._map_loading_var.set("")
+            self._map_loading_label.place_forget()
 
     def _on_map_mouse_motion(self, event):
         """Update status bar with coordinates under mouse cursor."""
@@ -1393,10 +2050,12 @@ class DBEditor:
         key = (lat_r, lon_r)
         if key in self._elev_cache:
             self._map_elev_var.set(f"Elev: {self._elev_cache[key] * METERS_TO_FEET:.0f} ft")
-        else:
+        elif not getattr(self, "_map_dragging", False):
             if self._elev_pending:
                 self.root.after_cancel(self._elev_pending)
             self._elev_pending = self.root.after(400, self._fetch_elevation, lat_r, lon_r)
+        if self._ruler_origin:
+            self._update_ruler_display(lat, lon)
 
     def _fetch_elevation(self, lat, lon):
         """Fetch elevation from Open-Meteo API in background thread."""
@@ -1462,10 +2121,34 @@ class DBEditor:
                 max_zoom=15)
             self.map_widget.set_position(35.0, 38.5)
             self.map_widget.set_zoom(7)
+        elif choice == "DCS Normandy":
+            self.map_widget.set_tile_server(
+                f"{DCS_OLYMPUS_MAPS}/alt-Normandy/{{z}}/{{x}}/{{y}}.png",
+                max_zoom=17)
+            self.map_widget.set_position(49.0, -0.5)
+            self.map_widget.set_zoom(7)
+        elif choice == "DCS Germany CW":
+            self.map_widget.set_tile_server(
+                f"{DCS_OLYMPUS_MAPS}/alt-GermanyCW/{{z}}/{{x}}/{{y}}.png",
+                max_zoom=15)
+            self.map_widget.set_position(51.0, 12.0)
+            self.map_widget.set_zoom(6)
+        elif choice == "DCS Marianas WWII":
+            self.map_widget.set_tile_server(
+                f"{DCS_OLYMPUS_MAPS}/alt-MarianaIslandsWWII/{{z}}/{{x}}/{{y}}.png",
+                max_zoom=18)
+            self.map_widget.set_position(15.2, 145.7)
+            self.map_widget.set_zoom(8)
+        elif choice == "DCS South Atlantic":
+            self.map_widget.set_tile_server(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}")
+            self.map_widget.set_position(-51.7, -59.0)
+            self.map_widget.set_zoom(7)
         elif choice == _t("tile_mbtiles"):
             self.map_widget.set_tile_server(
                 "http://127.0.0.1:" + str(_MBTILES_PORT) + "/tiles/{z}/{x}/{y}.png",
                 max_zoom=12)
+        self._schedule_map_loading_check()
 
     def _load_mbtiles_file(self):
         path = filedialog.askopenfilename(
@@ -1490,11 +2173,195 @@ class DBEditor:
             messagebox.showwarning(_t("ttl_error"),
                 _t("msg_tiles_error"))
 
+    def _refresh_map_overlays(self):
+        """Refresh waypoint and airport markers on the map."""
+        self._refresh_map_markers()
+        self._refresh_airport_markers()
+        if self._show_fix_markers.get():
+            self._refresh_fix_markers()
+
+    def _clear_wpt_markers(self):
+        for marker in self._map_markers:
+            marker.delete()
+        self._map_markers.clear()
+
+    def _clear_airport_markers(self):
+        for marker in self._map_airport_markers:
+            marker.delete()
+        self._map_airport_markers.clear()
+
+    def _clear_fix_markers(self):
+        for marker in self._map_fix_markers:
+            marker.delete()
+        self._map_fix_markers.clear()
+
+    def _get_map_view_bounds(self):
+        """Return (min_lat, max_lat, min_lon, max_lon) for the visible map area."""
+        try:
+            from tkintermapview.utility_functions import osm_to_decimal
+            mw = self.map_widget
+            zoom = round(mw.zoom)
+            lat0, lon0 = osm_to_decimal(
+                mw.upper_left_tile_pos[0], mw.upper_left_tile_pos[1], zoom)
+            lat1, lon1 = osm_to_decimal(
+                mw.lower_right_tile_pos[0], mw.lower_right_tile_pos[1], zoom)
+            margin = 0.02
+            return (min(lat0, lat1) - margin, max(lat0, lat1) + margin,
+                    min(lon0, lon1) - margin, max(lon0, lon1) + margin)
+        except Exception:
+            return None
+
+    def _on_fix_layer_toggle(self):
+        if self._show_fix_markers.get():
+            self.root.update_idletasks()
+            self._refresh_fix_markers()
+            self._schedule_fix_refresh()
+        else:
+            self._clear_fix_markers()
+
+    def _schedule_fix_refresh(self):
+        if self._fix_refresh_after:
+            self.root.after_cancel(self._fix_refresh_after)
+        self._fix_refresh_after = self.root.after(350, self._fix_refresh_markers_debounced)
+
+    def _fix_refresh_markers_debounced(self):
+        self._fix_refresh_after = None
+        if self._show_fix_markers.get():
+            self._refresh_fix_markers()
+
+    def _refresh_fix_markers(self):
+        if not hasattr(self, "map_widget"):
+            return
+        self._clear_fix_markers()
+        if not self._show_fix_markers.get() or not self.nav_conn:
+            return
+        bounds = self._get_map_view_bounds()
+        if not bounds:
+            self.root.after(200, self._refresh_fix_markers)
+            return
+        min_lat, max_lat, min_lon, max_lon = bounds
+        icon = self._make_fix_icon(12)
+        zoom = self.map_widget.zoom
+        nav = self.nav_conn.cursor()
+        nav.execute(
+            "SELECT waypoint_identifier, waypoint_name, waypoint_latitude, waypoint_longitude "
+            "FROM waypoints "
+            "WHERE waypoint_latitude BETWEEN ? AND ? AND waypoint_longitude BETWEEN ? AND ? "
+            "AND waypoint_latitude != 0 AND waypoint_longitude != 0 "
+            "LIMIT 800",
+            (min_lat, max_lat, min_lon, max_lon))
+        for fix_id, name, lat, lon in nav.fetchall():
+            if lat is None or lon is None:
+                continue
+            label = fix_id or ""
+            show_text = label if zoom >= 10 else ""
+            marker = self.map_widget.set_marker(
+                lat, lon, text=show_text,
+                icon=icon,
+                text_color="#004466",
+                font=("Consolas", 7, "bold"),
+                data={"fix_id": fix_id, "kind": "fix"})
+            marker._orig_text = label
+            self._map_fix_markers.append(marker)
+        self._raise_map_markers()
+
+    def _close_fix_dialog(self):
+        dlg = getattr(self, "_fix_dlg", None)
+        if dlg is not None:
+            try:
+                if dlg.winfo_exists():
+                    dlg.destroy()
+            except tk.TclError:
+                pass
+        self._fix_dlg = None
+
+    def _destroy_fix_dialog(self, dlg):
+        if getattr(self, "_fix_dlg", None) is dlg:
+            self._fix_dlg = None
+        try:
+            dlg.destroy()
+        except tk.TclError:
+            pass
+
+    def _get_fix_details(self, fix_id):
+        info = {"id": fix_id, "name": "", "lat": None, "lon": None}
+        if not self.nav_conn:
+            return info
+        row = self.nav_conn.execute(
+            "SELECT waypoint_identifier, waypoint_name, waypoint_latitude, waypoint_longitude "
+            "FROM waypoints WHERE waypoint_identifier = ? LIMIT 1",
+            (fix_id,)).fetchone()
+        if row:
+            info["id"] = row[0]
+            info["name"] = row[1] or ""
+            info["lat"], info["lon"] = row[2], row[3]
+        return info
+
+    def _on_fix_click(self, fix_id):
+        self._close_fix_dialog()
+        self._close_airport_dialog()
+        self._close_wpt_dialog()
+        info = self._get_fix_details(fix_id)
+        fix_id = info["id"]
+        lat, lon = info["lat"], info["lon"]
+
+        dlg = tk.Toplevel(self.root)
+        self._fix_dlg = dlg
+        dlg.title(_t("dlg_fix", id=fix_id))
+        dlg.transient(self.root)
+        dlg.resizable(False, False)
+        dlg.configure(bg=self.CDU_BG)
+        dlg.lift()
+        dlg.focus_force()
+        dlg.protocol("WM_DELETE_WINDOW", lambda: self._destroy_fix_dialog(dlg))
+
+        mgrs_str = ""
+        if lat is not None and lon is not None and _mgrs:
+            try:
+                mgrs_str = _mgrs.toMGRS(lat, lon, MGRSPrecision=4)
+            except Exception:
+                pass
+        coords_str = ""
+        if lat is not None and lon is not None:
+            coords_str = f"{dd_to_ddm(lat, True)}  {dd_to_ddm(lon, False)}"
+
+        rows = [
+            (_t("hd_id"), fix_id),
+            (_t("lbl_fix_name"), info["name"] or "—"),
+            (_t("lbl_apt_coords"), coords_str or "—"),
+            (_t("lbl_apt_mgrs"), mgrs_str or "—"),
+        ]
+        for i, (lbl, val) in enumerate(rows):
+            ttk.Label(dlg, text=lbl, style="TLabel").grid(
+                row=i, column=0, sticky="e", padx=(12, 6), pady=3)
+            ttk.Label(dlg, text=val, style="TLabel", font=self.CDU_FONT).grid(
+                row=i, column=1, sticky="w", padx=(0, 12), pady=3)
+
+        btn_frame = ttk.Frame(dlg)
+        btn_frame.grid(row=len(rows), column=0, columnspan=2, pady=(10, 12))
+
+        def copy_id():
+            self.root.clipboard_clear()
+            self.root.clipboard_append(fix_id)
+            messagebox.showinfo("OK", _t("msg_fix_copied", id=fix_id), parent=dlg)
+
+        def add_to_route():
+            if not self._ensure_db():
+                return
+            self._add_to_route_plan(fix_id)
+            messagebox.showinfo("OK", _t("msg_fix_added_route", id=fix_id), parent=dlg)
+            self._destroy_fix_dialog(dlg)
+
+        ttk.Button(btn_frame, text=_t("btn_copy_fix"), command=copy_id).pack(side=tk.LEFT, padx=4)
+        ttk.Button(btn_frame, text=_t("btn_add_to_route"), command=add_to_route).pack(side=tk.LEFT, padx=4)
+        ttk.Button(btn_frame, text=_t("btn_cancel"),
+                   command=lambda: self._destroy_fix_dialog(dlg)).pack(side=tk.LEFT, padx=4)
+        dlg.bind("<Escape>", lambda e: self._destroy_fix_dialog(dlg))
+
     def _refresh_map_markers(self):
         if not hasattr(self, "map_widget"):
             return
-        self.map_widget.delete_all_marker()
-        self._map_markers.clear()
+        self._clear_wpt_markers()
         if not self.conn:
             return
         icon = self._make_circle_icon(10, fill="#ff3333", outline="#cc0000")
@@ -1510,9 +2377,482 @@ class DBEditor:
                 icon=icon,
                 text_color="#000000",
                 font=("Consolas", 9, "bold"),
-                command=lambda m, n=name: self._on_marker_click(n))
+                data={"wpt_id": name, "kind": "custom"})
             marker._orig_text = name
             self._map_markers.append(marker)
+        self._raise_map_markers()
+
+    def _close_wpt_dialog(self):
+        dlg = getattr(self, "_wpt_dlg", None)
+        if dlg is not None:
+            try:
+                if dlg.winfo_exists():
+                    dlg.destroy()
+            except tk.TclError:
+                pass
+        self._wpt_dlg = None
+
+    def _destroy_wpt_dialog(self, dlg):
+        if getattr(self, "_wpt_dlg", None) is dlg:
+            self._wpt_dlg = None
+        try:
+            dlg.destroy()
+        except tk.TclError:
+            pass
+
+    def _get_custom_wpt_details(self, wpt_id):
+        info = {"id": wpt_id, "lat": None, "lon": None, "alt": None}
+        if not self.conn:
+            return info
+        row = self.conn.execute(
+            "SELECT name, lat, lon, alt FROM custom_data WHERE name = ? LIMIT 1",
+            (wpt_id,)).fetchone()
+        if row:
+            info["id"], info["lat"], info["lon"], info["alt"] = row[0], row[1], row[2], row[3]
+        return info
+
+    def _on_custom_wpt_click(self, wpt_id):
+        self._close_wpt_dialog()
+        self._close_airport_dialog()
+        self._close_fix_dialog()
+        info = self._get_custom_wpt_details(wpt_id)
+        wpt_id = info["id"]
+        lat, lon, alt = info["lat"], info["lon"], info["alt"]
+
+        dlg = tk.Toplevel(self.root)
+        self._wpt_dlg = dlg
+        dlg.title(_t("dlg_custom_wpt", id=wpt_id))
+        dlg.transient(self.root)
+        dlg.resizable(False, False)
+        dlg.configure(bg=self.CDU_BG)
+        dlg.lift()
+        dlg.focus_force()
+        dlg.protocol("WM_DELETE_WINDOW", lambda: self._destroy_wpt_dialog(dlg))
+
+        mgrs_str = ""
+        if lat is not None and lon is not None and _mgrs:
+            try:
+                mgrs_str = _mgrs.toMGRS(lat, lon, MGRSPrecision=4)
+            except Exception:
+                pass
+        coords_str = ""
+        if lat is not None and lon is not None:
+            coords_str = f"{dd_to_ddm(lat, True)}  {dd_to_ddm(lon, False)}"
+        elev_str = f"{alt:.0f}" if alt is not None else "—"
+
+        rows = [
+            (_t("hd_id"), wpt_id),
+            (_t("lbl_apt_coords"), coords_str or "—"),
+            (_t("lbl_apt_mgrs"), mgrs_str or "—"),
+            (_t("lbl_wpt_elev_ft"), elev_str),
+        ]
+        for i, (lbl, val) in enumerate(rows):
+            ttk.Label(dlg, text=lbl, style="TLabel").grid(
+                row=i, column=0, sticky="e", padx=(12, 6), pady=3)
+            ttk.Label(dlg, text=val, style="TLabel", font=self.CDU_FONT).grid(
+                row=i, column=1, sticky="w", padx=(0, 12), pady=3)
+
+        btn_frame = ttk.Frame(dlg)
+        btn_frame.grid(row=len(rows), column=0, columnspan=2, pady=(10, 12))
+
+        def copy_id():
+            self.root.clipboard_clear()
+            self.root.clipboard_append(wpt_id)
+            messagebox.showinfo("OK", _t("msg_fix_copied", id=wpt_id), parent=dlg)
+
+        def add_to_route():
+            if not self._ensure_db():
+                return
+            self._add_to_route_plan(wpt_id)
+            messagebox.showinfo("OK", _t("msg_fix_added_route", id=wpt_id), parent=dlg)
+            self._destroy_wpt_dialog(dlg)
+
+        ttk.Button(btn_frame, text=_t("btn_copy_fix"), command=copy_id).pack(side=tk.LEFT, padx=4)
+        ttk.Button(btn_frame, text=_t("btn_add_to_route"), command=add_to_route).pack(side=tk.LEFT, padx=4)
+        ttk.Button(btn_frame, text=_t("btn_cancel"),
+                   command=lambda: self._destroy_wpt_dialog(dlg)).pack(side=tk.LEFT, padx=4)
+        dlg.bind("<Escape>", lambda e: self._destroy_wpt_dialog(dlg))
+
+    def _refresh_airport_markers(self):
+        if not hasattr(self, "map_widget"):
+            return
+        self._clear_airport_markers()
+        if not self.nav_conn:
+            return
+        icon = self._make_airport_icon(14)
+        zoom = self.map_widget.zoom
+        nav = self.nav_conn.cursor()
+        nav.execute(
+            "SELECT icao, lat, lon FROM airports WHERE lat IS NOT NULL AND lon IS NOT NULL")
+        for icao, lat, lon in nav.fetchall():
+            if lat == 0 and lon == 0:
+                continue
+            alias = self._get_dcs_alias(icao)
+            label = alias if alias else icao
+            show_text = label if zoom >= 8 else ""
+            marker = self.map_widget.set_marker(
+                lat, lon, text=show_text,
+                icon=icon,
+                text_color="#000000",
+                font=("Consolas", 8, "bold"),
+                data={"icao": icao, "kind": "airport"})
+            marker._orig_text = label
+            self._map_airport_markers.append(marker)
+        self._raise_map_markers()
+
+    def _close_airport_dialog(self):
+        dlg = getattr(self, "_airport_dlg", None)
+        if dlg is not None:
+            try:
+                if dlg.winfo_exists():
+                    dlg.destroy()
+            except tk.TclError:
+                pass
+        self._airport_dlg = None
+
+    def _destroy_airport_dialog(self, dlg):
+        if getattr(self, "_airport_dlg", None) is dlg:
+            self._airport_dlg = None
+        try:
+            dlg.destroy()
+        except tk.TclError:
+            pass
+
+    def _map_search_goto(self):
+        """Search for a waypoint/airport and center the map on it."""
+        if not hasattr(self, "map_widget"):
+            return
+        result = self._wpt_search_dialog(for_map=True)
+        if not result:
+            return
+        wpt_id, _source, lat, lon = result[0], result[1], result[2], result[3]
+        if lat is None or lon is None or (lat == 0 and lon == 0):
+            lat, lon, _ = self._lookup_wpt_coords(wpt_id)
+        if lat is None or lon is None or (lat == 0 and lon == 0):
+            messagebox.showwarning(_t("ttl_error"), _t("msg_no_coords_map", id=wpt_id))
+            return
+        self.map_widget.set_position(lat, lon)
+        self.map_widget.set_zoom(10)
+        self._schedule_map_loading_check()
+
+    def _get_airport_details(self, icao):
+        """Collect airport info from nav_data and airport_names."""
+        info = {
+            "icao": icao,
+            "name": "",
+            "municipality": "",
+            "lat": None,
+            "lon": None,
+            "type": "",
+            "alias": "",
+            "route_id": icao,
+        }
+        if self.names_conn:
+            row = self.names_conn.execute(
+                "SELECT name, municipality, ident, icao FROM airport_names "
+                "WHERE ident = ? OR icao = ? LIMIT 1",
+                (icao, icao),
+            ).fetchone()
+            if row:
+                info["name"] = row[0] or ""
+                info["municipality"] = row[1] or ""
+        alias = self._get_dcs_alias(icao)
+        if alias:
+            info["alias"] = alias
+            info["route_id"] = alias
+        else:
+            resolved = self._resolve_alias_to_ident(icao)
+            if resolved:
+                info["route_id"] = icao
+                icao = resolved
+                info["icao"] = resolved
+        if self.nav_conn:
+            row = self.nav_conn.execute(
+                "SELECT icao, lat, lon, type FROM airports WHERE icao = ? LIMIT 1",
+                (icao,),
+            ).fetchone()
+            if row:
+                info["icao"] = row[0]
+                info["lat"], info["lon"] = row[1], row[2]
+                info["type"] = row[3] or ""
+                if not info["alias"]:
+                    info["alias"] = self._get_dcs_alias(row[0]) or ""
+                    if info["alias"]:
+                        info["route_id"] = info["alias"]
+        if not info["name"]:
+            info["name"] = self._get_airport_name(info["icao"])
+        return info
+
+    def _on_airport_click(self, icao):
+        self._close_airport_dialog()
+        self._close_fix_dialog()
+        self._close_wpt_dialog()
+        info = self._get_airport_details(icao)
+        route_id = info["route_id"]
+        display_icao = info["alias"] or info["icao"]
+
+        dlg = tk.Toplevel(self.root)
+        self._airport_dlg = dlg
+        dlg.title(_t("dlg_airport", icao=display_icao))
+        dlg.transient(self.root)
+        dlg.resizable(False, False)
+        dlg.configure(bg=self.CDU_BG)
+        dlg.lift()
+        dlg.focus_force()
+        dlg.protocol("WM_DELETE_WINDOW", lambda: self._destroy_airport_dialog(dlg))
+
+        lat, lon = info["lat"], info["lon"]
+        mgrs_str = ""
+        if lat is not None and lon is not None and _mgrs:
+            try:
+                mgrs_str = _mgrs.toMGRS(lat, lon, MGRSPrecision=4)
+            except Exception:
+                pass
+        elev_str = ""
+        if lat is not None and lon is not None:
+            key = (round(lat, 3), round(lon, 3))
+            if key in self._elev_cache:
+                elev_str = f"{self._elev_cache[key] * METERS_TO_FEET:.0f} ft"
+        coords_str = ""
+        if lat is not None and lon is not None:
+            coords_str = f"{dd_to_ddm(lat, True)}  {dd_to_ddm(lon, False)}"
+
+        rows = [
+            (_t("lbl_apt_icao"), display_icao),
+            (_t("lbl_apt_alias"), info["alias"] or "—"),
+            (_t("lbl_apt_name"), info["name"] or "—"),
+            (_t("lbl_apt_municipality"), info["municipality"] or "—"),
+            (_t("lbl_apt_type"), info["type"] or "—"),
+            (_t("lbl_apt_coords"), coords_str or "—"),
+            (_t("lbl_apt_mgrs"), mgrs_str or "—"),
+            (_t("lbl_apt_elev"), elev_str or "—"),
+        ]
+        for i, (lbl, val) in enumerate(rows):
+            ttk.Label(dlg, text=lbl, style="TLabel").grid(
+                row=i, column=0, sticky="e", padx=(12, 6), pady=3)
+            ttk.Label(dlg, text=val, style="TLabel", font=self.CDU_FONT).grid(
+                row=i, column=1, sticky="w", padx=(0, 12), pady=3)
+
+        btn_frame = ttk.Frame(dlg)
+        btn_frame.grid(row=len(rows), column=0, columnspan=2, pady=(10, 12))
+
+        def copy_icao():
+            self.root.clipboard_clear()
+            self.root.clipboard_append(display_icao)
+            messagebox.showinfo("OK", _t("msg_icao_copied", icao=display_icao), parent=dlg)
+
+        def add_to_route():
+            if not self._ensure_db():
+                return
+            self._add_airport_to_route(route_id)
+            messagebox.showinfo("OK", _t("msg_apt_added_route", icao=display_icao), parent=dlg)
+            self._destroy_airport_dialog(dlg)
+
+        def set_origin():
+            if not self._ensure_db():
+                return
+            self._set_route_origin(route_id)
+            messagebox.showinfo("OK", _t("msg_apt_set_origin", icao=display_icao), parent=dlg)
+            self._destroy_airport_dialog(dlg)
+
+        def set_dest():
+            if not self._ensure_db():
+                return
+            self._set_route_dest(route_id)
+            messagebox.showinfo("OK", _t("msg_apt_set_dest", icao=display_icao), parent=dlg)
+            self._destroy_airport_dialog(dlg)
+
+        ttk.Button(btn_frame, text=_t("btn_copy_icao"), command=copy_icao).pack(side=tk.LEFT, padx=4)
+        ttk.Button(btn_frame, text=_t("btn_add_to_route"), command=add_to_route).pack(side=tk.LEFT, padx=4)
+        ttk.Button(btn_frame, text=_t("btn_set_origin"), command=set_origin).pack(side=tk.LEFT, padx=4)
+        ttk.Button(btn_frame, text=_t("btn_set_dest"), command=set_dest).pack(side=tk.LEFT, padx=4)
+        ttk.Button(btn_frame, text=_t("btn_cancel"),
+                   command=lambda: self._destroy_airport_dialog(dlg)).pack(side=tk.LEFT, padx=4)
+
+        dlg.bind("<Escape>", lambda e: self._destroy_airport_dialog(dlg))
+
+    def _is_same_origin_dest_route(self):
+        origin = self.route_vars["origin"].get().strip()
+        dest = self.route_vars["dest"].get().strip()
+        return bool(origin and dest and self._same_route_wpt_id(origin, dest))
+
+    def _sync_same_origin_dest_route(self):
+        """Origin and destination are the same: first row = origin, last row = dest."""
+        if not self._is_same_origin_dest_route():
+            return False
+        origin = self.route_vars["origin"].get().strip()
+        dest = self.route_vars["dest"].get().strip()
+        tree = self._main_wpt_tree
+        items = list(tree.get_children())
+
+        middle_rows = []
+        for item in items:
+            vals = list(tree.item(item, "values"))
+            if not self._same_route_wpt_id(vals[1], origin):
+                middle_rows.append(vals)
+
+        if items:
+            first_id = tree.item(items[0], "values")[1]
+            last_id = tree.item(items[-1], "values")[1]
+            endpoint_count = sum(
+                1 for item in items
+                if self._same_route_wpt_id(tree.item(item, "values")[1], origin))
+            if (endpoint_count == 2
+                    and self._same_route_wpt_id(first_id, origin)
+                    and self._same_route_wpt_id(last_id, dest)
+                    and len(middle_rows) == len(items) - 2):
+                return False
+
+        start_native = self._build_native_wpt_for_id(origin)
+        end_native = self._build_native_wpt_for_id(dest)
+        start_source = self._identify_wpt_source(origin)
+        end_source = self._identify_wpt_source(dest)
+        start_nombre = self._get_airport_name(origin) if start_source == "airport" else ""
+        end_nombre = self._get_airport_name(dest) if end_source == "airport" else ""
+
+        tree.delete(*items)
+        tree.insert("", tk.END, values=(1, origin, start_nombre, start_source, start_native))
+        for vals in middle_rows:
+            tree.insert("", tk.END, values=vals)
+        tree.insert("", tk.END, values=(0, dest, end_nombre, end_source, end_native))
+        self._renumber_wpt_list("main")
+        self._sync_list_to_raw("main")
+        self._refresh_route_map_if_shown()
+        self._refresh_flight_plan()
+        return True
+
+    def _ensure_wpt_in_route_plan(self, wpt_id, where="append"):
+        """Insert or reposition a waypoint in the main route flight plan list."""
+        wpt_id = (wpt_id or "").strip()
+        if not wpt_id:
+            return
+        tree = self._main_wpt_tree
+        origin = self.route_vars["origin"].get().strip()
+        dest = self.route_vars["dest"].get().strip()
+        same_od = self._is_same_origin_dest_route()
+
+        if same_od and self._same_route_wpt_id(wpt_id, origin):
+            self._sync_same_origin_dest_route()
+            return
+
+        if same_od and where == "append":
+            items = tree.get_children()
+            for item in items:
+                if self._same_route_wpt_id(tree.item(item, "values")[1], wpt_id):
+                    return
+            self._sync_same_origin_dest_route()
+            items = tree.get_children()
+            insert_at = len(items) - 1 if items else 0
+            native = self._build_native_wpt_for_id(wpt_id)
+            source = self._identify_wpt_source(wpt_id)
+            nombre = self._get_airport_name(wpt_id) if source == "airport" else ""
+            tree.insert("", insert_at, values=(0, wpt_id, nombre, source, native))
+            self._renumber_wpt_list("main")
+            self._sync_list_to_raw("main")
+            self._refresh_route_map_if_shown()
+            self._refresh_flight_plan()
+            return
+
+        items = tree.get_children()
+        existing = None
+        for item in items:
+            if self._same_route_wpt_id(tree.item(item, "values")[1], wpt_id):
+                existing = item
+                break
+        if existing:
+            items = tree.get_children()
+            if where == "start" and items and existing != items[0]:
+                tree.move(existing, "", 0)
+                self._renumber_wpt_list("main")
+            elif where == "end" and items and existing != items[-1]:
+                tree.move(existing, "", tk.END)
+                self._renumber_wpt_list("main")
+        else:
+            native = self._build_native_wpt_for_id(wpt_id)
+            source = self._identify_wpt_source(wpt_id)
+            nombre = self._get_airport_name(wpt_id) if source == "airport" else ""
+            if where == "start":
+                tree.insert("", 0, values=(0, wpt_id, nombre, source, native))
+                self._renumber_wpt_list("main")
+            else:
+                seq = len(tree.get_children()) + 1
+                tree.insert("", tk.END, values=(seq, wpt_id, nombre, source, native))
+        self._sync_list_to_raw("main")
+        self._refresh_route_map_if_shown()
+        self._refresh_flight_plan()
+
+    def _ensure_dest_middle_duplicate(self):
+        """Origin+destination only: insert destination again between origin and final dest."""
+        tree = self._main_wpt_tree
+        items = tree.get_children()
+        if len(items) != 2:
+            return False
+        vals0 = tree.item(items[0], "values")
+        vals1 = tree.item(items[1], "values")
+        if vals0[1] == vals1[1]:
+            return False
+        nombre = vals1[2] if len(vals1) > 2 else ""
+        source = vals1[3] if len(vals1) > 3 else self._identify_wpt_source(vals1[1])
+        native = vals1[4] if len(vals1) > 4 else self._build_native_wpt_for_id(vals1[1])
+        tree.insert("", 1, values=(2, vals1[1], nombre, source, native))
+        self._renumber_wpt_list("main")
+        return True
+
+    def _set_route_origin(self, wpt_id):
+        self.route_vars["origin"].set(wpt_id)
+        if self._is_same_origin_dest_route():
+            self._sync_same_origin_dest_route()
+        else:
+            self._ensure_wpt_in_route_plan(wpt_id, "start")
+        self.notebook.select(self.route_frame)
+
+    def _set_route_dest(self, wpt_id):
+        self.route_vars["dest"].set(wpt_id)
+        if self._is_same_origin_dest_route():
+            self._sync_same_origin_dest_route()
+        else:
+            self._ensure_wpt_in_route_plan(wpt_id, "end")
+        self.notebook.select(self.route_frame)
+
+    def _refresh_route_map_if_shown(self):
+        if getattr(self, "_route_overlay_active", False) and hasattr(self, "map_widget"):
+            self.show_route_on_map(switch_tab=False)
+
+    def _add_to_route_plan(self, wpt_id):
+        """Add a waypoint (airport, nav, or custom) to the main route plan."""
+        origin = self.route_vars["origin"].get().strip()
+        dest = self.route_vars["dest"].get().strip()
+        if self._is_same_origin_dest_route():
+            if not self._same_route_wpt_id(wpt_id, origin):
+                self._ensure_wpt_in_route_plan(wpt_id, "append")
+            else:
+                self._sync_same_origin_dest_route()
+            self.notebook.select(self.route_frame)
+            return
+        if origin and not self._same_route_wpt_id(origin, wpt_id):
+            self._ensure_wpt_in_route_plan(origin, "start")
+        if self._same_route_wpt_id(wpt_id, origin):
+            where = "start"
+        elif self._same_route_wpt_id(wpt_id, dest):
+            where = "end"
+        else:
+            where = "append"
+        self._ensure_wpt_in_route_plan(wpt_id, where)
+        self.notebook.select(self.route_frame)
+
+    def _add_airport_to_route(self, wpt_id, tag="main"):
+        """Add an airport/nav waypoint to the route list."""
+        if tag == "main":
+            self._add_to_route_plan(wpt_id)
+            return
+        tree = self._get_wpt_tree(tag)
+        seq = len(tree.get_children()) + 1
+        source = self._identify_wpt_source(wpt_id)
+        nombre = self._get_airport_name(wpt_id) if source == "airport" else ""
+        native = self._build_native_wpt_for_id(wpt_id)
+        tree.insert("", tk.END, values=(seq, wpt_id, nombre, source, native))
+        self._sync_list_to_raw(tag)
+        self.notebook.select(self.route_frame)
 
     def _center_map_on_wpts(self):
         if not hasattr(self, "map_widget") or not self.conn:
@@ -1530,14 +2870,6 @@ class DBEditor:
             avg_lon = sum(r[1] for r in rows) / len(rows)
             self.map_widget.set_position(avg_lat, avg_lon)
             self.map_widget.set_zoom(8)
-
-    def _on_marker_click(self, wpt_name):
-        for iid in self.wpt_tree.get_children():
-            if self.wpt_tree.item(iid, "values")[0] == wpt_name:
-                self.wpt_tree.selection_set(iid)
-                self.wpt_tree.see(iid)
-                self.notebook.select(self.wpt_frame)
-                break
 
     def _map_create_wpt(self, coords):
         if not self._ensure_db():
@@ -1568,7 +2900,7 @@ class DBEditor:
             except Exception:
                 pass
         pre = ("", mgrs_str, dd_to_ddm(lat, True), dd_to_ddm(lon, False), elev_str)
-        self._waypoint_dialog(pre)
+        self._waypoint_dialog(pre, from_map=True)
 
     # ── DB helpers ───────────────────────────────────────────────────
 
@@ -1611,6 +2943,24 @@ class DBEditor:
         ).fetchone()
         return row[0] if row else ""
 
+    def _same_route_wpt_id(self, a, b):
+        """True if two route waypoint ids refer to the same airport/nav point."""
+        if not a or not b:
+            return False
+        a, b = a.strip(), b.strip()
+        if a == b:
+            return True
+        if self._get_dcs_alias(a) == b or self._get_dcs_alias(b) == a:
+            return True
+        ra, rb = self._resolve_alias_to_ident(a), self._resolve_alias_to_ident(b)
+        if ra and ra == b:
+            return True
+        if rb and rb == a:
+            return True
+        if ra and rb and ra == rb:
+            return True
+        return False
+
     def _get_dcs_alias(self, airport_ident):
         """Get the DCS ICAO alias for an airport ident (e.g. RU-0090 -> URKL)."""
         if not self.names_conn:
@@ -1648,6 +2998,10 @@ class DBEditor:
         saved = _load_navdata_config()
         if saved and os.path.isfile(saved):
             self.nav_conn = sqlite3.connect(saved)
+            if _HAS_MAPVIEW and hasattr(self, "map_widget"):
+                self._refresh_airport_markers()
+                if getattr(self, "_show_fix_markers", None) and self._show_fix_markers.get():
+                    self._refresh_fix_markers()
             return
 
         # 2. Auto-detect
@@ -1656,6 +3010,10 @@ class DBEditor:
             path = found[0]
             self.nav_conn = sqlite3.connect(path)
             _save_navdata_config(path)
+            if _HAS_MAPVIEW and hasattr(self, "map_widget"):
+                self._refresh_airport_markers()
+                if getattr(self, "_show_fix_markers", None) and self._show_fix_markers.get():
+                    self._refresh_fix_markers()
             return
 
         # 3. Silently continue without nav_data (still functional)
@@ -1822,13 +3180,39 @@ class DBEditor:
         sel = self.wpt_tree.selection()
         if not sel:
             return
-        name = self.wpt_tree.item(sel[0], "values")[0]
-        if messagebox.askyesno(_t("ttl_confirm"), _t("msg_confirm_del_wpt", name=name)):
-            self.conn.execute("DELETE FROM custom_data WHERE name = ?", (name,))
+        names = [self.wpt_tree.item(iid, "values")[0] for iid in sel]
+        if len(names) == 1:
+            msg = _t("msg_confirm_del_wpt", name=names[0])
+        else:
+            listed = ", ".join(names[:8])
+            if len(names) > 8:
+                listed += f" (+{len(names) - 8})"
+            msg = _t("msg_confirm_del_wpts", n=len(names), names=listed)
+        if messagebox.askyesno(_t("ttl_confirm"), msg):
+            for name in names:
+                self.conn.execute("DELETE FROM custom_data WHERE name = ?", (name,))
             self.conn.commit()
             self.refresh_waypoints()
 
-    def _waypoint_dialog(self, existing=None, is_duplicate=False):
+    def delete_all_waypoints(self):
+        if not self._ensure_db():
+            return
+        cur = self.conn.cursor()
+        cur.execute("SELECT COUNT(*) FROM custom_data")
+        count = cur.fetchone()[0]
+        if count == 0:
+            messagebox.showinfo("Info", _t("msg_no_wpts"))
+            return
+        msg = _t("msg_confirm_del_all_wpt", n=count)
+        cur.execute("SELECT COUNT(*) FROM routes")
+        if cur.fetchone()[0] > 0:
+            msg += _t("msg_del_all_routes_warn")
+        if messagebox.askyesno(_t("ttl_confirm"), msg):
+            self.conn.execute("DELETE FROM custom_data")
+            self.conn.commit()
+            self.refresh_waypoints()
+
+    def _waypoint_dialog(self, existing=None, is_duplicate=False, from_map=False):
         dlg = tk.Toplevel(self.root)
         dlg.title(_t("dlg_new_wpt") if (not existing or is_duplicate) else _t("dlg_edit_wpt"))
         dlg.geometry("540x290")
@@ -1857,7 +3241,7 @@ class DBEditor:
         if is_edit:
             entries[0].config(state="disabled")
 
-        def save():
+        def save(add_to_route=False):
             vals = [e.get().strip() for e in entries]
             if not vals[0]:
                 messagebox.showwarning(_t("ttl_error"), _t("msg_name_required"), parent=dlg)
@@ -1927,14 +3311,19 @@ class DBEditor:
                     )
             self.conn.commit()
             self.refresh_waypoints()
+            if add_to_route and not is_edit:
+                self._add_to_route_plan(vals[0])
             dlg.destroy()
 
         btn_frame = ttk.Frame(dlg)
         btn_frame.grid(row=len(labels), column=0, columnspan=2, pady=12)
-        ttk.Button(btn_frame, text=_t("btn_save"), command=save).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text=_t("btn_save"), command=lambda: save(False)).pack(side=tk.LEFT, padx=5)
+        if from_map and not is_edit:
+            ttk.Button(btn_frame, text=_t("btn_save_add_route"),
+                       command=lambda: save(True)).pack(side=tk.LEFT, padx=5)
         ttk.Button(btn_frame, text=_t("btn_cancel"), command=dlg.destroy).pack(side=tk.LEFT, padx=5)
 
-        dlg.bind("<Return>", lambda e: save())
+        dlg.bind("<Return>", lambda e: save(False))
         dlg.bind("<Escape>", lambda e: dlg.destroy())
         entries[0 if not is_edit else 1].focus_set()
 
@@ -1977,6 +3366,10 @@ class DBEditor:
         # Populate waypoint lists from raw text
         self._load_wpt_list_from_raw("main", main_raw)
         self._load_wpt_list_from_raw("alt", alt_raw)
+        self._ensure_dest_middle_duplicate()
+        self._sync_same_origin_dest_route()
+        self._sync_list_to_raw("main")
+        self._refresh_flight_plan()
 
     def add_route(self):
         if not self._ensure_db():
@@ -1988,6 +3381,42 @@ class DBEditor:
         self._main_wpt_tree.delete(*self._main_wpt_tree.get_children())
         self._alt_wpt_tree.delete(*self._alt_wpt_tree.get_children())
         self.route_tree.selection_remove(*self.route_tree.selection())
+        self._clear_flight_plan()
+
+    def _back_route_name(self, name):
+        """Append R to route name (max 10 chars); at length 10, replace last char with R."""
+        name = (name or "").strip()
+        if len(name) >= 10:
+            return name[:9] + "R"
+        return (name + "R")[:10]
+
+    def reverse_route(self):
+        """Reverse Main Points order and swap Origin/Destination; suffix route name with R."""
+        tree = self._main_wpt_tree
+        items = tree.get_children()
+        if not items:
+            messagebox.showwarning(_t("ttl_warning"), _t("msg_route_no_wpts"))
+            return
+
+        rows = [list(tree.item(item, "values")) for item in items]
+        rows.reverse()
+        tree.delete(*items)
+        for i, vals in enumerate(rows, 1):
+            vals[0] = i
+            tree.insert("", tk.END, values=vals)
+
+        self._sync_list_to_raw("main")
+
+        origin = self.route_vars["origin"].get().strip()
+        dest = self.route_vars["dest"].get().strip()
+        self.route_vars["origin"].set(dest)
+        self.route_vars["dest"].set(origin)
+
+        self.route_vars["name"].set(self._back_route_name(self.route_vars["name"].get()))
+
+        self._sync_list_to_raw("main")
+        self._refresh_flight_plan()
+        self._refresh_route_map_if_shown()
 
     def save_route(self):
         if not self._ensure_db():
@@ -2007,40 +3436,28 @@ class DBEditor:
         origin = self.route_vars["origin"].get().strip()
         dest = self.route_vars["dest"].get().strip()
 
-        if origin:
-            # Insert origin as first waypoint if not already there
-            first_id = tree.item(items[0], "values")[1] if items else None
-            if first_id != origin:
-                native = self._build_native_wpt_for_id(origin)
-                source = self._identify_wpt_source(origin)
-                nombre = self._get_airport_name(origin) if source == "airport" else ""
-                tree.insert("", 0, values=(0, origin, nombre, source, native))
-                self._renumber_wpt_list("main")
-                items = tree.get_children()
+        if self._is_same_origin_dest_route():
+            self._sync_same_origin_dest_route()
         else:
-            # No origin specified → use first waypoint
-            if items:
+            if origin:
+                self._ensure_wpt_in_route_plan(origin, "start")
+                items = tree.get_children()
+            elif items:
                 origin = tree.item(items[0], "values")[1]
                 self.route_vars["origin"].set(origin)
 
-        if dest:
-            # Insert dest as last waypoint if not already there
-            last_id = tree.item(items[-1], "values")[1] if items else None
-            if last_id != dest:
-                native = self._build_native_wpt_for_id(dest)
-                source = self._identify_wpt_source(dest)
-                nombre = self._get_airport_name(dest) if source == "airport" else ""
-                seq = len(tree.get_children()) + 1
-                tree.insert("", tk.END, values=(seq, dest, nombre, source, native))
+            if dest:
+                self._ensure_wpt_in_route_plan(dest, "end")
                 items = tree.get_children()
-        else:
-            # No dest specified → use last waypoint
-            if items:
+            elif items:
                 dest = tree.item(items[-1], "values")[1]
                 self.route_vars["dest"].set(dest)
 
+            self._ensure_dest_middle_duplicate()
+
         # Re-sync after possible insertions (updates type flags)
         self._sync_list_to_raw("main")
+        self._refresh_flight_plan()
 
         data = {k: v.get().strip() for k, v in self.route_vars.items()}
         data["main_pts"] = self.main_pts_text.get("1.0", tk.END).strip()
@@ -2095,9 +3512,17 @@ class DBEditor:
         sel = self.route_tree.selection()
         if not sel:
             return
-        name = self.route_tree.item(sel[0], "values")[0]
-        if messagebox.askyesno(_t("ttl_confirm"), _t("msg_confirm_del_rte", name=name)):
-            self.conn.execute("DELETE FROM routes WHERE name = ?", (name,))
+        names = [self.route_tree.item(iid, "values")[0] for iid in sel]
+        if len(names) == 1:
+            msg = _t("msg_confirm_del_rte", name=names[0])
+        else:
+            listed = ", ".join(names[:8])
+            if len(names) > 8:
+                listed += f" (+{len(names) - 8})"
+            msg = _t("msg_confirm_del_rtes", n=len(names), names=listed)
+        if messagebox.askyesno(_t("ttl_confirm"), msg):
+            for name in names:
+                self.conn.execute("DELETE FROM routes WHERE name = ?", (name,))
             self.conn.commit()
             self.refresh_routes()
 
@@ -2137,7 +3562,7 @@ class DBEditor:
         self.conn.commit()
         self.refresh_routes()
 
-    def show_route_on_map(self):
+    def show_route_on_map(self, switch_tab=True):
         if not hasattr(self, "map_widget"):
             messagebox.showwarning(_t("ttl_error"), _t("msg_map_unavailable"))
             return
@@ -2146,6 +3571,7 @@ class DBEditor:
         if not items:
             messagebox.showwarning(_t("ttl_error"), _t("msg_no_wpts_route"))
             return
+        self._route_overlay_active = True
         # Clear previous route overlay
         self._clear_route_overlay()
         # Collect coordinates from native tuples
@@ -2179,8 +3605,8 @@ class DBEditor:
         if len(coords) >= 2:
             self._map_route_path = self.map_widget.set_path(
                 coords, color="#3399ff", width=3)
-        # Switch to map tab and fit view
-        self.notebook.select(self.map_frame)
+        if switch_tab:
+            self.notebook.select(self.map_frame)
         if coords:
             lats = [c[0] for c in coords]
             lons = [c[1] for c in coords]
