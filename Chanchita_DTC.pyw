@@ -414,8 +414,22 @@ STRINGS = {
     "lbl_apt_elev":         {"es": "Elevación:",    "en": "Elevation:"},
     "btn_copy_icao":        {"es": "Copiar ICAO",   "en": "Copy ICAO"},
     "btn_add_to_route":     {"es": "Agregar a ruta", "en": "Add to route"},
-    "btn_set_origin":       {"es": "Origen",        "en": "Set Origin"},
-    "btn_set_dest":         {"es": "Destino",       "en": "Set Destination"},
+    "btn_set_origin":       {"es": "Establecer como Origen", "en": "Set as Origin"},
+    "btn_set_dest":         {"es": "Establecer como Destino", "en": "Set as Destination"},
+    "btn_coord_search":     {"es": "Buscar coordenadas", "en": "Coordinates search"},
+    "dlg_coord_search":     {"es": "Buscar por coordenadas", "en": "Search by coordinates"},
+    "lbl_coord_lat":        {"es": "Lat (DDM o decimal):", "en": "Lat (DDM or decimal):"},
+    "lbl_coord_lon":        {"es": "Lon (DDM o decimal):", "en": "Lon (DDM or decimal):"},
+    "lbl_coord_mgrs":       {"es": "MGRS (opcional):", "en": "MGRS (optional):"},
+    "btn_coord_go":         {"es": "Ir", "en": "Go"},
+    "dlg_coord_confirm":    {"es": "Confirmar ubicación", "en": "Confirm location"},
+    "msg_coord_confirm":    {"es": "¿Es esta la ubicación correcta?", "en": "Is this the correct location?"},
+    "btn_confirm":          {"es": "Confirmar", "en": "Confirm"},
+    "dlg_coord_action":     {"es": "¿Qué querés hacer?", "en": "What do you want to do?"},
+    "btn_add_as_wpt":       {"es": "Agregar como waypoint", "en": "Add as waypoint"},
+    "btn_add_as_route_wpt": {"es": "Agregar como waypoint de ruta", "en": "Add as route waypoint"},
+    "msg_coord_invalid":    {"es": "Ingresá coordenadas válidas (lat/lon o MGRS).",
+                            "en": "Enter valid coordinates (lat/lon or MGRS)."},
     "msg_icao_copied":      {"es": "ICAO copiado: {icao}", "en": "ICAO copied: {icao}"},
     "msg_apt_added_route":  {"es": "'{icao}' agregado a la ruta", "en": "'{icao}' added to route"},
     "msg_apt_set_origin":   {"es": "Origen: {icao}", "en": "Origin set: {icao}"},
@@ -1227,13 +1241,14 @@ class DBEditor:
 
     def _wpt_list_add(self, tag):
         """Open search dialog and add selected waypoint to the list."""
-        result = self._wpt_search_dialog()
+        result = self._wpt_search_dialog(for_route=True)
         if result:
             wpt_id, source = result[0], result[1]
             if tag == "main":
                 self._add_to_route_plan(wpt_id)
                 return
             tree = self._get_wpt_tree(tag)
+            seq = len(tree.get_children()) + 1
             nombre = self._get_airport_name(wpt_id) if source == "airport" else ""
             native = self._build_native_wpt_for_id(wpt_id)
             tree.insert("", tk.END, values=(seq, wpt_id, nombre, source, native))
@@ -1353,7 +1368,7 @@ class DBEditor:
 
     # ── Waypoint Search Dialog ───────────────────────────────────────
 
-    def _wpt_search_dialog(self, for_map=False):
+    def _wpt_search_dialog(self, for_map=False, for_route=False):
         """Search dialog that queries custom_data + nav_data.db.
         Returns (wpt_id, source) or (wpt_id, source, lat, lon) when for_map=True."""
         dlg = tk.Toplevel(self.root)
@@ -1438,8 +1453,31 @@ class DBEditor:
             status_var.set(_t("msg_results", n=len(results)) +
                            (_t("msg_max_100") if len(results) >= 100 else ""))
 
+        def do_set_origin():
+            sel = res_tree.selection()
+            if not sel:
+                return
+            vals = res_tree.item(sel[0], "values")
+            if not self._ensure_db():
+                return
+            self._set_route_origin(vals[0])
+            dlg.destroy()
+
+        def do_set_dest():
+            sel = res_tree.selection()
+            if not sel:
+                return
+            vals = res_tree.item(sel[0], "values")
+            if not self._ensure_db():
+                return
+            self._set_route_dest(vals[0])
+            dlg.destroy()
+
         select_label = _t("btn_goto_map") if for_map else _t("btn_select")
         ttk.Button(btn_frame, text=select_label, command=do_select).pack(side=tk.LEFT, padx=5)
+        if for_route:
+            ttk.Button(btn_frame, text=_t("btn_set_origin"), command=do_set_origin).pack(side=tk.LEFT, padx=5)
+            ttk.Button(btn_frame, text=_t("btn_set_dest"), command=do_set_dest).pack(side=tk.LEFT, padx=5)
         ttk.Button(btn_frame, text=_t("btn_cancel"), command=dlg.destroy).pack(side=tk.LEFT, padx=5)
 
         # Bind enter and double-click
@@ -1546,6 +1584,8 @@ class DBEditor:
                    command=self._center_map_on_wpts).pack(side=tk.LEFT, padx=2)
         ttk.Button(toolbar, text=_t("btn_search"),
                    command=self._map_search_goto).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text=_t("btn_coord_search"),
+                   command=self._map_coord_search).pack(side=tk.LEFT, padx=2)
         self._show_fix_markers = tk.BooleanVar(value=True)
         ttk.Checkbutton(toolbar, text=_t("map_show_fixes"), variable=self._show_fix_markers,
                         command=self._on_fix_layer_toggle).pack(side=tk.LEFT, padx=(8, 2))
@@ -1622,6 +1662,7 @@ class DBEditor:
         self._map_fix_markers = []
         self._map_route_markers = []
         self._map_route_path = None
+        self._coord_search_marker = None
         self._route_overlay_active = False
         self._airport_dlg = None
         self._fix_dlg = None
@@ -2535,6 +2576,239 @@ class DBEditor:
         self.map_widget.set_zoom(10)
         self._schedule_map_loading_check()
 
+    def _clear_coord_search_marker(self):
+        if getattr(self, "_coord_search_marker", None):
+            try:
+                self._coord_search_marker.delete()
+            except Exception:
+                pass
+            self._coord_search_marker = None
+
+    def _map_coord_search(self):
+        """Search map by known coordinates (DDM, decimal, or MGRS)."""
+        if not hasattr(self, "map_widget"):
+            return
+        dlg = tk.Toplevel(self.root)
+        dlg.title(_t("dlg_coord_search"))
+        dlg.geometry("480x200")
+        dlg.transient(self.root)
+        dlg.grab_set()
+        dlg.resizable(False, False)
+        dlg.configure(bg=self.CDU_BG)
+
+        lat_var = tk.StringVar()
+        lon_var = tk.StringVar()
+        mgrs_var = tk.StringVar()
+
+        ttk.Label(dlg, text=_t("lbl_coord_lat")).grid(row=0, column=0, sticky="e", padx=(12, 6), pady=8)
+        lat_entry = ttk.Entry(dlg, textvariable=lat_var, width=28, font=self.CDU_FONT)
+        lat_entry.grid(row=0, column=1, sticky="w", padx=(0, 12), pady=8)
+        ttk.Label(dlg, text=_t("hint_lat"), foreground=self.CDU_FG_DIM).grid(row=0, column=2, sticky="w")
+
+        ttk.Label(dlg, text=_t("lbl_coord_lon")).grid(row=1, column=0, sticky="e", padx=(12, 6), pady=8)
+        lon_entry = ttk.Entry(dlg, textvariable=lon_var, width=28, font=self.CDU_FONT)
+        lon_entry.grid(row=1, column=1, sticky="w", padx=(0, 12), pady=8)
+        ttk.Label(dlg, text=_t("hint_lon"), foreground=self.CDU_FG_DIM).grid(row=1, column=2, sticky="w")
+
+        ttk.Label(dlg, text=_t("lbl_coord_mgrs")).grid(row=2, column=0, sticky="e", padx=(12, 6), pady=8)
+        mgrs_entry = ttk.Entry(dlg, textvariable=mgrs_var, width=28, font=self.CDU_FONT)
+        mgrs_entry.grid(row=2, column=1, sticky="w", padx=(0, 12), pady=8)
+
+        def go():
+            lat, lon = None, None
+            mgrs_str = mgrs_var.get().strip()
+            if mgrs_str:
+                if not is_valid_mgrs(mgrs_str):
+                    messagebox.showwarning(
+                        _t("ttl_mgrs_invalid"), _t("msg_mgrs_invalid", mgrs=mgrs_str), parent=dlg)
+                    return
+                result = mgrs_to_latlon(mgrs_str)
+                if not result:
+                    messagebox.showwarning(_t("ttl_mgrs_conv"), _t("msg_mgrs_conv_fail"), parent=dlg)
+                    return
+                lat, lon = result
+            else:
+                try:
+                    if lat_var.get().strip():
+                        lat = ddm_to_dd(lat_var.get())
+                    if lon_var.get().strip():
+                        lon = ddm_to_dd(lon_var.get())
+                except ValueError as exc:
+                    messagebox.showwarning(_t("ttl_error"), _t("msg_invalid_value", err=exc), parent=dlg)
+                    return
+            if lat is None or lon is None:
+                messagebox.showwarning(_t("ttl_error"), _t("msg_coord_invalid"), parent=dlg)
+                return
+            dlg.destroy()
+            self._map_show_coord_location(lat, lon)
+
+        btn_frame = ttk.Frame(dlg)
+        btn_frame.grid(row=3, column=0, columnspan=3, pady=(8, 12))
+        ttk.Button(btn_frame, text=_t("btn_coord_go"), command=go).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text=_t("btn_cancel"), command=dlg.destroy).pack(side=tk.LEFT, padx=5)
+        dlg.bind("<Return>", lambda e: go())
+        dlg.bind("<Escape>", lambda e: dlg.destroy())
+        lat_entry.focus_set()
+
+    def _map_show_coord_location(self, lat, lon):
+        """Center map on coordinates, show marker, and ask user to confirm."""
+        self._clear_coord_search_marker()
+        self.notebook.select(self.map_frame)
+        self.map_widget.set_position(lat, lon)
+        self.map_widget.set_zoom(12)
+        icon = self._make_circle_icon(12, fill="#00ccff", outline="#0088cc")
+        self._coord_search_marker = self.map_widget.set_marker(
+            lat, lon, icon=icon, text="?", text_color="#000000",
+            font=("Consolas", 9, "bold"))
+        self._schedule_map_loading_check()
+        self._map_coord_confirm_dialog(lat, lon)
+
+    def _map_coord_confirm_dialog(self, lat, lon):
+        dlg = tk.Toplevel(self.root)
+        dlg.title(_t("dlg_coord_confirm"))
+        dlg.transient(self.root)
+        dlg.grab_set()
+        dlg.resizable(False, False)
+        dlg.configure(bg=self.CDU_BG)
+
+        mgrs_str = ""
+        if _mgrs:
+            try:
+                mgrs_str = _mgrs.toMGRS(lat, lon, MGRSPrecision=4)
+            except Exception:
+                pass
+        coords_str = f"{dd_to_ddm(lat, True)}  {dd_to_ddm(lon, False)}"
+
+        ttk.Label(dlg, text=_t("msg_coord_confirm"), font=self.CDU_FONT).pack(
+            padx=12, pady=(12, 8))
+        ttk.Label(dlg, text=coords_str, font=self.CDU_FONT).pack(padx=12, pady=2)
+        if mgrs_str:
+            ttk.Label(dlg, text=f"MGRS: {mgrs_str}", font=self.CDU_FONT).pack(padx=12, pady=2)
+
+        btn_frame = ttk.Frame(dlg)
+        btn_frame.pack(pady=(12, 12))
+
+        def confirm():
+            dlg.destroy()
+            self._map_coord_action_dialog(lat, lon)
+
+        def cancel():
+            self._clear_coord_search_marker()
+            dlg.destroy()
+
+        ttk.Button(btn_frame, text=_t("btn_confirm"), command=confirm).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text=_t("btn_cancel"), command=cancel).pack(side=tk.LEFT, padx=5)
+        dlg.bind("<Escape>", lambda e: cancel())
+
+    def _find_wpt_id_at_coords(self, lat, lon, tol=0.0005):
+        """Find a custom/nav waypoint id near lat, lon (~50 m)."""
+        def near(la, lo):
+            return la is not None and lo is not None and abs(la - lat) <= tol and abs(lo - lon) <= tol
+
+        if self.conn:
+            for name, la, lo in self.conn.execute(
+                    "SELECT name, lat, lon FROM custom_data WHERE lat IS NOT NULL AND lon IS NOT NULL"):
+                if near(la, lo):
+                    return name
+        if self.nav_conn:
+            for icao, la, lo in self.nav_conn.execute(
+                    "SELECT icao, lat, lon FROM airports WHERE lat IS NOT NULL AND lon IS NOT NULL"):
+                if near(la, lo):
+                    return self._get_dcs_alias(icao) or icao
+            for name, la, lo in self.nav_conn.execute(
+                    "SELECT name, lat, lon FROM navaids WHERE lat IS NOT NULL AND lon IS NOT NULL"):
+                if near(la, lo):
+                    return name
+            for wid, la, lo in self.nav_conn.execute(
+                    "SELECT waypoint_identifier, waypoint_latitude, waypoint_longitude FROM waypoints "
+                    "WHERE waypoint_latitude IS NOT NULL AND waypoint_longitude IS NOT NULL"):
+                if near(la, lo):
+                    return wid
+        return None
+
+    def _map_coord_action_dialog(self, lat, lon):
+        """After confirming a coordinate search, ask what to do with the location."""
+        dlg = tk.Toplevel(self.root)
+        dlg.title(_t("dlg_coord_action"))
+        dlg.transient(self.root)
+        dlg.grab_set()
+        dlg.resizable(False, False)
+        dlg.configure(bg=self.CDU_BG)
+
+        ttk.Label(dlg, text=_t("dlg_coord_action"), font=self.CDU_FONT).pack(
+            padx=12, pady=(12, 8))
+
+        btn_frame = ttk.Frame(dlg)
+        btn_frame.pack(padx=12, pady=(4, 12))
+
+        def close():
+            self._clear_coord_search_marker()
+            dlg.destroy()
+
+        def with_wpt_id(action):
+            wpt_id = self._find_wpt_id_at_coords(lat, lon)
+            if wpt_id:
+                if action == "route":
+                    if self._ensure_db():
+                        self._add_to_route_plan(wpt_id)
+                elif action == "origin":
+                    if self._ensure_db():
+                        self._set_route_origin(wpt_id)
+                elif action == "dest":
+                    if self._ensure_db():
+                        self._set_route_dest(wpt_id)
+                close()
+                return
+            pre = self._coord_pre_fill(lat, lon)
+            if action == "wpt":
+                close()
+                self._waypoint_dialog(pre, from_map=True)
+            elif action == "route":
+                close()
+                self._waypoint_dialog(pre, from_map=True, post_save="route")
+            elif action == "origin":
+                close()
+                self._waypoint_dialog(pre, from_map=True, post_save="origin")
+            elif action == "dest":
+                close()
+                self._waypoint_dialog(pre, from_map=True, post_save="dest")
+
+        ttk.Button(btn_frame, text=_t("btn_add_as_wpt"),
+                   command=lambda: with_wpt_id("wpt")).pack(fill=tk.X, pady=2)
+        ttk.Button(btn_frame, text=_t("btn_add_as_route_wpt"),
+                   command=lambda: with_wpt_id("route")).pack(fill=tk.X, pady=2)
+        ttk.Button(btn_frame, text=_t("btn_set_origin"),
+                   command=lambda: with_wpt_id("origin")).pack(fill=tk.X, pady=2)
+        ttk.Button(btn_frame, text=_t("btn_set_dest"),
+                   command=lambda: with_wpt_id("dest")).pack(fill=tk.X, pady=2)
+        ttk.Button(btn_frame, text=_t("btn_cancel"), command=close).pack(fill=tk.X, pady=(8, 2))
+        dlg.bind("<Escape>", lambda e: close())
+
+    def _coord_pre_fill(self, lat, lon):
+        mgrs_str = ""
+        if _mgrs:
+            try:
+                mgrs_str = _mgrs.toMGRS(lat, lon, MGRSPrecision=4)
+            except Exception:
+                pass
+        elev_str = ""
+        lat_r, lon_r = round(lat, 3), round(lon, 3)
+        key = (lat_r, lon_r)
+        if key in self._elev_cache:
+            elev_str = f"{self._elev_cache[key] * METERS_TO_FEET:.0f}"
+        else:
+            try:
+                url = f"https://api.open-meteo.com/v1/elevation?latitude={lat_r}&longitude={lon_r}"
+                req = urllib.request.Request(url, headers={"User-Agent": "ChanchitaDTC/0.2"})
+                with urllib.request.urlopen(req, timeout=5) as resp:
+                    data = json.loads(resp.read())
+                elev_m = data["elevation"][0]
+                self._elev_cache[key] = elev_m
+                elev_str = f"{elev_m * METERS_TO_FEET:.0f}"
+            except Exception:
+                pass
+        return ("", mgrs_str, dd_to_ddm(lat, True), dd_to_ddm(lon, False), elev_str)
+
     def _get_airport_details(self, icao):
         """Collect airport info from nav_data and airport_names."""
         info = {
@@ -2875,32 +3149,7 @@ class DBEditor:
         if not self._ensure_db():
             return
         lat, lon = coords
-        # MGRS
-        mgrs_str = ""
-        if _mgrs:
-            try:
-                mgrs_str = _mgrs.toMGRS(lat, lon, MGRSPrecision=4)
-            except Exception:
-                pass
-        # Elevation from cache or fetch synchronously
-        elev_str = ""
-        lat_r, lon_r = round(lat, 3), round(lon, 3)
-        key = (lat_r, lon_r)
-        if key in self._elev_cache:
-            elev_str = f"{self._elev_cache[key] * METERS_TO_FEET:.0f}"
-        else:
-            try:
-                url = f"https://api.open-meteo.com/v1/elevation?latitude={lat_r}&longitude={lon_r}"
-                req = urllib.request.Request(url, headers={"User-Agent": "ChanchitaDTC/0.2"})
-                with urllib.request.urlopen(req, timeout=5) as resp:
-                    data = json.loads(resp.read())
-                elev_m = data["elevation"][0]
-                self._elev_cache[key] = elev_m
-                elev_str = f"{elev_m * METERS_TO_FEET:.0f}"
-            except Exception:
-                pass
-        pre = ("", mgrs_str, dd_to_ddm(lat, True), dd_to_ddm(lon, False), elev_str)
-        self._waypoint_dialog(pre, from_map=True)
+        self._waypoint_dialog(self._coord_pre_fill(lat, lon), from_map=True)
 
     # ── DB helpers ───────────────────────────────────────────────────
 
@@ -3212,7 +3461,7 @@ class DBEditor:
             self.conn.commit()
             self.refresh_waypoints()
 
-    def _waypoint_dialog(self, existing=None, is_duplicate=False, from_map=False):
+    def _waypoint_dialog(self, existing=None, is_duplicate=False, from_map=False, post_save=None):
         dlg = tk.Toplevel(self.root)
         dlg.title(_t("dlg_new_wpt") if (not existing or is_duplicate) else _t("dlg_edit_wpt"))
         dlg.geometry("540x290")
@@ -3311,14 +3560,19 @@ class DBEditor:
                     )
             self.conn.commit()
             self.refresh_waypoints()
-            if add_to_route and not is_edit:
-                self._add_to_route_plan(vals[0])
+            if not is_edit:
+                if post_save == "origin":
+                    self._set_route_origin(vals[0])
+                elif post_save == "dest":
+                    self._set_route_dest(vals[0])
+                elif add_to_route or post_save == "route":
+                    self._add_to_route_plan(vals[0])
             dlg.destroy()
 
         btn_frame = ttk.Frame(dlg)
         btn_frame.grid(row=len(labels), column=0, columnspan=2, pady=12)
         ttk.Button(btn_frame, text=_t("btn_save"), command=lambda: save(False)).pack(side=tk.LEFT, padx=5)
-        if from_map and not is_edit:
+        if from_map and not is_edit and not post_save:
             ttk.Button(btn_frame, text=_t("btn_save_add_route"),
                        command=lambda: save(True)).pack(side=tk.LEFT, padx=5)
         ttk.Button(btn_frame, text=_t("btn_cancel"), command=dlg.destroy).pack(side=tk.LEFT, padx=5)
