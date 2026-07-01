@@ -663,7 +663,7 @@ class DBEditor:
 
     def __init__(self, root):
         self.root = root
-        self.version = "Alpha 0.2l (260627)"
+        self.version = "Alpha 0.2m (260630)"
 
         # ── Language selection ──
         global _LANG
