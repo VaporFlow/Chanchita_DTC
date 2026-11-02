@@ -9,6 +9,9 @@ import re
 import shutil
 import configparser
 import string
+import zipfile
+import subprocess
+import tempfile
 import urllib.request
 
 try:
@@ -58,7 +61,9 @@ def ddm_to_dd(text):
         return float(text)
     except ValueError:
         pass
-    text = text.upper().replace("°", " ").replace("'", " ").replace("\u00b4", " ")
+    for ch in ("\u00b0", "\u00ba", "'", "\u2019", "\u2018", "\u2032", "\u00b4", "`"):
+        text = text.replace(ch, " ")
+    text = text.upper()
     parts = text.split()
     if len(parts) < 3:
         raise ValueError(f"Formato inválido: '{text}'  — usar  N 41° 23.456'")
@@ -97,6 +102,379 @@ def haversine_nm(lat1, lon1, lat2, lon2):
     dlon = lon2 - lon1
     a = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
     return 3440.065 * 2 * math.asin(math.sqrt(a))
+
+
+DKS_AIRPORT_RADIUS_NM = 1.5
+
+
+class DksFormatError(Exception):
+    """The chosen file is not a DKS flight plan."""
+
+
+def _alnum_key(text):
+    return re.sub(r"[^A-Z0-9]", "", (text or "").upper())
+
+
+def is_generic_steerpoint(name):
+    """Blank steerpoints and DKS placeholders named STPT get a WPT### id."""
+    return _alnum_key(name) in ("", "STPT")
+
+
+def clean_wpt_name(name):
+    """Waypoint id safe for the C-130 route tuple. custom_data names hold 10 chars."""
+    name = (name or "").strip()
+    name = re.sub(r"[|(),]", " ", name)
+    name = re.sub(r"\s+", " ", name).strip()
+    return name[:10]
+
+
+def route_name_8(origin, dest):
+    """Eight-character route name: 4-char origin code + 4-char destination code.
+
+    Shorter codes are padded on the right with zeros (TO + LLBG -> TO00LLBG).
+    """
+    def side(code):
+        raw = _alnum_key(code)
+        if not raw:
+            raw = "XXXX"
+        return (raw + "0000")[:4]
+
+    return side(origin) + side(dest)
+
+
+def is_icao_code(code):
+    return bool(re.fullmatch(r"[A-Z][A-Z0-9]{3}", (code or "").strip().upper()))
+
+
+def pick_icao_label(ident, icao_col, alias):
+    """Prefer a 4-character ICAO over a local ident such as PS-0001."""
+    for code in (icao_col, ident, alias):
+        text = (code or "").strip().upper()
+        if is_icao_code(text):
+            return text
+    return (ident or "").strip().upper()
+
+
+def airport_name_hit(key, apt):
+    if not key:
+        return False
+    ident_fields = (
+        _alnum_key(apt.get("ident")),
+        _alnum_key(apt.get("icao_col")),
+        _alnum_key(apt.get("label")),
+    )
+    if key in ident_fields:
+        return True
+    for text in (_alnum_key(apt.get("name")), _alnum_key(apt.get("muni"))):
+        if not text:
+            continue
+        if key == text:
+            return True
+        if len(key) >= 4 and text.startswith(key):
+            return True
+    return False
+
+
+def match_endpoint_airport(airports, name, lat, lon):
+    """Match a takeoff or landing point to an airport.
+
+    A name coincidence wins, and the closest match wins if several names hit.
+    Otherwise the closest airport inside 1.5 NM.
+    Returns (airport, distance_nm, how) or (None, None, None).
+    how is 'name' or 'coord'.
+    """
+    key = _alnum_key(name)
+    name_hits = []
+    near_hits = []
+    for apt in airports:
+        dist = haversine_nm(lat, lon, apt["lat"], apt["lon"])
+        if airport_name_hit(key, apt):
+            name_hits.append((dist, apt))
+        if dist <= DKS_AIRPORT_RADIUS_NM:
+            near_hits.append((dist, apt))
+    if name_hits:
+        name_hits.sort(key=lambda item: item[0])
+        return name_hits[0][1], name_hits[0][0], "name"
+    if near_hits:
+        near_hits.sort(key=lambda item: item[0])
+        return near_hits[0][1], near_hits[0][0], "coord"
+    return None, None, None
+
+
+def latlon_to_mgrs(lat, lon):
+    if not _mgrs:
+        return ""
+    try:
+        raw = _mgrs.toMGRS(lat, lon, MGRSPrecision=4)
+    except Exception:
+        return ""
+    if isinstance(raw, bytes):
+        raw = raw.decode("ascii", "ignore")
+    return str(raw).replace(" ", "")
+
+
+def _waypoints_from_dtc_obj(data):
+    raw = ((data.get("Waypoints") or {}).get("Waypoints")) or []
+    points = []
+    for item in raw:
+        if not isinstance(item, dict):
+            continue
+        label = str(item.get("Name") or "").strip()
+        lat_txt = str(item.get("Latitude") or "").strip()
+        lon_txt = str(item.get("Longitude") or "").strip()
+        if not lat_txt or not lon_txt:
+            raise ValueError(label or "?")
+        try:
+            lat = ddm_to_dd(lat_txt)
+            lon = ddm_to_dd(lon_txt)
+        except ValueError as exc:
+            raise ValueError(f"{label or '?'}: {exc}") from exc
+        elev = item.get("Elevation")
+        try:
+            elev_ft = None if elev is None or elev == "" else float(elev)
+        except (TypeError, ValueError):
+            elev_ft = None
+        points.append({"name": label, "lat": lat, "lon": lon, "elev_ft": elev_ft})
+    return points
+
+
+def _waypoints_from_theway(data):
+    if not isinstance(data, list):
+        raise DksFormatError("theway")
+    points = []
+    for item in data:
+        if not isinstance(item, dict):
+            continue
+        elev = item.get("elev")
+        try:
+            elev_ft = None if elev is None or elev == "" else float(elev)
+        except (TypeError, ValueError):
+            elev_ft = None
+        lon = item.get("long", item.get("lon"))
+        points.append({
+            "name": str(item.get("name") or "").strip(),
+            "lat": float(item["lat"]),
+            "lon": float(lon),
+            "elev_ft": elev_ft,
+        })
+    return points
+
+
+def _dks_plan(source, design, pilot, waypoints):
+    return {
+        "source": source,
+        "design": design or "",
+        "pilot": pilot or "",
+        "waypoints": waypoints,
+    }
+
+
+def load_dks_plans(path):
+    """Read flight plans from a DKS zip, dtc.json, or theway.tw file."""
+    ext = os.path.splitext(path)[1].lower()
+    if ext == ".zip":
+        return _plans_from_dks_zip(path)
+    with open(path, "r", encoding="utf-8-sig") as handle:
+        data = json.load(handle)
+    base = os.path.basename(path)
+    if isinstance(data, list):
+        return [_dks_plan(base, "", "", _waypoints_from_theway(data))]
+    if isinstance(data, dict) and "Waypoints" in data:
+        return [_dks_plan(base, "", "", _waypoints_from_dtc_obj(data))]
+    raise DksFormatError("not a DKS flight plan")
+
+
+def _plans_from_dks_zip(path):
+    design = ""
+    pilot = ""
+    c130_plans = []
+    other_plans = []
+    theway_plans = []
+    with zipfile.ZipFile(path) as zf:
+        names = [name for name in zf.namelist() if not name.endswith("/")]
+        for name in names:
+            if os.path.basename(name).lower() != "manifest.json":
+                continue
+            try:
+                manifest = json.loads(zf.read(name).decode("utf-8-sig"))
+            except (json.JSONDecodeError, UnicodeError):
+                continue
+            block = manifest.get("design") or {}
+            design = block.get("name") or design
+            pilot = block.get("pilotName") or pilot
+        for name in names:
+            if os.path.basename(name).lower() != "dtc.json":
+                continue
+            try:
+                data = json.loads(zf.read(name).decode("utf-8-sig"))
+            except (json.JSONDecodeError, UnicodeError):
+                continue
+            if not isinstance(data, dict):
+                continue
+            points = _waypoints_from_dtc_obj(data)
+            if not points:
+                continue
+            plan = _dks_plan(name, design, pilot, points)
+            aircraft = str(data.get("Aircraft") or "").upper()
+            if "C130" in aircraft:
+                c130_plans.append(plan)
+            else:
+                other_plans.append(plan)
+        if not c130_plans and not other_plans:
+            for name in names:
+                if os.path.basename(name).lower() != "theway.tw":
+                    continue
+                try:
+                    data = json.loads(zf.read(name).decode("utf-8-sig"))
+                    points = _waypoints_from_theway(data)
+                except (json.JSONDecodeError, UnicodeError, DksFormatError, KeyError, TypeError, ValueError):
+                    continue
+                if points:
+                    theway_plans.append(_dks_plan(name, design, pilot, points))
+    plans = c130_plans or other_plans or theway_plans
+    if not plans:
+        raise DksFormatError("empty DKS flight plan")
+    return plans
+
+
+_WIN_OCR_PS = r"""
+param([string]$Path)
+$ErrorActionPreference = "Stop"
+Add-Type -AssemblyName System.Runtime.WindowsRuntime
+$null = [Windows.Storage.StorageFile, Windows.Storage, ContentType = WindowsRuntime]
+$null = [Windows.Graphics.Imaging.BitmapDecoder, Windows.Graphics.Imaging, ContentType = WindowsRuntime]
+$null = [Windows.Media.Ocr.OcrEngine, Windows.Media.Ocr, ContentType = WindowsRuntime]
+$asTaskGeneric = ([System.WindowsRuntimeSystemExtensions].GetMethods() | Where-Object {
+    $_.Name -eq "AsTask" -and $_.GetParameters().Count -eq 1 -and $_.GetParameters()[0].ParameterType.Name -eq "IAsyncOperation``1"
+})[0]
+function Await([object]$WinRtTask, [type]$ResultType) {
+    $asTask = $asTaskGeneric.MakeGenericMethod($ResultType)
+    $netTask = $asTask.Invoke($null, @($WinRtTask))
+    $netTask.Wait(-1) | Out-Null
+    $netTask.Result
+}
+$file = Await ([Windows.Storage.StorageFile]::GetFileFromPathAsync($Path)) ([Windows.Storage.StorageFile])
+$stream = Await ($file.OpenAsync([Windows.Storage.FileAccessMode]::Read)) ([Windows.Storage.Streams.IRandomAccessStream])
+$decoder = Await ([Windows.Graphics.Imaging.BitmapDecoder]::CreateAsync($stream)) ([Windows.Graphics.Imaging.BitmapDecoder])
+$bitmap = Await ($decoder.GetSoftwareBitmapAsync()) ([Windows.Graphics.Imaging.SoftwareBitmap])
+$engine = [Windows.Media.Ocr.OcrEngine]::TryCreateFromUserProfileLanguages()
+if (-not $engine) { throw "Windows OCR engine is not available" }
+$result = Await ($engine.RecognizeAsync($bitmap)) ([Windows.Media.Ocr.OcrResult])
+$result.Lines | ForEach-Object { $_.Text }
+"""
+
+
+def ocr_image_text(path):
+    """Read text from a kneeboard image with the Windows OCR engine."""
+    if os.name != "nt" or not path or not os.path.isfile(path):
+        return ""
+    script = None
+    try:
+        handle = tempfile.NamedTemporaryFile("w", suffix=".ps1", delete=False, encoding="utf-8")
+        script = handle.name
+        handle.write(_WIN_OCR_PS)
+        handle.close()
+        proc = subprocess.run(
+            [
+                "powershell", "-NoProfile", "-STA", "-ExecutionPolicy", "Bypass",
+                "-File", script, "-Path", path,
+            ],
+            capture_output=True, text=True, timeout=45, encoding="utf-8", errors="replace",
+        )
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    finally:
+        if script:
+            try:
+                os.remove(script)
+            except OSError:
+                pass
+    if proc.returncode != 0:
+        return ""
+    return proc.stdout or ""
+
+
+def _normalize_rwy(token):
+    match = re.fullmatch(r"(\d{1,2})([LRC]?)", (token or "").strip(), re.IGNORECASE)
+    if not match:
+        return (token or "").strip().upper()
+    return f"{int(match.group(1)):02d}{match.group(2).upper()}"
+
+
+def _is_place_line(line):
+    text = re.sub(r"\s+", " ", (line or "").strip().upper())
+    if not re.fullmatch(r"[A-Z][A-Z .'\-]{1,40}", text):
+        return False
+    if any(ch.isdigit() for ch in text):
+        return False
+    stopped = {
+        "CALLSIGN", "ELEV", "MGRS", "RWY", "LOADOUT", "SUPPORT", "SUPPORT ASSETS",
+        "FREQ", "TWR/CTAF", "STN", "TYPE", "MISSION", "DATE", "TIME", "PILOT",
+        "COPILOT", "ROLE", "DESCRIPTION", "ALT", "HOME PLATE", "DIVERT",
+    }
+    return text not in stopped
+
+
+def parse_kneeboard_fields(text):
+    """Home plate / divert rows from a DKS kneeboard page.
+
+    The flight-plan steerpoints do not include the departure airfield. That
+    airfield is the first FIELD/FOB row (name, MGRS, runway).
+    """
+    if not text:
+        return []
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    grids = []
+    for zone, square, east, north in re.findall(
+        r"(\d{1,2}[A-Z])\s*([A-Z]{2})\s*(\d{3,5})\s+(\d{3,5})", text, re.IGNORECASE
+    ):
+        width = min(len(east), len(north))
+        if width < 3:
+            continue
+        grids.append(f"{zone.upper()}{square.upper()}{east[:width]}{north[:width]}")
+
+    names = []
+    for index, line in enumerate(lines):
+        key = re.sub(r"\s+", "", line.upper())
+        if key != "FIELD/FOB":
+            continue
+        for nxt in lines[index + 1:]:
+            if _is_place_line(nxt):
+                names.append(re.sub(r"\s+", " ", nxt.strip().upper()))
+            else:
+                break
+        if names:
+            break
+
+    rwys = []
+    for index, line in enumerate(lines):
+        if line.strip().upper() != "RWY":
+            continue
+        for nxt in lines[index + 1:]:
+            if re.fullmatch(r"\d{1,2}[LRC]?", nxt.strip(), re.IGNORECASE):
+                rwys.append(_normalize_rwy(nxt))
+            else:
+                break
+        break
+
+    count = max(len(grids), len(names))
+    fields = []
+    for index in range(count):
+        grid = grids[index] if index < len(grids) else ""
+        lat = lon = None
+        if grid and _mgrs:
+            try:
+                lat, lon = _mgrs.toLatLon(grid.encode())
+            except Exception:
+                lat = lon = None
+        fields.append({
+            "name": names[index] if index < len(names) else "",
+            "mgrs": grid,
+            "lat": lat,
+            "lon": lon,
+            "rwy": rwys[index] if index < len(rwys) else "",
+        })
+    return fields
 
 
 def format_duration_hours(hours):
@@ -195,6 +573,8 @@ STRINGS = {
     "btn_clone":            {"es": "Clonar",         "en": "Clone"},
     "btn_back_route":       {"es": "Ruta inversa",   "en": "Back Route"},
     "btn_show_map":         {"es": "🗺 Ver en Mapa", "en": "🗺 Show on Map"},
+    "btn_import_dks":       {"es": "Importar desde DKS", "en": "Import from DKS"},
+    "menu_import_dks":      {"es": "Importar desde DKS...", "en": "Import from DKS..."},
     "msg_route_no_wpts":    {"es": "No hay waypoints en Main Points para invertir.",
                             "en": "No waypoints in Main Points to reverse."},
     "btn_fp_calc":          {"es": "Calcular", "en": "Calculate"},
@@ -348,6 +728,41 @@ STRINGS = {
     "msg_no_wpts_route":    {"es": "No hay waypoints en la ruta", "en": "No waypoints in route"},
     "msg_wpt_exists":       {"es": "Ya existe un waypoint con nombre '{name}'", "en": "A waypoint named '{name}' already exists"},
     "msg_wpt_overwrite":    {"es": "Ya existe un waypoint con nombre '{name}'.\n¿Querés sobreescribirlo?", "en": "A waypoint named '{name}' already exists.\nDo you want to overwrite it?"},
+    "dlg_import_dks":       {"es": "Importar plan de vuelo DKS", "en": "Import DKS flight plan"},
+    "ft_dks":               {"es": "Paquete DKS", "en": "DKS package"},
+    "ft_dks_json":          {"es": "JSON DKS", "en": "DKS JSON"},
+    "dlg_pick_dks":         {"es": "Elegir plan DKS", "en": "Choose DKS plan"},
+    "lbl_pick_dks":         {"es": "El archivo tiene más de un plan. Elegí cuál importar:",
+                            "en": "This file has more than one plan. Choose which one to import:"},
+    "msg_dks_bad_file":     {"es": "Ese archivo no tiene un plan de vuelo DKS.",
+                            "en": "That file does not contain a DKS flight plan."},
+    "msg_dks_need_two":     {"es": "El plan necesita al menos un despegue y un aterrizaje.",
+                            "en": "The flight plan needs at least a takeoff and a landing."},
+    "msg_dks_no_nav":       {"es": "No está cargada nav_data.db, así que no puedo buscar aeropuertos.\n¿Seguir igual? Despegue y aterrizaje van a quedar como TO y LG.",
+                            "en": "nav_data.db is not loaded, so airports cannot be matched.\nContinue anyway? Takeoff and landing will be stored as TO and LG."},
+    "msg_dks_route_overwrite": {"es": "Ya existe una ruta '{name}'.\n¿Querés sobreescribirla?",
+                               "en": "A route named '{name}' already exists.\nDo you want to overwrite it?"},
+    "ttl_dks_done":         {"es": "Importación DKS", "en": "DKS import"},
+    "msg_dks_design":       {"es": "DKS: {design} / {pilot}", "en": "DKS: {design} / {pilot}"},
+    "msg_dks_route_line":   {"es": "Ruta: {name}", "en": "Route: {name}"},
+    "msg_dks_coord_bad":    {"es": "Coordenadas inválidas en '{name}'.",
+                            "en": "Invalid coordinates on '{name}'."},
+    "dks_by_name":          {"es": "{original} -> aeropuerto por nombre, {dist} NM — {airport}",
+                            "en": "{original} -> airport by name, {dist} NM — {airport}"},
+    "dks_by_coord":         {"es": "{original} -> aeropuerto a {dist} NM — {airport}",
+                            "en": "{original} -> airport at {dist} NM — {airport}"},
+    "dks_as_to":            {"es": "sin aeropuerto, queda como TO", "en": "no airport, kept as TO"},
+    "dks_as_lg":            {"es": "sin aeropuerto, queda como LG", "en": "no airport, kept as LG"},
+    "dks_new":              {"es": "nuevo", "en": "new"},
+    "dks_overwritten":      {"es": "sobrescrito", "en": "overwritten"},
+    "dks_renamed":          {"es": "{original} -> {name}", "en": "{original} -> {name}"},
+    "dks_point":            {"es": "{seq}. {ident}  ({detail})", "en": "{seq}. {ident}  ({detail})"},
+    "dks_homeplate":        {"es": "home plate {name} -> {icao} ({dist} NM){rwy}",
+                            "en": "home plate {name} -> {icao} ({dist} NM){rwy}"},
+    "dks_no_homeplate":     {"es": "La kneeboard no tiene home plate. La ruta arranca en el primer steerpoint.",
+                            "en": "The kneeboard has no home plate. The route starts at the first steerpoint."},
+    "msg_dks_no_mgrs":      {"es": "La librería MGRS no está disponible: los waypoints nuevos se guardaron solo con lat/lon.",
+                            "en": "The MGRS library is not available: new waypoints were saved with lat/lon only."},
     "msg_invalid_elev":     {"es": "Elevación inválida: '{val}'", "en": "Invalid elevation: '{val}'"},
     "msg_invalid_value":    {"es": "Valor inválido:\n{err}", "en": "Invalid value:\n{err}"},
     "msg_mgrs_invalid":     {"es": "El MGRS '{mgrs}' tiene un número impar de dígitos u otro error de formato.\nVerificá que la coordenada sea correcta.",
@@ -663,7 +1078,7 @@ class DBEditor:
 
     def __init__(self, root):
         self.root = root
-        self.version = "Alpha 0.2m (260630)"
+        self.version = "Alpha 0.2n (261102)"
 
         # ── Language selection ──
         global _LANG
@@ -781,6 +1196,7 @@ class DBEditor:
         imp_menu = tk.Menu(menubar, tearoff=0, **menu_kw)
         imp_menu.add_command(label=_t("menu_import_wpt_csv"), command=self.import_waypoints_csv)
         imp_menu.add_command(label=_t("menu_import_rte_csv"), command=self.import_routes_csv)
+        imp_menu.add_command(label=_t("menu_import_dks"), command=self.import_from_dks)
         imp_menu.add_separator()
         imp_menu.add_command(label=_t("menu_export_wpt_csv"), command=self.export_waypoints_csv)
         imp_menu.add_command(label=_t("menu_export_rte_csv"), command=self.export_routes_csv)
@@ -864,6 +1280,10 @@ class DBEditor:
     # ── Routes tab ───────────────────────────────────────────────────
 
     def _build_routes_tab(self):
+        top = ttk.Frame(self.route_frame)
+        top.pack(fill=tk.X, padx=5, pady=(5, 0))
+        ttk.Button(top, text=_t("btn_import_dks"), command=self.import_from_dks).pack(side=tk.LEFT)
+
         paned = ttk.PanedWindow(self.route_frame, orient=tk.HORIZONTAL)
         paned.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
@@ -4141,6 +4561,524 @@ class DBEditor:
 
         self.root.wait_window(dlg)
         return result.get()
+
+    # ── DKS flight plan import ───────────────────────────────────────
+
+    def import_from_dks(self):
+        """Import a DKS kneeboard zip (or its dtc.json) as a Chanchita route."""
+        if not self._ensure_db():
+            return
+        initial = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+        if not os.path.isdir(initial):
+            initial = os.path.dirname(os.path.abspath(__file__))
+        path = filedialog.askopenfilename(
+            title=_t("dlg_import_dks"),
+            initialdir=initial,
+            filetypes=[
+                (_t("ft_dks"), "*.zip"),
+                (_t("ft_dks_json"), "*.json"),
+                ("The Way", "*.tw"),
+                (_t("ft_all"), "*.*"),
+            ],
+        )
+        if not path:
+            return
+        try:
+            plans = load_dks_plans(path)
+        except ValueError as exc:
+            messagebox.showerror(_t("ttl_error"), _t("msg_dks_coord_bad", name=exc))
+            return
+        except (OSError, zipfile.BadZipFile, json.JSONDecodeError, DksFormatError, KeyError, TypeError):
+            messagebox.showerror(_t("ttl_error"), _t("msg_dks_bad_file"))
+            return
+
+        plan = self._pick_dks_plan(plans)
+        if not plan:
+            return
+        if len(plan["waypoints"]) < 2:
+            messagebox.showwarning(_t("ttl_warning"), _t("msg_dks_need_two"))
+            return
+        if not self.nav_conn:
+            self._load_nav_data()
+        if not self.nav_conn:
+            if not messagebox.askokcancel(_t("ttl_warning"), _t("msg_dks_no_nav")):
+                return
+
+        airports = self._airport_match_index() if self.nav_conn else []
+        self.root.config(cursor="watch")
+        self.root.update_idletasks()
+        try:
+            try:
+                plan["fields"] = self._read_dks_fields(path)
+                route_name, summary = self._commit_dks_plan(plan, airports)
+            except Exception as exc:
+                try:
+                    self.conn.rollback()
+                except sqlite3.Error:
+                    pass
+                messagebox.showerror(_t("ttl_error"), str(exc))
+                return
+        finally:
+            self.root.config(cursor="")
+
+        self.refresh_waypoints()
+        self.refresh_routes()
+        self.notebook.select(self.route_frame)
+        self._select_route_by_name(route_name)
+        messagebox.showinfo(_t("ttl_dks_done"), summary)
+
+    def _pick_dks_plan(self, plans):
+        if len(plans) == 1:
+            return plans[0]
+        dlg = tk.Toplevel(self.root)
+        dlg.title(_t("dlg_pick_dks"))
+        dlg.transient(self.root)
+        dlg.grab_set()
+        dlg.resizable(False, False)
+        dlg.configure(bg=self.CDU_BG)
+        chosen = {"plan": None}
+        ttk.Label(dlg, text=_t("lbl_pick_dks")).pack(padx=12, pady=(12, 6))
+        lb = tk.Listbox(
+            dlg, width=78, height=min(8, len(plans)), font=self.CDU_FONT,
+            bg=self.CDU_ENTRY_BG, fg=self.CDU_FG, selectbackground=self.CDU_SEL_BG,
+        )
+        for plan in plans:
+            title = plan["design"] or os.path.basename(plan["source"])
+            lb.insert(tk.END, f"{title}  —  {plan['source']}  ({len(plan['waypoints'])})")
+        lb.selection_set(0)
+        lb.pack(padx=12, pady=4)
+
+        def accept(_event=None):
+            sel = lb.curselection()
+            if sel:
+                chosen["plan"] = plans[sel[0]]
+            dlg.destroy()
+
+        def cancel(_event=None):
+            dlg.destroy()
+
+        btns = ttk.Frame(dlg)
+        btns.pack(pady=(4, 12))
+        ttk.Button(btns, text=_t("btn_accept"), command=accept).pack(side=tk.LEFT, padx=4)
+        ttk.Button(btns, text=_t("btn_cancel"), command=cancel).pack(side=tk.LEFT, padx=4)
+        lb.bind("<Double-Button-1>", accept)
+        dlg.bind("<Escape>", cancel)
+        dlg.bind("<Return>", accept)
+        self.root.wait_window(dlg)
+        return chosen["plan"]
+
+    def _airport_match_index(self):
+        """Airports from nav_data, with names and the ICAO label to keep."""
+        names = {}
+        aliases = {}
+        if self.names_conn:
+            for ident, name, muni, icao_col in self.names_conn.execute(
+                "SELECT ident, IFNULL(name,''), IFNULL(municipality,''), IFNULL(icao,'') "
+                "FROM airport_names"
+            ):
+                names[ident] = (name, muni, icao_col)
+            try:
+                for alias, ident in self.names_conn.execute(
+                    "SELECT alias, airport_ident FROM icao_alias"
+                ):
+                    aliases.setdefault(ident, alias)
+            except sqlite3.Error:
+                pass
+        airports = []
+        for ident, lat, lon in self.nav_conn.execute("SELECT icao, lat, lon FROM airports"):
+            if lat is None or lon is None:
+                continue
+            name, muni, icao_col = names.get(ident, ("", "", ""))
+            airports.append({
+                "ident": ident,
+                "lat": lat,
+                "lon": lon,
+                "name": name,
+                "muni": muni,
+                "icao_col": icao_col,
+                "label": pick_icao_label(ident, icao_col, aliases.get(ident)),
+            })
+        return airports
+
+    def _custom_name_existing(self, name):
+        row = self.conn.execute(
+            "SELECT name FROM custom_data WHERE name = ? COLLATE NOCASE",
+            (name,),
+        ).fetchone()
+        return row[0] if row else None
+
+    def _alloc_wpt_name(self, reserved):
+        """Next WPT### after the highest number already used. Does not fill gaps."""
+        highest = 0
+        seen = {item.upper() for item in reserved}
+        for (name,) in self.conn.execute("SELECT name FROM custom_data"):
+            seen.add((name or "").upper())
+            match = re.fullmatch(r"WPT(\d+)", (name or "").strip(), re.IGNORECASE)
+            if match:
+                highest = max(highest, int(match.group(1)))
+        for name in reserved:
+            match = re.fullmatch(r"WPT(\d+)", name.strip(), re.IGNORECASE)
+            if match:
+                highest = max(highest, int(match.group(1)))
+        number = highest + 1
+        while number < 100000:
+            candidate = f"WPT{number:03d}"
+            if candidate.upper() not in seen:
+                return candidate
+            number += 1
+        raise RuntimeError("No free WPT number")
+
+    def _insert_custom_wpt(self, name, lat, lon, elev_ft):
+        alt_m = ft_to_m(elev_ft) if elev_ft is not None else None
+        self.conn.execute(
+            "INSERT INTO custom_data (name, entry_pos, lat, lon, alt) VALUES (?,?,?,?,?)",
+            (name, latlon_to_mgrs(lat, lon), lat, lon, alt_m),
+        )
+
+    def _update_custom_wpt(self, name, lat, lon, elev_ft):
+        alt_m = ft_to_m(elev_ft) if elev_ft is not None else None
+        self.conn.execute(
+            "UPDATE custom_data SET entry_pos=?, lat=?, lon=?, alt=? WHERE name=?",
+            (latlon_to_mgrs(lat, lon), lat, lon, alt_m, name),
+        )
+
+    def _store_dks_custom(self, desired, lat, lon, elev_ft, reserved):
+        """Save a custom steerpoint. Returns (final_name, action).
+
+        action is 'new', 'overwrite', or 'renamed'. A name already used earlier
+        in this same import is renamed to the next WPT### so the previous
+        point is left in place. A name that already exists in the database
+        asks before overwriting; declining also takes the next WPT###.
+        """
+        desired = clean_wpt_name(desired)
+        if not desired or desired.upper() in reserved:
+            name = self._alloc_wpt_name(reserved)
+            self._insert_custom_wpt(name, lat, lon, elev_ft)
+            reserved.add(name.upper())
+            return name, "renamed"
+        existing = self._custom_name_existing(desired)
+        if existing:
+            if messagebox.askyesno(
+                _t("ttl_warning"),
+                _t("msg_wpt_overwrite", name=existing),
+                parent=self.root,
+            ):
+                self._update_custom_wpt(existing, lat, lon, elev_ft)
+                reserved.add(existing.upper())
+                return existing, "overwrite"
+            name = self._alloc_wpt_name(reserved)
+            self._insert_custom_wpt(name, lat, lon, elev_ft)
+            reserved.add(name.upper())
+            return name, "renamed"
+        self._insert_custom_wpt(desired, lat, lon, elev_ft)
+        reserved.add(desired.upper())
+        return desired, "new"
+
+    def _route_name_taken(self, name):
+        row = self.conn.execute(
+            "SELECT 1 FROM routes WHERE name = ? COLLATE NOCASE",
+            (name,),
+        ).fetchone()
+        return row is not None
+
+    def _resolve_dks_route_name(self, base):
+        """Returns (name, overwrite). A declined overwrite keeps 8 characters."""
+        if not self._route_name_taken(base):
+            return base, False
+        if messagebox.askyesno(
+            _t("ttl_warning"),
+            _t("msg_dks_route_overwrite", name=base),
+            parent=self.root,
+        ):
+            return base, True
+        for number in range(1, 100):
+            candidate = f"{base[:6]}{number:02d}"
+            if not self._route_name_taken(candidate):
+                return candidate, False
+        raise RuntimeError("No free route name")
+
+    def _read_dks_fields(self, path):
+        """Home plate and divert rows drawn on the DKS kneeboard pages."""
+        if not str(path).lower().endswith(".zip"):
+            return []
+        fields = []
+        try:
+            with zipfile.ZipFile(path) as zf, tempfile.TemporaryDirectory() as tmp:
+                images = []
+                for name in zf.namelist():
+                    base = os.path.basename(name).lower()
+                    if not base.endswith((".png", ".jpg", ".jpeg")):
+                        continue
+                    if "map" in base or "route" in base:
+                        continue
+                    images.append(name)
+                for index, name in enumerate(sorted(images)):
+                    dest = os.path.join(tmp, f"{index}_{os.path.basename(name)}")
+                    with zf.open(name) as src, open(dest, "wb") as out:
+                        out.write(src.read())
+                    found = parse_kneeboard_fields(ocr_image_text(dest))
+                    if found:
+                        return found
+        except (OSError, zipfile.BadZipFile):
+            return []
+        return fields
+
+    def _airport_label(self, apt):
+        if not apt:
+            return ""
+        return apt.get("label") or apt.get("ident") or ""
+
+    def _point_on_airport(self, wp, apt, field=None):
+        """True when a steerpoint is on the airfield, not a point already in the air."""
+        if field and field.get("lat") is not None and field.get("lon") is not None:
+            if haversine_nm(wp["lat"], wp["lon"], field["lat"], field["lon"]) <= DKS_AIRPORT_RADIUS_NM:
+                return True
+        if apt and apt.get("lat") is not None and apt.get("lon") is not None:
+            if haversine_nm(wp["lat"], wp["lon"], apt["lat"], apt["lon"]) <= DKS_AIRPORT_RADIUS_NM:
+                return True
+        return False
+
+    def _resolve_dks_field(self, field, airports):
+        if not airports or field.get("lat") is None or field.get("lon") is None:
+            return None, None, None
+        apt, dist, how = match_endpoint_airport(
+            airports, field.get("name") or "", field["lat"], field["lon"])
+        if apt and dist is not None and dist > DKS_AIRPORT_RADIUS_NM:
+            near, near_dist, near_how = match_endpoint_airport(
+                airports, "", field["lat"], field["lon"])
+            if near:
+                return near, near_dist, near_how
+        return apt, dist, how
+
+    def _steerpoint_airport(self, wp, airports):
+        """Airport only when the steerpoint itself is within 1.5 NM of the field."""
+        if not airports:
+            return None, None, None
+        apt, dist, how = match_endpoint_airport(
+            airports, wp.get("name") or "", wp["lat"], wp["lon"])
+        if apt and dist is not None and dist <= DKS_AIRPORT_RADIUS_NM:
+            return apt, dist, how
+        return None, None, None
+
+    def _rwy_for_airport(self, apt, fields):
+        label = self._airport_label(apt)
+        if not label:
+            return ""
+        for field in fields:
+            if self._airport_label(field.get("apt")) == label:
+                return field.get("rwy") or ""
+        return ""
+
+    def _append_dks_steer(self, wp, reserved, stored, point_lines):
+        original = wp["name"]
+        if is_generic_steerpoint(original):
+            ident = self._alloc_wpt_name(reserved)
+            self._insert_custom_wpt(ident, wp["lat"], wp["lon"], wp["elev_ft"])
+            reserved.add(ident.upper())
+            stored.append({"id": ident, "lat": wp["lat"], "lon": wp["lon"], "is_nav": False})
+            point_lines.append(_t("dks_renamed", original=original or "—", name=ident))
+            return
+        ident, action = self._store_dks_custom(
+            original, wp["lat"], wp["lon"], wp["elev_ft"], reserved)
+        if action == "renamed":
+            detail = _t("dks_renamed", original=original, name=ident)
+        elif action == "overwrite":
+            detail = _t("dks_overwritten")
+        else:
+            detail = _t("dks_new")
+        stored.append({"id": ident, "lat": wp["lat"], "lon": wp["lon"], "is_nav": False})
+        point_lines.append(detail)
+
+    def _add_dks_airport(self, apt, detail, stored, point_lines):
+        stored.append({
+            "id": self._airport_label(apt),
+            "lat": apt["lat"],
+            "lon": apt["lon"],
+            "is_nav": True,
+        })
+        point_lines.append(detail)
+
+    def _add_dks_unprepared(self, role, lat, lon, elev_ft, original, reserved, stored, point_lines):
+        ident, action = self._store_dks_custom(role, lat, lon, elev_ft, reserved)
+        detail = _t("dks_as_to") if role == "TO" else _t("dks_as_lg")
+        if original and _alnum_key(original) not in ("", _alnum_key(ident)):
+            detail = f"{original} -> {detail}"
+        if action == "renamed":
+            detail = f"{detail}; " + _t("dks_renamed", original=role, name=ident)
+        elif action == "overwrite":
+            detail = f"{detail}; " + _t("dks_overwritten")
+        stored.append({"id": ident, "lat": lat, "lon": lon, "is_nav": False})
+        point_lines.append(detail)
+
+    def _commit_dks_plan(self, plan, airports):
+        waypoints = plan["waypoints"]
+        fields = []
+        for field in plan.get("fields") or []:
+            apt, dist, how = self._resolve_dks_field(field, airports)
+            fields.append({**field, "apt": apt, "dist": dist, "how": how})
+
+        dep = fields[0] if fields else None
+        dep_apt = dep.get("apt") if dep else None
+        first = waypoints[0]
+        last_wp = waypoints[-1]
+        first_on_field = bool(dep) and self._point_on_airport(first, dep_apt, dep)
+
+        reserved = set()
+        stored = []
+        point_lines = []
+
+        if dep and not first_on_field:
+            if dep_apt:
+                rwy = f", rwy {dep.get('rwy')}" if dep.get("rwy") else ""
+                self._add_dks_airport(dep_apt, _t(
+                    "dks_homeplate",
+                    name=dep.get("name") or self._airport_label(dep_apt),
+                    icao=self._airport_label(dep_apt),
+                    dist=f"{dep.get('dist') or 0:.1f}",
+                    rwy=rwy,
+                ), stored, point_lines)
+            elif dep.get("lat") is not None:
+                self._add_dks_unprepared(
+                    "TO", dep["lat"], dep["lon"], None, dep.get("name") or "",
+                    reserved, stored, point_lines)
+
+        last_index = len(waypoints) - 1
+        for index, wp in enumerate(waypoints):
+            if index == 0 and first_on_field and dep_apt:
+                rwy = f", rwy {dep.get('rwy')}" if dep.get("rwy") else ""
+                self._add_dks_airport(dep_apt, _t(
+                    "dks_homeplate",
+                    name=wp["name"] or dep.get("name") or self._airport_label(dep_apt),
+                    icao=self._airport_label(dep_apt),
+                    dist=f"{dep.get('dist') or 0:.1f}",
+                    rwy=rwy,
+                ), stored, point_lines)
+                continue
+
+            if index == last_index:
+                land_apt, land_dist, land_how = self._steerpoint_airport(wp, airports)
+                if land_apt:
+                    detail = _t(
+                        "dks_by_name" if land_how == "name" else "dks_by_coord",
+                        original=wp["name"] or self._airport_label(land_apt),
+                        dist=f"{land_dist:.1f}",
+                        airport=land_apt.get("name") or self._airport_label(land_apt),
+                    )
+                    rwy = self._rwy_for_airport(land_apt, fields)
+                    if rwy:
+                        detail = f"{detail}, rwy {rwy}"
+                    self._add_dks_airport(land_apt, detail, stored, point_lines)
+                    continue
+
+                landing_field = None
+                dep_label = self._airport_label(dep_apt)
+                for field in fields[1:]:
+                    label = self._airport_label(field.get("apt"))
+                    if field.get("apt") and label != dep_label:
+                        landing_field = field
+                        break
+                    if field.get("lat") is not None and not field.get("apt"):
+                        landing_field = field
+                        break
+                if landing_field and landing_field.get("apt"):
+                    self._append_dks_steer(wp, reserved, stored, point_lines)
+                    rwy = f", rwy {landing_field.get('rwy')}" if landing_field.get("rwy") else ""
+                    self._add_dks_airport(landing_field["apt"], _t(
+                        "dks_homeplate",
+                        name=landing_field.get("name") or self._airport_label(landing_field["apt"]),
+                        icao=self._airport_label(landing_field["apt"]),
+                        dist=f"{landing_field.get('dist') or 0:.1f}",
+                        rwy=rwy,
+                    ), stored, point_lines)
+                elif landing_field and landing_field.get("lat") is not None:
+                    self._append_dks_steer(wp, reserved, stored, point_lines)
+                    self._add_dks_unprepared(
+                        "LG", landing_field["lat"], landing_field["lon"], None,
+                        landing_field.get("name") or "", reserved, stored, point_lines)
+                else:
+                    self._add_dks_unprepared(
+                        "LG", wp["lat"], wp["lon"], wp["elev_ft"], wp["name"],
+                        reserved, stored, point_lines)
+                continue
+
+            self._append_dks_steer(wp, reserved, stored, point_lines)
+
+        if not stored:
+            raise DksFormatError("empty DKS flight plan")
+
+        origin = stored[0]["id"]
+        dest = stored[-1]["id"]
+        rwy_dep = self._rwy_for_airport(dep_apt, fields) if first_on_field or dep else ""
+        if dep and not first_on_field:
+            rwy_dep = dep.get("rwy") or rwy_dep
+        land_apt_final = None
+        for field in fields:
+            if self._airport_label(field.get("apt")) == dest:
+                land_apt_final = field.get("apt")
+                break
+        rwy_arr = self._rwy_for_airport(land_apt_final, fields)
+        alt_apt = None
+        alt_rwy = ""
+        for field in fields:
+            label = self._airport_label(field.get("apt"))
+            if label and label not in (origin, dest):
+                alt_apt = field.get("apt")
+                alt_rwy = field.get("rwy") or ""
+                break
+        alt_name = self._airport_label(alt_apt)
+
+        route_name, overwrite = self._resolve_dks_route_name(route_name_8(origin, dest))
+        tuples = []
+        for index, point in enumerate(stored):
+            if index == 0:
+                wtype = 2
+            elif index == len(stored) - 1:
+                wtype = 1
+            else:
+                wtype = 0
+            tuples.append(self._build_native_wpt_tuple(
+                point["id"], wtype, point["lat"], point["lon"], is_nav=point["is_nav"]))
+        if overwrite:
+            self.conn.execute("DELETE FROM routes WHERE name = ? COLLATE NOCASE", (route_name,))
+        self.conn.execute(
+            """INSERT INTO routes (name, wpt_trans, main_pts, alt_pts, origin, dest, alt,
+               rwy_dep, rwy_arr, rwy_dep_return, rwy_alt, rwy_dep_sid, rwy_arr_star,
+               rwy_alt_star, rwy_dep_return_star, rwy_dep_trans, rwy_arr_trans)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (
+                route_name, 0, ",".join(tuples), "", origin, dest, alt_name,
+                rwy_dep, rwy_arr, "", alt_rwy, "", "", "", "", "", "",
+            ),
+        )
+        self.conn.commit()
+
+        summary = []
+        if plan.get("design") or plan.get("pilot"):
+            summary.append(_t(
+                "msg_dks_design",
+                design=plan.get("design") or "—",
+                pilot=plan.get("pilot") or "—",
+            ))
+        summary.append(_t("msg_dks_route_line", name=route_name))
+        summary.append(f"{origin} -> {dest}")
+        if not fields:
+            summary.append(_t("dks_no_homeplate"))
+        summary.append("")
+        for index, (point, detail) in enumerate(zip(stored, point_lines), 1):
+            summary.append(_t("dks_point", seq=index, ident=point["id"], detail=detail))
+        if not _mgrs:
+            summary.append("")
+            summary.append(_t("msg_dks_no_mgrs"))
+        return route_name, "\n".join(summary)
+
+    def _select_route_by_name(self, name):
+        for iid in self.route_tree.get_children():
+            if self.route_tree.item(iid, "values")[0] == name:
+                self.route_tree.selection_set(iid)
+                self.route_tree.focus(iid)
+                self.route_tree.see(iid)
+                self._on_route_select()
+                return
 
     # ── Import / Export ──────────────────────────────────────────────
 

@@ -313,6 +313,11 @@ NOTAS TÉCNICAS
 
 LOG DE VERSIÓN / VERSION LOG
 -----------------------------
+Alpha 0.2n (261102)
+  - Routes: Import from DKS. A kneeboard zip's Home plate is the takeoff
+    when the first steerpoint is already airborne; the route name is the
+    two endpoint codes (8 characters).
+
 Alpha 0.2l (260627)
   - Routes: same Origin and Destination — origin stays first, destination
     last; enroute waypoints insert between them (AAA, FIX1, AAA).
