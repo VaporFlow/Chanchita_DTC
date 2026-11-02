@@ -83,6 +83,11 @@ STEP-BY-STEP TUTORIAL
    - Flight Plan Calculator (below Main Points): enter speed (kts),
      altitude (ft) and fuel flow (lbs/hr), then Calculate to see per-leg
      distance, time and fuel, plus route totals.
+   - "Import from DKS" reads a DKS kneeboard zip and builds the route.
+     In DKS, open the Divert page and enter the home plate (departure
+     airfield) in the first field. Chanchita uses that first field as the
+     takeoff. If the first flight-plan steerpoint is already in the air,
+     it stays a waypoint and the home plate is inserted ahead of it.
 
 4. USE THE MAP
    - Go to the "Map" tab.
@@ -236,6 +241,11 @@ TUTORIAL PASO A PASO
    - Calculadora de plan de vuelo (debajo de Main Points): ingresar
      velocidad (kts), altitud (ft) y flujo de combustible (lbs/hr);
      Calcular muestra distancia, tiempo y combustible por tramo y totales.
+   - "Importar desde DKS" lee un zip de kneeboard DKS y arma la ruta.
+     En DKS, abrir la página Divert y cargar el home plate (aeródromo de
+     despegue) en el primer campo. Chanchita usa ese primer campo como
+     despegue. Si el primer steerpoint del plan ya está en el aire, se
+     conserva como waypoint y el home plate se inserta delante.
 
 4. USAR EL MAPA
    - Ir a la pestaña "Mapa".
@@ -314,9 +324,10 @@ NOTAS TÉCNICAS
 LOG DE VERSIÓN / VERSION LOG
 -----------------------------
 Alpha 0.2n (261102)
-  - Routes: Import from DKS. A kneeboard zip's Home plate is the takeoff
-    when the first steerpoint is already airborne; the route name is the
-    two endpoint codes (8 characters).
+  - Routes: Import from DKS. Enter the home plate in the first field of
+    the DKS Divert page; that field is the takeoff. If the first steerpoint
+    is already airborne, it stays a waypoint. The route name is the two
+    endpoint codes (8 characters).
 
 Alpha 0.2l (260627)
   - Routes: same Origin and Destination — origin stays first, destination
